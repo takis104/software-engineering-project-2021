@@ -1,132 +1,129 @@
-package guiApp;
-
-import java.awt.EventQueue;
+package schoolink;
 
 import javax.swing.JFrame;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.JTextPane;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
+import javax.swing.JDialog;
+import java.awt.Font;
+import java.awt.Image;
+
+import javax.swing.JTextField;
+import java.sql.*;
 import java.awt.Color;
-import javax.swing.SwingConstants;
-import java.awt.SystemColor;
-import javax.swing.UIManager;
+import java.awt.Container;
+import java.awt.Dimension;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
+import javax.swing.JComboBox;
+import javax.swing.Icon;
 
-public class Teacher {
+@SuppressWarnings("serial")
+public class Teacher extends JDialog {
+	List<Integer> CategoryComboIndexToId;
+	private JTextField NameTxtFld;
+	JComboBox<String> parent_category;
+	JTextField category_descr;
+	public static JFrame screen;
 
-	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Teacher window = new Teacher();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	
+	public Teacher() {	
+		screen = new JFrame();
+		screen.getContentPane().setBackground(new Color(0, 0, 153));
+		screen.setTitle("Teacher:" + db_interface.user_surname + ": " + db_interface.school_name);
+		screen.setSize(new Dimension(500,500));
+		
+		ImageIcon bg = new ImageIcon(getClass().getResource("/images/main_bg.png"));
+		Image bg_img = bg.getImage().getScaledInstance(screen.getWidth(), screen.getHeight(), Image.SCALE_DEFAULT);
+		screen.setContentPane(new ImagePanel(bg_img));
+		Container cnt = screen.getContentPane();
+		cnt.setLayout(null);
+		
+		JLabel lbl1 = new JLabel("Teacher :");
+		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl1.setBounds(10, 100, 86, 14);
+		lbl1.setForeground(Color.WHITE);
+		cnt.add(lbl1);
+		
+		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
+		exit_btn.setToolTipText("Exit");
+		exit_btn.setMaximumSize(new Dimension(35, 35));
+		exit_btn.setBounds(250, 400, 46, 35);
+		exit_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				screen.dispose();
 			}
 		});
-	}
+		cnt.add(exit_btn);
+		
+		screen.setLocationRelativeTo(null);
+		screen.setVisible(true);
+		/*		
+		super(owner,"openschool-teacher : " + init_db.user_surname,true);
 
-	/**
-	 * Create the application.
-	 */
-	public Teacher() {
-		initialize();
-	}
+		db=init_db;
+		CategoryComboIndexToId = new ArrayList<Integer>();
+		
+		
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		Container cnt = this.getContentPane();
+		cnt.setBackground(new Color(102, 0, 0));
+		cnt.setLayout(null);
+		
+		JLabel lbl1 = new JLabel("Description :");
+		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl1.setBounds(10, 100, 86, 14);
+		lbl1.setForeground(Color.WHITE);
+		cnt.add(lbl1);
+		
+		JLabel lbl2 = new JLabel("Parent Category :");
+		lbl2.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl2.setBounds(10, 140, 106, 14);
+		lbl2.setForeground(Color.WHITE);
+		cnt.add(lbl2);
+		
+		JTextField category_descr = new JTextField();
+		category_descr.setBounds(126, 98, 247, 20);
+		this.getContentPane().add(category_descr);
+		category_descr.setColumns(10);
+		
+		parent_category = new JComboBox<String>();
+		parent_category.setBounds(126, 138, 247, 20);
+		parent_category.addItem("-1");
+		this.getContentPane().add(parent_category);
+		
+		db.getCategories(parent_category, CategoryComboIndexToId);
+	
+		JButton save_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/save.png")));
+		save_btn.setToolTipText("Save category");
+		save_btn.setMaximumSize(new Dimension(35, 35));
+		save_btn.setBounds(10, 2, 46, 35);
+		this.getContentPane().add(save_btn);
+		
+		JLabel lblName = new JLabel("Name :");
+		lblName.setForeground(Color.WHITE);
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblName.setBounds(10, 60, 86, 14);
+		getContentPane().add(lblName);
+		
+		NameTxtFld = new JTextField();
+		NameTxtFld.setColumns(10);
+		NameTxtFld.setBounds(126, 58, 247, 20);
+		getContentPane().add(NameTxtFld);
+		
+		save_btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(null, "Login Sucessful...");
+			}
+		});
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JTextPane txtpnTeachersName = new JTextPane();
-		txtpnTeachersName.setBackground(UIManager.getColor("Button.background"));
-		txtpnTeachersName.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 14));
-		txtpnTeachersName.setText("\u039A\u03B1\u03BB\u03CE\u03C2 \u03AE\u03BB\u03B8\u03B1\u03C4\u03B5 \u03C3\u03C4\u03BF SchooLink! \r\n\u039A\u03B5\u03BD\u03C4\u03C1\u03B9\u03BA\u03CC \u039C\u03B5\u03BD\u03BF\u03CD \u0395\u03C0\u03B9\u03BB\u03BF\u03B3\u03CE\u03BD \u039A\u03B1\u03B8\u03B7\u03B3\u03B7\u03C4\u03AE");
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\\u03A0\u03B1\u03BD\u03B5\u03C0\u03B9\u03C3\u03C4\u03AE\u03BC\u03B9\u03BF\\8\u03BF \u03B5\u03BE\u03AC\u03BC\u03B7\u03BD\u03BF\\\u03A4\u03B5\u03C7\u03BD\u03BF\u03BB\u03BF\u03B3\u03AF\u03B1 \u039B\u03BF\u03B3\u03B9\u03C3\u03BC\u03B9\u03BA\u03BF\u03CD\\img\\mystudents1.png"));
-		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\\u03A0\u03B1\u03BD\u03B5\u03C0\u03B9\u03C3\u03C4\u03AE\u03BC\u03B9\u03BF\\8\u03BF \u03B5\u03BE\u03AC\u03BC\u03B7\u03BD\u03BF\\\u03A4\u03B5\u03C7\u03BD\u03BF\u03BB\u03BF\u03B3\u03AF\u03B1 \u039B\u03BF\u03B3\u03B9\u03C3\u03BC\u03B9\u03BA\u03BF\u03CD\\img\\homework14.png"));
-		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\\u03A0\u03B1\u03BD\u03B5\u03C0\u03B9\u03C3\u03C4\u03AE\u03BC\u03B9\u03BF\\8\u03BF \u03B5\u03BE\u03AC\u03BC\u03B7\u03BD\u03BF\\\u03A4\u03B5\u03C7\u03BD\u03BF\u03BB\u03BF\u03B3\u03AF\u03B1 \u039B\u03BF\u03B3\u03B9\u03C3\u03BC\u03B9\u03BA\u03BF\u03CD\\img\\library.png"));
-		
-		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\\u03A0\u03B1\u03BD\u03B5\u03C0\u03B9\u03C3\u03C4\u03AE\u03BC\u03B9\u03BF\\8\u03BF \u03B5\u03BE\u03AC\u03BC\u03B7\u03BD\u03BF\\\u03A4\u03B5\u03C7\u03BD\u03BF\u03BB\u03BF\u03B3\u03AF\u03B1 \u039B\u03BF\u03B3\u03B9\u03C3\u03BC\u03B9\u03BA\u03BF\u03CD\\img\\salary1.png"));
-		
-		JButton btnNewButton = new JButton("Back");
-		btnNewButton.setBackground(Color.BLUE);
-		
-		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\\u03A0\u03B1\u03BD\u03B5\u03C0\u03B9\u03C3\u03C4\u03AE\u03BC\u03B9\u03BF\\8\u03BF \u03B5\u03BE\u03AC\u03BC\u03B7\u03BD\u03BF\\\u03A4\u03B5\u03C7\u03BD\u03BF\u03BB\u03BF\u03B3\u03AF\u03B1 \u039B\u03BF\u03B3\u03B9\u03C3\u03BC\u03B9\u03BA\u03BF\u03CD\\img\\announcment1.png"));
-		
-		JLabel lblNewLabel_5 = new JLabel("New label");
-		lblNewLabel_5.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\\u03A0\u03B1\u03BD\u03B5\u03C0\u03B9\u03C3\u03C4\u03AE\u03BC\u03B9\u03BF\\8\u03BF \u03B5\u03BE\u03AC\u03BC\u03B7\u03BD\u03BF\\\u03A4\u03B5\u03C7\u03BD\u03BF\u03BB\u03BF\u03B3\u03AF\u03B1 \u039B\u03BF\u03B3\u03B9\u03C3\u03BC\u03B9\u03BA\u03BF\u03CD\\img\\email1.png"));
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblNewLabel_1)
-								.addComponent(lblNewLabel_3, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnNewButton)
-							.addPreferredGap(ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-							.addComponent(txtpnTeachersName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblNewLabel_4, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(lblNewLabel_4, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-					.addGap(49)
-					.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
-					.addGap(84))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnNewButton)
-						.addComponent(txtpnTeachersName, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(34)
-							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(29)
-							.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_3, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
-		frame.getContentPane().setLayout(groupLayout);
+		this.setSize(475, 250); 
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
+*/
 	}
 }
