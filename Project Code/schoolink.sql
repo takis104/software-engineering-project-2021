@@ -69,19 +69,22 @@ CREATE TABLE `courses` (
 
 CREATE TABLE `expenses` (
   `id` int(11) NOT NULL,
-  `edate` datetime NOT NULL COMMENT 'Ημερ. Πληρωμής',
+  `expense_type` varchar(100) NOT NULL COMMENT 'Είδος Λειτουργικών Εξόδων',
   `amount` int(11) NOT NULL COMMENT 'Ποσό',
-  `comments` varchar(100) NOT NULL COMMENT 'Αιτιολόγηση',
-  `supplier_id` int(11) NOT NULL COMMENT 'Προμηθευτής'
+  `payment_method` enum("Μετρητά","Κάρτα","Τραπεζικό Έμβασμα") NOT NULL COMMENT 'Μέθοδος Πληρωμής',
+  `edate` date NOT NULL COMMENT 'Ημερομηνία Πληρωμής',
+  `comments` varchar(500) NOT NULL COMMENT 'Σημειώσεις'
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `expenses`
 --
 
-INSERT INTO `expenses` (`id`, `edate`, `amount`, `comments`, `supplier_id`) VALUES
-(1, '2021-05-10 19:20:13', 150, 'Είδη SM', 3),
-(2, '2021-05-03 19:20:20', 100, 'Επισκευή', 5);
+INSERT INTO `expenses` (`id`, `expense_type`, `amount`, `payment_method`, `edate`, `comments`) VALUES
+(1, "ΔΕΗ", 400, "Τραπεζικό Έμβασμα", '2021-03-01', "Πληρωμή ρεύματος στη ΔΕΗ"),
+(2, "VODAFONE", 80, "Κάρτα", '2021-03-01', "Πληρωμή λογαριασμού τηλεφωνίας");
+/*(1, '2021-05-10 19:20:13', 150, 'Είδη SM', 3),
+(2, '2021-05-03 19:20:20', 100, 'Επισκευή', 5);*/
 
 -- --------------------------------------------------------
 
@@ -331,32 +334,6 @@ INSERT INTO `school_params` (`school_name`, `school_title`, `address`, `email`, 
 
 -- --------------------------------------------------------
 
---
--- Δομή πίνακα για τον πίνακα `suppliers`
---
-
-CREATE TABLE `suppliers` (
-  `id` int(11) NOT NULL,
-  `sname` int(11) NOT NULL,
-  `afm` int(11) NOT NULL,
-  `comments` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
-
---
--- Άδειασμα δεδομένων του πίνακα `suppliers`
---
-
-INSERT INTO `suppliers` (`id`, `sname`, `afm`, `comments`) VALUES
-(1, 0, 10245244, NULL),
-(2, 0, 10245244, NULL),
-(3, 0, 110245244, NULL),
-(4, 0, 210245244, NULL),
-(5, 0, 230245244, NULL),
-(6, 0, 250245244, NULL),
-(7, 0, 630245244, NULL),
-(8, 0, 670245244, NULL);
-
--- --------------------------------------------------------
 
 --
 -- Δομή πίνακα για τον πίνακα `teach`
@@ -516,7 +493,8 @@ INSERT INTO `users` (`id`, `surname`, `firstname`, `gender`, `fathername`, `moth
 (100, 'ΠΑΠΑΔΑΚΗΣ', 'ΑΝΤΩΝΙΟΣ', b'0', 'ΑΝΤΩΝΗΣ', 'ΚΥΡΙΑΚΗ', 'pa87@gmail.com', 'pa87', '87', NULL, 5, NULL, 0, NULL, NULL, NULL),
 (101, 'ΜΙΧΑΛΑΚΟΥ', 'ΕΥΑΝΘΙΑ', b'1', 'ΑΠΟΣΤΟΛΟΣ', 'ΕΙΡΗΝΗ', 'le95@gmail.com', 'le95', '95', NULL, 5, NULL, 0, NULL, NULL, NULL),
 (102, 'ΠΑΠΑΝΔΡΕΟΥ', 'ΕΥΤΥΧΙΑ', b'1', 'ΛΕΥΤΕΡΗΣ', 'ΔΗΜΗΤΡΑ', 'pe97@gmail.com', 'pe97', '97', NULL, 5, NULL, 0, NULL, NULL, NULL),
-(103, 'ΠΑΠΑΔΗΜΑ', 'ΕΥΦΡΟΣΥΝΗ', b'1', 'ΣΩΤΗΡΗΣ', 'ΑΝΝΑ', 'pe98@gmail.com', 'pe98', '98', NULL, 5, NULL, 0, NULL, NULL, NULL);
+(103, 'ΠΑΠΑΔΗΜΑ', 'ΕΥΦΡΟΣΥΝΗ', b'1', 'ΣΩΤΗΡΗΣ', 'ΑΝΝΑ', 'pe98@gmail.com', 'pe98', '98', NULL, 5, NULL, 0, NULL, NULL, NULL),
+(104, 'SMITH', 'JOHN', b'0', NULL, NULL, 'doctorwho@tardis.co.uk', 'test', '1234', NULL, 2, NULL, 0, NULL, 1000, NULL);
 
 --
 -- Ευρετήρια για άχρηστους πίνακες
@@ -539,8 +517,8 @@ ALTER TABLE `courses`
 -- Ευρετήρια για πίνακα `expenses`
 --
 ALTER TABLE `expenses`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `supplier_id` (`supplier_id`);
+  ADD PRIMARY KEY (`id`);
+  /*ADD KEY `supplier_id` (`supplier_id`);*/
 
 --
 -- Ευρετήρια για πίνακα `feedback`
@@ -600,12 +578,6 @@ ALTER TABLE `payments`
 -- Ευρετήρια για πίνακα `roles`
 --
 ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`);
-
---
--- Ευρετήρια για πίνακα `suppliers`
---
-ALTER TABLE `suppliers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -685,12 +657,6 @@ ALTER TABLE `roles`
   MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT για πίνακα `suppliers`
---
-ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT για πίνακα `users`
 --
 ALTER TABLE `users`
@@ -705,12 +671,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `courses`
   ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`);
-
---
--- Περιορισμοί για πίνακα `expenses`
---
-ALTER TABLE `expenses`
-  ADD CONSTRAINT `expenses_ibfk_1` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`);
 
 --
 -- Περιορισμοί για πίνακα `feedback`
