@@ -13,8 +13,8 @@ public class AboutAppDialog {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-		about = new JDialog(newFrame, "Σχετικά με την εφαρμογή", true);
-		JButton exitBtn = new JButton ("Κλείσιμο"); 
+		about = new JDialog(newFrame, "Ξ£Ο‡ΞµΟ„ΞΉΞΊΞ¬ ΞΌΞµ Ο„Ξ·Ξ½ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ®", true);
+		JButton exitBtn = new JButton ("ΞΞ»ΞµΞ―ΟƒΞΉΞΌΞΏ"); 
 		exitBtn.addActionListener (new ActionListener() {  
             public void actionPerformed( ActionEvent e )  
             {  
@@ -31,27 +31,27 @@ public class AboutAppDialog {
 		panel.add(logo);
 		
 		//add components to panel
-		JLabel text1 = new JLabel("Σχετικά με την εφαρμογή");
+		JLabel text1 = new JLabel("Ξ£Ο‡ΞµΟ„ΞΉΞΊΞ¬ ΞΌΞµ Ο„Ξ·Ξ½ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ®");
 		text1.setFont(new Font("Tahoma", Font.BOLD, 20));
 		panel.add(text1);
 		
-		JLabel text2 = new JLabel("Σκοπός της εφαρμογής είναι η μηχανογράφηση της λειτουργίας ενός σχολικού περιβάλλοντος.");
+		JLabel text2 = new JLabel("Ξ£ΞΊΞΏΟ€ΟΟ‚ Ο„Ξ·Ο‚ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ®Ο‚ ΞµΞ―Ξ½Ξ±ΞΉ Ξ· ΞΌΞ·Ο‡Ξ±Ξ½ΞΏΞ³ΟΞ¬Ο†Ξ·ΟƒΞ· Ο„Ξ·Ο‚ Ξ»ΞµΞΉΟ„ΞΏΟ…ΟΞ³Ξ―Ξ±Ο‚ ΞµΞ½ΟΟ‚ ΟƒΟ‡ΞΏΞ»ΞΉΞΊΞΏΟ Ο€ΞµΟΞΉΞ²Ξ¬Ξ»Ξ»ΞΏΞ½Ο„ΞΏΟ‚.");
 		panel2.add(text2);
 		panel2.add( new JLabel("\n"));
 		
-		JLabel text3 = new JLabel("Η εφαρμογή αναπτύχθηκε στα πλαίσια του μαθήματος της Τεχνολογίας Λογισμικού.");
+		JLabel text3 = new JLabel("Ξ— ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ® Ξ±Ξ½Ξ±Ο€Ο„ΟΟ‡ΞΈΞ·ΞΊΞµ ΟƒΟ„Ξ± Ο€Ξ»Ξ±Ξ―ΟƒΞΉΞ± Ο„ΞΏΟ… ΞΌΞ±ΞΈΞ®ΞΌΞ±Ο„ΞΏΟ‚ Ο„Ξ·Ο‚ Ξ¤ΞµΟ‡Ξ½ΞΏΞ»ΞΏΞ³Ξ―Ξ±Ο‚ Ξ›ΞΏΞ³ΞΉΟƒΞΌΞΉΞΊΞΏΟ.");
 		panel2.add(text3);
-		JLabel text4 = new JLabel("Τμήμα Μηχανικών Η/Υ και Πληροφορικής, Πανεπιστήμιο Πατρών.");
+		JLabel text4 = new JLabel("Ξ¤ΞΌΞ®ΞΌΞ± ΞΞ·Ο‡Ξ±Ξ½ΞΉΞΊΟΞ½ Ξ—/Ξ¥ ΞΊΞ±ΞΉ Ξ Ξ»Ξ·ΟΞΏΟ†ΞΏΟΞΉΞΊΞ®Ο‚, Ξ Ξ±Ξ½ΞµΟ€ΞΉΟƒΟ„Ξ®ΞΌΞΉΞΏ Ξ Ξ±Ο„ΟΟΞ½.");
 		panel2.add(text4);
 		panel2.add( new JLabel("\n"));
 		
-		JLabel text5 = new JLabel("Μέλη Ομάδας: ");
+		JLabel text5 = new JLabel("ΞΞ­Ξ»Ξ· ΞΞΌΞ¬Ξ΄Ξ±Ο‚: ");
 		panel2.add(text5);
-		panel2.add( new JLabel("ΧΡΗΣΤΟΣ-ΠΑΝΑΓΙΩΤΗΣ ΜΠΑΛΑΤΣΟΥΡΑΣ, (Α.Μ. : 1054335)"));
-		panel2.add( new JLabel("ΕΙΡΗΝΗ ΡΟΥΧΩΤΑ, (Α.Μ. : 1059654)"));
-		panel2.add( new JLabel("ΧΡΙΣΤΙΝΑ ΠΑΠΑΣΤΑΥΡΟΥ, (Α.Μ. : 1059621)"));
-		panel2.add( new JLabel("ΓΙΑΝΝΗΣ ΧΑΤΖΗΜΙΧΑΛΗΣ, (Α.Μ. : 1059613)"));
-		panel2.add( new JLabel("ΓΙΩΡΓΟΣ ΜΗΤΣΕΑΣ, (Α.Μ. : 1002345)"));
+		panel2.add( new JLabel("Ξ§Ξ΅Ξ—Ξ£Ξ¤ΞΞ£-Ξ Ξ‘ΞΞ‘Ξ“Ξ™Ξ©Ξ¤Ξ—Ξ£ ΞΞ Ξ‘Ξ›Ξ‘Ξ¤Ξ£ΞΞ¥Ξ΅Ξ‘Ξ£, (Ξ‘.Ξ. : 1054335)"));
+		panel2.add( new JLabel("Ξ•Ξ™Ξ΅Ξ—ΞΞ— Ξ΅ΞΞ¥Ξ§Ξ©Ξ¤Ξ‘, (Ξ‘.Ξ. : 1059654)"));
+		panel2.add( new JLabel("Ξ§Ξ΅Ξ™Ξ£Ξ¤Ξ™ΞΞ‘ Ξ Ξ‘Ξ Ξ‘Ξ£Ξ¤Ξ‘Ξ¥Ξ΅ΞΞ¥, (Ξ‘.Ξ. : 1059621)"));
+		panel2.add( new JLabel("Ξ“Ξ™Ξ‘ΞΞΞ—Ξ£ Ξ§Ξ‘Ξ¤Ξ–Ξ—ΞΞ™Ξ§Ξ‘Ξ›Ξ—Ξ£, (Ξ‘.Ξ. : 1059613)"));
+		panel2.add( new JLabel("Ξ“Ξ™Ξ©Ξ΅Ξ“ΞΞ£ ΞΞ—Ξ¤Ξ£Ξ•Ξ‘Ξ£, (Ξ‘.Ξ. : 1002345)"));
 		panel2.add( new JLabel("\n"));
 		
 		panel2.add(exitBtn);
