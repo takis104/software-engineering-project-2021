@@ -18,8 +18,13 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
+
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -31,14 +36,13 @@ public class LoginPage extends JFrame {
 	private static JTextField username;
 	private static JPasswordField password;
 	private static JFrame screen;
-	//private JournalistWindow journalist;
 	private static db_interface db;
 	private boolean see_btn_state=false;
 	
 	public LoginPage() {	
 		
 		screen = new JFrame("");
-		screen.setTitle("");
+		screen.setTitle("Schoolink");
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		screen.getContentPane().setBackground(new Color(0, 102, 153));
 		screen.getContentPane().setLayout(null);
@@ -93,6 +97,17 @@ public class LoginPage extends JFrame {
 	    });
 	    btnLogin.setBounds(164, 184, 89, 23);
 	    screen.getContentPane().add(btnLogin);
+	    
+	    //About application button
+	    JButton btnAbout = new JButton("About");
+	    btnAbout.addActionListener (new ActionListener() {  
+            public void actionPerformed( ActionEvent arg0 )  
+            {  
+            	new AboutAppDialog();
+            }
+        });
+	    btnAbout.setBounds(20, 184, 89, 23);
+	    screen.getContentPane().add(btnAbout);
 		
 		username = new JTextField();
 		username.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -141,17 +156,9 @@ public class LoginPage extends JFrame {
 
 		screen.setLocationRelativeTo(null);
 		screen.setVisible(true);
-		
-		try {
-			dropbox_interface i=new dropbox_interface();
-		} catch (DbxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+		Cval.multirow_instances_stack = new Stack<MultirowForm>();
+		Cval.jtbl_stack = new Stack<JTable>();
+		Cval.id_from_parent = new Stack<Integer>();
 	}
 	
     private static void Connect2Db() throws InterruptedException, ExecutionException, TimeoutException  { 
@@ -161,7 +168,7 @@ public class LoginPage extends JFrame {
     		    // Background work
     			  db = new db_interface();
     			  if (!db_interface.status) this.cancel(true);
-    			  new dropbox_interface();
+    			  //new dropbox_interface();
     		    // Value transmitted to done()
     		    return true;
     		  }
@@ -189,7 +196,7 @@ public class LoginPage extends JFrame {
     	        		  		db_interface.user_firstname = db_interface.rs.getString("firstname");
     	        		  		db_interface.user_surname = db_interface.rs.getString("surname");
     	        		  		db_interface.user_auth_level = db_interface.rs.getInt("role_id");
-    	        		  		db_interface.getSchoolParams();    	        			    
+    	        		  		db_interface.getSchoolParams();    	
     	        			   
     	        		  		switch (db_interface.user_auth_level) {
     		        		  		case 1: //Director
@@ -206,7 +213,7 @@ public class LoginPage extends JFrame {
     		        		  			break;
     		        		  		case 5: //Parent
     		        		  			new Parent();
-    		        		  			break;    	        		  		
+    		        		  			break;
     		        		  		}
     	        		  		db_interface.rs.close();
     	        		  		db_interface.last_stmt.close();
