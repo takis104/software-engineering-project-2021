@@ -59,7 +59,7 @@ public class EditRow extends JDialog {
     ArrayList<RowObject>  Smr = new ArrayList<RowObject>();
 	
 	public EditRow(String parent_tbl, int id, int mode, boolean modal) {//mode = db_interface.ADD || mode=<record id> to MODIFY
-		super(Cval.multirow_instances_stack.peek(), (mode==db_interface.ADD ? "Add new record":"Edit record"), modal);
+		super(db_interface.parent_window, (mode==db_interface.ADD ? "Add new record":"Edit record"), modal);
 		this.mode=mode;
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Container cnt = this.getContentPane();
@@ -90,8 +90,9 @@ public class EditRow extends JDialog {
 	        Values = new ArrayList<JTextField>();
 
 			JLabel lbl1;	
+			
 			if (mode==db_interface.MODIFY) {
-				//System.out.println("---->SELECT * FROM " + parent_tbl + " WHERE id = " + id);
+				System.out.println("---->SELECT * FROM " + parent_tbl + " WHERE id = " + id);
 				db_interface.getAuxQueryResults("SELECT * FROM " + parent_tbl + " WHERE id = " + id);				
 				db_interface.rs_aux.next();
 			}
@@ -119,6 +120,7 @@ public class EditRow extends JDialog {
 					lbl1.setBounds(col, line, w, h); 
 					cnt.add(lbl1);
 					JTextField txt_field;
+					
 					if (db_interface.listOf_int_fields.contains(rs.getInt("DATA_TYPE"))) {
 						JComboBox<String> combobox;
 						fkeys = db_interface.GetForeignKeyReferences(rs.getString("COLUMN_NAME"), parent_tbl);
@@ -162,12 +164,12 @@ public class EditRow extends JDialog {
 							remove_image_object = t;
 							//String photo = db_interface.rs_aux.getString(rs.getString("COLUMN_NAME"));
 							String photo="";
-							//System.out.println("--->" + photo);
+							System.out.println("--->" + photo);
 							if (isEmptyStr(photo)) 
 								photo_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/File-Photo-icon.png")));
 							else {
 								String photo_id = photo;
-								ImageIcon ph = FileServer.get_image_to_icon(photo_id);
+								ImageIcon ph = dropbox_interface.get_image_to_icon(photo_id);
 								Image bg_img1 = ph.getImage().getScaledInstance(128, 128, Image.SCALE_DEFAULT);
 								photo_btn = new JButton();
 								photo_btn.setIcon(new ImageIcon(bg_img1));
@@ -177,13 +179,13 @@ public class EditRow extends JDialog {
 							photo_btn.setBounds(col + w + h, line, 128, 128);
 							photo_btn.addActionListener(new ActionListener() {
 						        public void actionPerformed(ActionEvent arg0) {
-						        	ImageIcon ic = FileServer.PickAPhotoFile();
+						        	ImageIcon ic = dropbox_interface.PickAPhotoFile();
 						        	delete_old_photo = false;
 						        	if (ic!=null) {
 						        		Image bg_img2 = ic.getImage().getScaledInstance(128, 128, Image.SCALE_DEFAULT);
 						        		//txt_field.setText("to_be_saved");
 						        		photo_btn.setIcon(new ImageIcon(bg_img2));
-						        		txt_field.setText(FileServer.store_file_online(FileServer.LastSelectedImage, true).id);
+						        		txt_field.setText(dropbox_interface.store_file_online(dropbox_interface.LastSelectedImage, true).id);
 						        		delete_old_photo=true;
 						        	}
 						        }
@@ -216,7 +218,7 @@ public class EditRow extends JDialog {
 	        	}
 				try {
 					String sql_stm1 = PrepareSqlStatement();
-					//System.out.println("Sql1:"+sql_stm1);
+					System.out.println("Sql1:"+sql_stm1);
 					//db_interface.db_connection.setAutoCommit(false);
 					db_interface.execute(sql_stm1);
 					//db_interface.db_connection.commit();
@@ -224,9 +226,9 @@ public class EditRow extends JDialog {
 					success_msg = (mode==db_interface.ADD) ? "New record has been stored" : "Record has been updated";
 					JOptionPane.showMessageDialog(null, success_msg);
 					if (delete_old_photo) 
-						FileServer.delete_file(remove_image_object.init_value);
+						dropbox_interface.delete_file(remove_image_object.init_value);
 					//Categories.populate_jtable();
-					Cval.multirow_instances_stack.peek().populate_jtable(false);
+					db_interface.multirow_form.populate_jtable(false);
 					dispose();
 				} catch (SQLException se) {
 					fail_msg = (mode==db_interface.ADD) ? "Failed to create new record!" : "Failed to update record...";
@@ -252,9 +254,7 @@ public class EditRow extends JDialog {
 			}
 		});
 		cnt.add(exit_btn);
-
 		PrepareSqlStatement();
-
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
@@ -266,11 +266,9 @@ public class EditRow extends JDialog {
 		//for (k=0;k<Smr.size();k++) {
 		//	System.out.println(Smr.get(k).label.getText() + "--->" + Smr.get(k).getText() + ":" + Smr.get(k).init_value + ":" + Smr.get(k).data_type);
 		//}
-		MultirowForm mr = Cval.multirow_instances_stack.peek();
 		if (mode==db_interface.ADD) {
 			String values="DEFAULT";
-			mr = Cval.multirow_instances_stack.peek();
-			query = "INSERT INTO " + mr.my_sql_tbl + "(id,";
+			query = "INSERT INTO " + db_interface.table_from_parent + "(id,";
 			String fields="";
 			for (k=0;k<Smr.size();k++) {
 				fields += "," + Smr.get(k).field;
@@ -280,13 +278,13 @@ public class EditRow extends JDialog {
 			}
 			query +=  fields.substring(1) + ") VALUES(" + values + ");";
 		} else {
-			query = "UPDATE " + mr.my_sql_tbl + " SET ";
+			query = "UPDATE " + db_interface.table_from_parent + " SET ";
 			String upd="";
 			String val;
 			for (k=0;k<Smr.size();k++) {
 				RowObject t = Smr.get(k);
 				String current_value = t.getText();
-				//System.out.println(">" + t.label.getText() + " : " + t.init_value + "-->" + current_value+"<");
+				System.out.println(">" + t.label.getText() + " : " + t.init_value + "-->" + current_value+"<");
 				if ((t.init_value!=null) && (current_value!=null) && (!t.init_value.equals(current_value))) {
 					val = t.getText();
 					if (t.data_type==java.sql.Types.VARCHAR)
@@ -295,7 +293,7 @@ public class EditRow extends JDialog {
 				}
 			}
 			if (upd.length()>0)
-				query = query + upd.substring(1) + " WHERE id = " + Cval.id_from_parent.peek();
+				query = query + upd.substring(1) + " WHERE id = " + db_interface.id_from_parent;
 			else return "";
 		} 
 		return query;

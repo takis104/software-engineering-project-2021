@@ -4,16 +4,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JDialog;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.JTextField;
+
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+
 import java.sql.*;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,105 +35,69 @@ import javax.swing.Icon;
 @SuppressWarnings("serial")
 public class Teacher extends JDialog {
 	List<Integer> CategoryComboIndexToId;
-	private JTextField NameTxtFld;
 	JComboBox<String> parent_category;
 	JTextField category_descr;
 	public static JFrame screen;
+	int button_size;
 
 	
 	public Teacher() {	
 		screen = new JFrame();
-		screen.getContentPane().setBackground(new Color(0, 0, 153));
-		screen.setTitle("Teacher:" + db_interface.user_surname + ": " + db_interface.school_name);
-		screen.setSize(new Dimension(500,500));
-		
+		screen.setTitle("Teacher:" + db_interface.user_surname + ":" + db_interface.school_name);
 		ImageIcon bg = new ImageIcon(getClass().getResource("/images/main_bg.png"));
+		screen.setSize(new Dimension(Cval.ScreenWidth,Cval.ScreenHeight));
 		Image bg_img = bg.getImage().getScaledInstance(screen.getWidth(), screen.getHeight(), Image.SCALE_DEFAULT);
 		screen.setContentPane(new ImagePanel(bg_img));
-		Container cnt = screen.getContentPane();
-		cnt.setLayout(null);
+
+		GridBagLayout grid = new GridBagLayout();
+		screen.setLayout(grid);
+		GridBagConstraints gbc1 = new GridBagConstraints();
+		gbc1.gridx = 6;  gbc1.gridy = 6; screen.add(new JLabel(""), gbc1);
 		
-		JLabel lbl1 = new JLabel("Teacher :");
-		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl1.setBounds(10, 100, 86, 14);
+		JLabel lbl1 = new JLabel("Welcome...");
+		lbl1.setFont(new Font("Tahoma", Font.PLAIN, Cval.TitleFontSize));
 		lbl1.setForeground(Color.WHITE);
-		cnt.add(lbl1);
+		GridBagConstraints gbc2 = new GridBagConstraints();
+		gbc2.gridx = 0;  gbc2.gridy = 0; gbc2.gridwidth=2;
+		screen.add(lbl1, gbc2);
 		
+		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im10.png", "Send message");
+		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im07.png", "Μαθητές");
+		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im16.png", "Γονείς");
+		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im02.png", "Call Edit multiple records");
+		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im06.png", "Call dbx");
+		JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im05.png", "Call editor");
+
+		btn2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				db_interface.sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο, role_id FROM "+ "users WHERE id>0 ORDER BY surname";
+				new HandleGroups("Edit groups", screen, false);
+			}
+		});
+		
+		btn1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					MessageFx e = new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Send message",dropbox_interface.getHtmlText(getClass().getResource("/test.htm")));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+			
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");
 		exit_btn.setMaximumSize(new Dimension(35, 35));
-		exit_btn.setBounds(250, 400, 46, 35);
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				screen.dispose();
 			}
 		});
-		cnt.add(exit_btn);
-		
+		GridBagConstraints gbc3 = new GridBagConstraints();
+		gbc3.gridx = 5;  gbc3.gridy = 5; screen.add(exit_btn, gbc3);
 		screen.setLocationRelativeTo(null);
 		screen.setVisible(true);
-		/*		
-		super(owner,"openschool-teacher : " + init_db.user_surname,true);
 
-		db=init_db;
-		CategoryComboIndexToId = new ArrayList<Integer>();
-		
-		
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		Container cnt = this.getContentPane();
-		cnt.setBackground(new Color(102, 0, 0));
-		cnt.setLayout(null);
-		
-		JLabel lbl1 = new JLabel("Description :");
-		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl1.setBounds(10, 100, 86, 14);
-		lbl1.setForeground(Color.WHITE);
-		cnt.add(lbl1);
-		
-		JLabel lbl2 = new JLabel("Parent Category :");
-		lbl2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl2.setBounds(10, 140, 106, 14);
-		lbl2.setForeground(Color.WHITE);
-		cnt.add(lbl2);
-		
-		JTextField category_descr = new JTextField();
-		category_descr.setBounds(126, 98, 247, 20);
-		this.getContentPane().add(category_descr);
-		category_descr.setColumns(10);
-		
-		parent_category = new JComboBox<String>();
-		parent_category.setBounds(126, 138, 247, 20);
-		parent_category.addItem("-1");
-		this.getContentPane().add(parent_category);
-		
-		db.getCategories(parent_category, CategoryComboIndexToId);
-	
-		JButton save_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/save.png")));
-		save_btn.setToolTipText("Save category");
-		save_btn.setMaximumSize(new Dimension(35, 35));
-		save_btn.setBounds(10, 2, 46, 35);
-		this.getContentPane().add(save_btn);
-		
-		JLabel lblName = new JLabel("Name :");
-		lblName.setForeground(Color.WHITE);
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblName.setBounds(10, 60, 86, 14);
-		getContentPane().add(lblName);
-		
-		NameTxtFld = new JTextField();
-		NameTxtFld.setColumns(10);
-		NameTxtFld.setBounds(126, 58, 247, 20);
-		getContentPane().add(NameTxtFld);
-		
-		save_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "Login Sucessful...");
-			}
-		});
-
-		this.setSize(475, 250); 
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
-*/
 	}
 }

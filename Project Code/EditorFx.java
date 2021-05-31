@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
@@ -61,6 +62,12 @@ public class EditorFx extends Application {
 	private static Scene parent_scene;
 	private static Stage primStage;
 	private static Stage main_dialog;
+	private static int file_no; 
+	private static String file_replace_str1 = "_%$_##";
+	private static String file_replace_str2 = "%$_##_";
+	private static ArrayList<String> files;
+	private static ArrayList<String> images;
+	
 	
     public void start(Stage primaryStage) throws Exception {
     	primStage = primaryStage;
@@ -68,6 +75,10 @@ public class EditorFx extends Application {
 	
 	public EditorFx(int width, int height, String title_txt, String init_html_content) {
 		instance = this;
+    	file_no = 1;
+    	files = new ArrayList<String>();
+    	images = new ArrayList<String>();
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -142,15 +153,14 @@ public class EditorFx extends Application {
 	    if (node instanceof ToolBar) {
 	      ToolBar bar = (ToolBar) node;
 	      ImageView graphic = new ImageView(new Image(EditorFx.class.getResource("/images/ed_table.png").toExternalForm(), 16, 16, true, true));
-	      //graphic.setEffect(new DropShadow());
 	      Button tblButton = new Button("", graphic);
 	      ImageView graphic1 = new ImageView(new Image(EditorFx.class.getResource("/images/ed_image.png").toExternalForm(), 16, 16, true, true));
-	      //graphic1.setEffect(new DropShadow());
 	      Button imgButton = new Button("", graphic1);
-	      ImageView graphic2 = new ImageView(new Image(EditorFx.class.getResource("/images/ed_link.png").toExternalForm(), 16, 16, true, true));
-	      //graphic2.setEffect(new DropShadow());
+	      ImageView graphic2 = new ImageView(new Image(EditorFx.class.getResource("/images/ed_link.png").toExternalForm(), 16, 16, true, true));     
 	      Button lnkButton = new Button("", graphic2);
-	      bar.getItems().addAll(tblButton, imgButton,lnkButton, new Separator());
+	      ImageView graphic3 = new ImageView(new Image(EditorFx.class.getResource("/images/ed_import.png").toExternalForm(), 16, 16, true, true));     
+	      Button pdfButton = new Button("", graphic3);
+	      bar.getItems().addAll(tblButton, imgButton,lnkButton,pdfButton, new Separator());
           tblButton.setOnAction(new EventHandler<ActionEvent>() {
 	        @Override public void handle(ActionEvent arg0) {
 	            Dialog<Pair<Integer, Integer>> ndialog = new Dialog<>();
@@ -246,6 +256,8 @@ public class EditorFx extends Application {
 				                    "<br><embed width='%d' height='%d' src='data:%s;base64,%s' type='%s' /><br>",
 				                    w,h, type, base64data, type);
 							insertTextAtCursor(htmlData);
+							System.out.println("img path = " + fp.toPath().toString());
+							images.add(fp.toPath().toString());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -254,6 +266,86 @@ public class EditorFx extends Application {
 	        	}
 	        }
 	      });
+          //========
+          pdfButton.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override public void handle(ActionEvent arg0) {
+	            Dialog<Pair<String, String>> ndialog = new Dialog<>();
+	            ndialog.setTitle("Select a file and its alias");
+	            ndialog.initOwner(main_dialog);
+	            ndialog.initModality(Modality.WINDOW_MODAL);
+
+	            ButtonType loginButtonType = new ButtonType("OK", ButtonData.OK_DONE);
+	            ndialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+	            GridPane gridPane = new GridPane();
+	            gridPane.setHgap(10);
+	            gridPane.setVgap(10);
+	            gridPane.setPadding(new Insets(20, 150, 10, 10));
+	            
+	            gridPane.add(new Label("Alias:"), 0, 0);
+	            TextField given_alias = new TextField();
+	            given_alias.setEditable(true);
+	            given_alias.setPrefColumnCount(35);
+	            given_alias.setPromptText("Enter your alias");
+	            gridPane.add(given_alias, 1, 0);
+	                      
+	            gridPane.add(new Label("File:"), 0, 1);
+	            TextField given_file = new TextField();
+	            given_file.setEditable(false);
+	            given_file.setPrefColumnCount(35);
+	            given_file.setPromptText("Selected file");
+	            gridPane.add(given_file, 1, 1);	            
+	            
+	            
+	            Button file_btn = new Button("...");
+	            gridPane.add(file_btn,2,1);
+	            
+	            file_btn.setOnAction(new EventHandler<ActionEvent>() {
+	                @Override public void handle(ActionEvent arg0) {
+	    	        	FileChooser fc = new FileChooser();
+	    	        	fc.setTitle("Open Resource File");
+	    	    	    FileChooser.ExtensionFilter extFilterPNG = 
+	    	                    new FileChooser.ExtensionFilter("pdf files (*.pdf)", "*.pdf");
+	    	            fc.getExtensionFilters().addAll(extFilterPNG);
+	    	        	File fp = fc.showOpenDialog(primStage);
+	    	        	if (fp!=null) given_file.setText(fp.getAbsolutePath());
+	                }
+	            });
+
+	            ndialog.getDialogPane().setContent(gridPane);
+	            
+	            
+	            // Request focus on the username field by default.
+	            Platform.runLater(() -> given_alias.requestFocus());
+
+	            ndialog.setResultConverter(dialogButton -> {
+	                if (dialogButton == loginButtonType) {
+	                	if ((given_alias.getText().length()==0) ||  (given_file.getText().length()==0)) return null;
+	                    return new Pair<String, String>(given_alias.getText(), given_file.getText());
+	                }
+	                return null;
+	            });  	
+	            
+	            //loginButtonType.disableProperty().bind(given_alias.textProperty().isEmpty());
+
+	            Optional<Pair<String, String>> result = ndialog.showAndWait();
+	            
+	            result.ifPresent(pair -> {
+	            	String alias = pair.getKey();
+	            	String filepath = pair.getValue();
+	            	System.out.println("alias = " + alias + "fpath = " + filepath);
+	            	String to_be_replaced = file_replace_str1 + (file_no++) + file_replace_str2;
+	            	System.out.println("pdf path = " + filepath);
+	            	files.add(filepath);
+	  	        	//WebView webView = (WebView) ed.lookup("WebView");
+	  	        	//String selected = (String) webView.getEngine().executeScript("window.getSelection().toString();");
+	  	        	String pdflinkHtml = "<a href=\"" + to_be_replaced + "\" title=\"" + alias + "\" target=\"_blank\">" + alias + "</a>";
+	  	        	insertTextAtCursor(pdflinkHtml);
+	            });
+
+	        }
+	      });          
+          //========
           lnkButton.setOnAction(new EventHandler<ActionEvent>() {
   	        @Override public void handle(ActionEvent arg0) {
   	        	//String url = JOptionPane.showInputDialog("Enter Url");
