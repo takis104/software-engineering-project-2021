@@ -1,15 +1,11 @@
-drop database if exists schoolink;
-create database schooLink;
-use schoolink;
-
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Φιλοξενητής: 127.0.0.1
--- Χρόνος δημιουργίας: 25 Μάη 2021 στις 18:28:37
--- Έκδοση διακομιστή: 10.4.14-MariaDB
--- Έκδοση PHP: 7.2.34
+-- Χρόνος δημιουργίας: 01 Ιουν 2021 στις 03:39:37
+-- Έκδοση διακομιστή: 10.4.17-MariaDB
+-- Έκδοση PHP: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -71,7 +67,7 @@ CREATE TABLE `expenses` (
   `id` int(11) NOT NULL,
   `expense_type` varchar(100) NOT NULL COMMENT 'Είδος Λειτουργικών Εξόδων',
   `amount` int(11) NOT NULL COMMENT 'Ποσό',
-  `payment_method` enum("Μετρητά","Κάρτα","Τραπεζικό Έμβασμα") NOT NULL COMMENT 'Μέθοδος Πληρωμής',
+  `payment_method` tinyint(11) DEFAULT NULL COMMENT 'Μέθοδος Πληρωμής',
   `edate` date NOT NULL COMMENT 'Ημερομηνία Πληρωμής',
   `comments` varchar(500) NOT NULL COMMENT 'Σημειώσεις'
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
@@ -81,10 +77,29 @@ CREATE TABLE `expenses` (
 --
 
 INSERT INTO `expenses` (`id`, `expense_type`, `amount`, `payment_method`, `edate`, `comments`) VALUES
-(1, "ΔΕΗ", 400, "Τραπεζικό Έμβασμα", '2021-03-01', "Πληρωμή ρεύματος στη ΔΕΗ"),
-(2, "VODAFONE", 80, "Κάρτα", '2021-03-01', "Πληρωμή λογαριασμού τηλεφωνίας");
-/*(1, '2021-05-10 19:20:13', 150, 'Είδη SM', 3),
-(2, '2021-05-03 19:20:20', 100, 'Επισκευή', 5);*/
+(1, 'ΔΕΗ', 400, 1, '2021-03-01', 'Πληρωμή ρεύματος στη ΔΕΗ'),
+(2, 'VODAFONE', 80, 2, '2021-03-01', 'Πληρωμή λογαριασμού τηλεφωνίας'),
+(3, 'Τράπεζα Πειραιώς', 3600, 1, '2021-05-02', 'Δόση Δανείου');
+
+-- --------------------------------------------------------
+
+--
+-- Δομή πίνακα για τον πίνακα `expense_payment_methods`
+--
+
+CREATE TABLE `expense_payment_methods` (
+  `id` tinyint(4) NOT NULL,
+  `method` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=greek;
+
+--
+-- Άδειασμα δεδομένων του πίνακα `expense_payment_methods`
+--
+
+INSERT INTO `expense_payment_methods` (`id`, `method`) VALUES
+(1, 'Τραπεζικό Έμβασμα'),
+(2, 'Κάρτα'),
+(3, 'Μετρητά');
 
 -- --------------------------------------------------------
 
@@ -334,6 +349,38 @@ INSERT INTO `school_params` (`school_name`, `school_title`, `address`, `email`, 
 
 -- --------------------------------------------------------
 
+--
+-- Δομή πίνακα για τον πίνακα `subscriptions`
+--
+
+CREATE TABLE `subscriptions` (
+  `id` int(11) NOT NULL,
+  `student_surname` varchar(50) NOT NULL COMMENT 'Επώνυμο Μαθητή',
+  `student_name` varchar(50) NOT NULL COMMENT 'Όνομα Μαθητή',
+  `student_class` varchar(50) NOT NULL COMMENT 'Τάξη Μαθητή',
+  `subscription_monthly_price` int(11) NOT NULL COMMENT 'Μηνιαίο Κόστος Συνδρομής',
+  `payment_September` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Σεπτεμβρίου',
+  `payment_October` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Οκτωβρίου',
+  `payment_November` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Νοεμβρίου',
+  `payment_December` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Δεκεμβρίου',
+  `payment_January` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Ιανουαρίου',
+  `payment_February` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Φεβρουαρίου',
+  `payment_March` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Μαρτίου',
+  `payment_April` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Απριλίου',
+  `payment_May` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Μαΐου',
+  `payment_June` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Ιουνίου',
+  `Comments` varchar(500) DEFAULT NULL COMMENT 'Σχόλια'
+) ENGINE=InnoDB DEFAULT CHARSET=greek;
+
+--
+-- Άδειασμα δεδομένων του πίνακα `subscriptions`
+--
+
+INSERT INTO `subscriptions` (`id`, `student_surname`, `student_name`, `student_class`, `subscription_monthly_price`, `payment_September`, `payment_October`, `payment_November`, `payment_December`, `payment_January`, `payment_February`, `payment_March`, `payment_April`, `payment_May`, `payment_June`, `Comments`) VALUES
+(1, 'ΓΙΑΛΑΜΑΣ', 'ΚΩΝΣΤΑΝΤΙΝΟΣ', 'Β Τάξη', 2000, 'ΝΑΙ', 'ΝΑΙ', 'ΝΑΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'Έχουν εξοφληθεί τυχόν εκκρεμότητες'),
+(2, 'ΛΑΜΠΑΚΗ', 'ΕΥΓΕΝΙΑ', 'Γ Τάξη', 3220, 'ΝΑΙ', 'ΝΑΙ', 'ΝΑΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', 'ΟΧΙ', NULL);
+
+-- --------------------------------------------------------
 
 --
 -- Δομή πίνακα για τον πίνακα `teach`
@@ -393,7 +440,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `surname`, `firstname`, `gender`, `fathername`, `mothername`, `email`, `username`, `password`, `birthdate`, `role_id`, `parent_id`, `discount`, `teaching`, `salary`, `photo`) VALUES
 (0, '-', '-', b'1', '-', '-', '0@gmail.com', '0', '0', NULL, 1, NULL, 0, NULL, NULL, NULL),
 (1, 'ΖΑΧΟY', 'ΑΙΚΑΤΕΡΙΝΗ', b'1', 'ΓΙΩΡΓΟΣ', 'ΜΑΡΙΑ', 'fi0@gmail.com', 'fi0', '0', NULL, 1, NULL, 0, NULL, 2000, NULL),
-(2, 'ΑΛΕΞΑΝΔΡΙΔΗ', 'ΕΥΑΓΓΕΛΙΑ', b'1', 'ΓΙΑΝΝΗΣ', 'ΕΛΕΝΗ', 'ae1@gmail.com', 'ae1', '1', NULL, 2, NULL, 0, NULL, 1000, NULL),
+(2, 'ΑΛΕΞΑΝΔΡΙΔΗ', 'ΕΥΑΓΓΕΛΙΑ', b'1', 'ΓΙΑΝΝΗΣ', 'ΕΛΕΝΗ', 'ae1@gmail.com', 'ae1', '1', NULL, 2, NULL, 0, NULL, 1600, NULL),
 (3, 'ΖΑΦΕΙΡΟΠΟΥΛΟY', 'ΙΩΑΝΝΑ', b'1', 'ΚΩΣΤΑΣ', 'ΚΑΤΕΡΙΝΑ', 'fi1@gmail.com', 'fi1', '1', NULL, 3, NULL, 0, NULL, 1500, NULL),
 (4, 'ΜΟΣΧΟΣ', 'ΕΛΕΥΘΕΡΙΟΣ', b'0', 'ΒΑΓΓΕΛΗΣ', 'ΚΩΝΣΤΑΝΤΙΝΑ', 'le4@gmail.com', 'le4', '4', NULL, 3, NULL, 0, NULL, NULL, NULL),
 (5, 'ΚΑΛΑΡΗΣ', 'ΗΛΙΑΣ', b'0', 'ΘΟΔΩΡΟΣ', 'ΑΝΑΣΤΑΣΙΑ', 'jg5@gmail.com', 'jg5', '5', NULL, 3, NULL, 0, NULL, NULL, NULL),
@@ -494,7 +541,35 @@ INSERT INTO `users` (`id`, `surname`, `firstname`, `gender`, `fathername`, `moth
 (101, 'ΜΙΧΑΛΑΚΟΥ', 'ΕΥΑΝΘΙΑ', b'1', 'ΑΠΟΣΤΟΛΟΣ', 'ΕΙΡΗΝΗ', 'le95@gmail.com', 'le95', '95', NULL, 5, NULL, 0, NULL, NULL, NULL),
 (102, 'ΠΑΠΑΝΔΡΕΟΥ', 'ΕΥΤΥΧΙΑ', b'1', 'ΛΕΥΤΕΡΗΣ', 'ΔΗΜΗΤΡΑ', 'pe97@gmail.com', 'pe97', '97', NULL, 5, NULL, 0, NULL, NULL, NULL),
 (103, 'ΠΑΠΑΔΗΜΑ', 'ΕΥΦΡΟΣΥΝΗ', b'1', 'ΣΩΤΗΡΗΣ', 'ΑΝΝΑ', 'pe98@gmail.com', 'pe98', '98', NULL, 5, NULL, 0, NULL, NULL, NULL),
-(104, 'SMITH', 'JOHN', b'0', NULL, NULL, 'doctorwho@tardis.co.uk', 'test', '1234', NULL, 2, NULL, 0, NULL, 1000, NULL);
+(104, 'SMITH', 'JOHN', b'0', NULL, NULL, 'doctorwho@tardis.co.uk', 'test', '1234', NULL, 2, NULL, 0, NULL, 1600, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Δομή πίνακα για τον πίνακα `work_time_salary`
+--
+
+CREATE TABLE `work_time_salary` (
+  `id` int(11) NOT NULL,
+  `employee_surname` varchar(50) NOT NULL COMMENT 'Επώνυμο Εργαζομένου',
+  `employee_name` varchar(50) NOT NULL COMMENT 'Όνομα Εργαζομένου',
+  `work_shift_date` date NOT NULL COMMENT 'Ημερομηνία Εργασίας',
+  `work_time` int(11) NOT NULL COMMENT 'Χρόνος Εργασίας σε Ώρες',
+  `hour_cost` int(11) NOT NULL COMMENT 'Κόστος Ώρας Εργαζομένου',
+  `payment_status` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Κατάσταση Πληρωμής'
+) ENGINE=InnoDB DEFAULT CHARSET=greek;
+
+--
+-- Άδειασμα δεδομένων του πίνακα `work_time_salary`
+--
+
+INSERT INTO `work_time_salary` (`id`, `employee_surname`, `employee_name`, `work_shift_date`, `work_time`, `hour_cost`, `payment_status`) VALUES
+(1, 'ΑΛΕΞΑΝΔΡΙΔΗ', 'ΕΥΑΓΓΕΛΙΑ', '2021-03-01', 8, 10, 'ΟΧΙ'),
+(2, 'ΑΛΕΞΑΝΔΡΙΔΗ', 'ΕΥΑΓΓΕΛΙΑ', '2021-03-02', 8, 10, 'ΟΧΙ'),
+(3, 'ΜΟΣΧΟΣ', 'ΕΛΕΥΘΕΡΙΟΣ', '2021-03-01', 8, 9, 'ΟΧΙ'),
+(4, 'ΜΟΣΧΟΣ', 'ΕΛΕΥΘΕΡΙΟΣ', '2021-03-02', 8, 9, 'ΟΧΙ'),
+(5, 'ΑΛΕΞΑΝΔΡΙΔΗ', 'ΕΥΑΓΓΕΛΙΑ', '2021-04-01', 8, 10, 'ΝΑΙ'),
+(6, 'ΑΛΕΞΑΝΔΡΙΔΗ', 'ΕΥΑΓΓΕΛΙΑ', '2021-04-01', 8, 10, 'NAI');
 
 --
 -- Ευρετήρια για άχρηστους πίνακες
@@ -517,8 +592,14 @@ ALTER TABLE `courses`
 -- Ευρετήρια για πίνακα `expenses`
 --
 ALTER TABLE `expenses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `payment_method` (`payment_method`) USING BTREE;
+
+--
+-- Ευρετήρια για πίνακα `expense_payment_methods`
+--
+ALTER TABLE `expense_payment_methods`
   ADD PRIMARY KEY (`id`);
-  /*ADD KEY `supplier_id` (`supplier_id`);*/
 
 --
 -- Ευρετήρια για πίνακα `feedback`
@@ -581,6 +662,12 @@ ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Ευρετήρια για πίνακα `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Ευρετήρια για πίνακα `teach`
 --
 ALTER TABLE `teach`
@@ -605,6 +692,12 @@ ALTER TABLE `users`
   ADD KEY `role_id` (`role_id`);
 
 --
+-- Ευρετήρια για πίνακα `work_time_salary`
+--
+ALTER TABLE `work_time_salary`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT για άχρηστους πίνακες
 --
 
@@ -624,7 +717,13 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT για πίνακα `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT για πίνακα `expense_payment_methods`
+--
+ALTER TABLE `expense_payment_methods`
+  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT για πίνακα `feedback`
@@ -657,10 +756,22 @@ ALTER TABLE `roles`
   MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT για πίνακα `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT για πίνακα `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
+
+--
+-- AUTO_INCREMENT για πίνακα `work_time_salary`
+--
+ALTER TABLE `work_time_salary`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Περιορισμοί για άχρηστους πίνακες
@@ -671,6 +782,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `courses`
   ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`);
+
+--
+-- Περιορισμοί για πίνακα `expenses`
+--
+ALTER TABLE `expenses`
+  ADD CONSTRAINT `expenses_ibfk_1` FOREIGN KEY (`payment_method`) REFERENCES `expense_payment_methods` (`id`);
 
 --
 -- Περιορισμοί για πίνακα `feedback`
