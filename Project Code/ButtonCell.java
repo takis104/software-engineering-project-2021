@@ -3,6 +3,8 @@ package schoolink;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,10 +31,23 @@ public class ButtonCell extends AbstractCellEditor implements TableCellEditor, T
             	db_interface.id_from_parent=clicked_id;
                 System.out.println("clicked--> "+row+","+col + "," + clicked_id);
                 if (col==0) {
-                	db_interface.sql_from_parent = "SELECT * FROM" + db_interface.table_from_parent + " WHERE id = " + clicked_id;
-                	EditRow edit_scr = new EditRow(db_interface.MODIFY, true);
+                	db_interface.sql_from_parent = "SELECT * FROM " + db_interface.table_from_parent + " WHERE id = " + clicked_id;
+                	//EditRow edit_scr = 
+                	new EditRow(db_interface.table_from_parent, clicked_id, db_interface.MODIFY, true);
                 } else {
-                	JOptionPane.showMessageDialog(null, "Delete row...");
+                	if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
+                	        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                		try {
+							db_interface.execute("DELETE FROM " + db_interface.table_from_parent + " WHERE id = " + clicked_id);
+							db_interface.multirow_form.populate_jtable(false);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Unable to delete record... ","Error",JOptionPane.ERROR_MESSAGE);
+						}
+                		
+                	} 
+                	
                 }
 /*
                 switch (db_interface.calling) {
