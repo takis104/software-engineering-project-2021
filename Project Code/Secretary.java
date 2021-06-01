@@ -68,6 +68,8 @@ public class Secretary extends JDialog {
 		JButton btn8 = Cval.AddButton(screen, 3, 3, "/images/mn_im03.png", "Απεσταλμένα");
 		JButton btn9 = Cval.AddButton(screen, 4, 1, "/images/mn_im02.png", "Διαχείριση ομάδων");
 		JButton btn10 = Cval.AddButton(screen, 2, 3, "/images/entries_book.png", "Διαχείριση Συνδρομών");
+		JButton btn11 = Cval.AddButton(screen, 4, 2, "/images/clock.png", "Διαχείριση Εργασίας Προσωπικού");
+		JButton btn12 = Cval.AddButton(screen, 4, 3, "/images/salary_img.png", "Υπολογισμός Κόστους Μισθοδοσίας ανά Υπάλληλο");
 		
 		btn1.addActionListener(new ActionListener() { //users
 			public void actionPerformed(ActionEvent arg0) {
@@ -127,8 +129,20 @@ public class Secretary extends JDialog {
 		});
 		btn10.addActionListener(new ActionListener() { //subscription management
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "";
-				//new MultirowForm("Διαχείριση συνδρομών", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				sql_from_parent = "SELECT id AS Κωδικός, student_surname AS Επώνυμο, student_name AS Όνομα, student_class AS Τάξη, subscription_monthly_price AS Μηνιαίο_Κόστος_EUR, payment_September AS Σεπτέμβριος, payment_October AS Οκτώβριος, payment_November AS Νοέμβριος, payment_December AS Δεκέμβριος, payment_January AS Ιανουάριος, payment_February AS Φεβρουάριος, payment_March AS Μάρτιος, payment_April AS Απρίλιος, payment_May AS Μάιος, payment_June AS Ιούνιος, Comments AS Σχόλια FROM subscriptions order by student_surname asc";
+				new MultirowForm("Διαχείριση Συνδρομών", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+			}
+		});
+		btn11.addActionListener(new ActionListener() { //work time management
+			public void actionPerformed(ActionEvent arg0) {
+				sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, work_shift_date AS Ημερομηνία, work_time AS Χρόνος_Εργασίας, hour_cost AS Κόστος_Ώρας, payment_status AS Κατάσταση_Πληρωμής FROM work_time_salary ORDER BY work_shift_date DESC;";
+				new MultirowForm("Διαχείριση Εργασίας Προσωπικού", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+			}
+		});
+		btn12.addActionListener(new ActionListener() { //salary calculator management
+			public void actionPerformed(ActionEvent arg0) {
+				sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, MONTH(work_shift_date) AS Μήνας, SUM(work_time*hour_cost) AS Κόστος FROM work_time_salary WHERE payment_status = 'ΟΧΙ' GROUP BY employee_surname, MONTH(work_shift_date) order by employee_surname asc, MONTH(work_shift_date) desc";
+				new MultirowForm("Μισθοδοσία ανά Υπάλληλο", sql_from_parent, false, true, true, Cval.OPEN_EDIT_ROW);
 			}
 		});
 		
