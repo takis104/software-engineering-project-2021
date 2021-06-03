@@ -62,6 +62,12 @@ public class Pupil extends JDialog {
 		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im15.png", "Call Edit multiple records");
 		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im06.png", "Call dbx");
 		//JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im14.png", "Call editor");
+		
+		btn1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MessageFx e = new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Send message",null, false); //false : in not an assignment
+			}
+		});
 				
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");

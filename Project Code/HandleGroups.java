@@ -285,6 +285,13 @@ public class HandleGroups extends JDialog {
 		groups.setRowSelectionInterval(0, 0);
 		screen.setModal(true);
 		screen.setLocationRelativeTo(null);
+		screen.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	//Cval.multirow_state_stack.pop();
+		    	Cval.jtbl_stack.pop();
+		    }
+		});
 		screen.setVisible(true);
 	}
 	
@@ -334,8 +341,9 @@ public class HandleGroups extends JDialog {
 	    int n = query_str.indexOf("FROM");
 	    String q1 = query_str.substring(n+4).trim();
 	    int table_end = q1.indexOf(" ");
-	    db_interface.table_from_parent = q1.substring(0, table_end).trim();
-	    String my_tbl = db_interface.table_from_parent;
+	    String my_tbl = q1.substring(0, table_end).trim();
+	    
+	    //db_interface.table_from_parent = 
 	    try {    	
 	    	db_interface.getQueryResults(query_str);
 	    	result = new JTable(local_model);
@@ -352,7 +360,7 @@ public class HandleGroups extends JDialog {
 			//db_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);;
 	    	result.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 	    	result.setBackground(clr);
-			db_interface.jtbl = result;
+			Cval.jtbl_stack.push(result);
 			java.sql.ResultSetMetaData rsmdt = db_interface.rs.getMetaData();
 	        int columns = rsmdt.getColumnCount();
 	        if (with_select) result.getColumnModel().getColumn(0).setMaxWidth(35);
@@ -380,7 +388,9 @@ public class HandleGroups extends JDialog {
 			}
 			result.removeColumn(result.getColumnModel().getColumn(1-minus));
 
-			db_interface.jtbl = result;
+			//db_interface.jtbl = result;
+			Cval.jtbl_stack.push(result);
+			
 			local_model.setRowCount(0);
 			
 			while(db_interface.rs.next()){
