@@ -111,7 +111,7 @@ public class EditorFx extends Application {
     private static Scene createScene() {
     	Stage dialog = new Stage();
     	main_dialog = dialog;
-    	try {
+    	/*try {
     		URL.setURLStreamHandlerFactory(protocol -> {
     			if (protocol.startsWith("http")) {
     				return new CustomUrlHandler();
@@ -121,7 +121,7 @@ public class EditorFx extends Application {
     	} catch (Error e) {
     	    //e.printStackTrace();
     		System.err.println("Url handlig already installed...");
-    	}
+    	}*/
         
         VBox root = new VBox();      
         root.setPadding(new Insets(8, 8, 8, 8));

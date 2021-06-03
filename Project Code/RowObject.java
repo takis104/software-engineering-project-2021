@@ -30,7 +30,7 @@ public class RowObject {
 				if (combo_text.equals("-")) return null;
 				String combo_name = ((JComboBox)ctrl).getName();
 				int combo_selected_index = ((JComboBox)ctrl).getSelectedIndex();
-				System.out.println("name = " +combo_name + "indx = " + combo_selected_index);
+				//System.out.println("name = " +combo_name + "indx = " + combo_selected_index);
 				String[] result = combo_name.split(",");
 				return result[combo_selected_index];
 		}
