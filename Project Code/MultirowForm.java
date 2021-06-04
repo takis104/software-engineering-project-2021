@@ -30,13 +30,9 @@ import javax.swing.table.TableColumnModel;
 public class MultirowForm extends JFrame {
 	private JFrame screen;
 	private JTable db_table;
-	static db_interface db;
 	private DefaultTableModel model;
-	static ImageIcon edit_icon;
-	static ImageIcon del_icon;
-	static int ROW_HEIGHT=35;
-	static int PREFERRED_ROWS=12;
-	private boolean allow_edit, allow_delete, allow_new_record; 
+	private boolean allow_edit, allow_delete;
+
 	private int w,h;
 	private JScrollPane pg;
 	private java.sql.ResultSetMetaData rsmdt;
@@ -45,15 +41,25 @@ public class MultirowForm extends JFrame {
 	private ArrayList<Integer> combo_columns;
 	private String query_str;
 	private int init_width;
+	private int edit_mode;
 	
-	public MultirowForm(String title, boolean allow_edit, boolean allow_delete, boolean allow_new_record) {	
+	private String sql_string_multirow;
+	
+	static ImageIcon edit_icon;
+	static ImageIcon del_icon;
+	static int ROW_HEIGHT=35;
+	static int PREFERRED_ROWS=12;
+	
+	public MultirowForm(String title, String sql, boolean allow_edit, boolean allow_delete, int edit_mode) {	
 		Container cnt;
-		db_interface.sql_string_multirow = db_interface.sql_from_parent;
+		sql_string_multirow = sql;
 		pg = null;
 		this.allow_edit = allow_edit;
 		this.allow_delete = allow_delete;
-		this.allow_new_record = allow_new_record;
-		db_interface.multirow_form= this;
+		this.edit_mode = edit_mode;
+		
+		Cval.multirow_state_stack.push(edit_mode);
+		Cval.multirow_instances_stack.push(this);
 		String my_tbl;
 		
 		model = new DefaultTableModel(){
@@ -69,12 +75,13 @@ public class MultirowForm extends JFrame {
         del_icon = new ImageIcon(getClass().getResource("/images/delete.png"));
        
 		screen = new JFrame();
-		db_interface.parent_window = screen;
+		//db_interface.parent_window = screen;
+		
 		screen.getContentPane().setBackground(new Color(0, 0, 153));
 		screen.setTitle("(user : " + db_interface.user_surname + ": " + db_interface.school_name + ")");
 		cnt = screen.getContentPane();
 		
-		String query_str = db_interface.sql_from_parent;
+		String query_str = sql;
 	    int n = query_str.indexOf("FROM");
 	    String q1 = query_str.substring(n+4).trim();
 	    int table_end = q1.indexOf(" ");
@@ -92,8 +99,10 @@ public class MultirowForm extends JFrame {
 			        }
 			    };
 			db_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);//AUTO_RESIZE_OFF);
-			db_interface.jtbl = db_table;
-			db_interface.table_from_parent = my_tbl;
+			
+			Cval.jtbl_stack.push(db_table);
+			Cval.multirow_parent_table_stack.push(my_tbl);
+			
 			db_interface.getQueryResults(query_str);
 			rsmdt = db_interface.rs.getMetaData();
 	        columns = rsmdt.getColumnCount();
@@ -112,6 +121,7 @@ public class MultirowForm extends JFrame {
 				db_table.getColumnModel().getColumn(1).setCellEditor(new ButtonCell(del_icon));
 				db_table.getColumnModel().getColumn(1).setMaxWidth(35);
 			}
+
 			db_table.setRowHeight(ROW_HEIGHT);
 			// The column count starts from 1
 			ArrayList<ArrayList<String>> fkeys;
@@ -132,9 +142,10 @@ public class MultirowForm extends JFrame {
 		        db_table.getColumnModel().getColumn(i+1).setPreferredWidth(300);
 			}
 			db_table.removeColumn(db_table.getColumnModel().getColumn(2));
+			if (my_tbl.equals("msgs")) db_table.removeColumn(db_table.getColumnModel().getColumn(5));
 			
 			w = populate_jtable(true);
-
+			db_interface.rs.close();
 			pg = new JScrollPane(db_table,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	        db_table.setFillsViewportHeight(true);
     	} catch (Exception e) {
@@ -156,7 +167,7 @@ public class MultirowForm extends JFrame {
 		title_lbl.setText(title);
 		title_lbl.setForeground(Color.YELLOW);
 		title_lbl.setFont(new Font("Helvetica", Font.ITALIC, 24));
-		title_lbl.setBounds(110, 10, 100, 35);
+		title_lbl.setBounds(110, 10, 400, 35);
 		cnt.add(title_lbl);
 
         //System.out.println(h + "---> " + w);
@@ -168,7 +179,7 @@ public class MultirowForm extends JFrame {
 	    new_btn.setMaximumSize(new Dimension(35,35));
 	    new_btn.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent arg0) {
-	        	EditRow edit_scr = new EditRow(my_tbl, db_interface.id_from_parent,  db_interface.ADD, true);
+	        	EditRow edit_scr = new EditRow(my_tbl, Cval.id_from_parent.peek(),  db_interface.ADD, true);
 	        }
 	    });
 	    new_btn.setBounds(10, 10, 35, 35);
@@ -184,7 +195,16 @@ public class MultirowForm extends JFrame {
 			}
 		});
 		cnt.add(exit_btn);
-
+		screen.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	if (!Cval.multirow_state_stack.isEmpty()) Cval.multirow_state_stack.pop();
+		    	if (!Cval.multirow_instances_stack.isEmpty()) Cval.multirow_instances_stack.pop();
+				if (!Cval.id_from_parent.isEmpty()) Cval.id_from_parent.pop();
+				if (!Cval.jtbl_stack.isEmpty()) Cval.jtbl_stack.pop();
+				if (!Cval.multirow_parent_table_stack.isEmpty()) Cval.multirow_parent_table_stack.pop();
+		    }
+		});
 		screen.setLocationRelativeTo(null);
 		screen.setVisible(true);
 	}
@@ -194,7 +214,7 @@ public class MultirowForm extends JFrame {
 	    //System.out.println("2>>>>"+db_interface.sql_from_parent+"<");
 	    try {    				
 			model.setRowCount(0);
-			if (!form_init) db_interface.getQueryResults(db_interface.sql_string_multirow);
+			if (!form_init) db_interface.getQueryResults(sql_string_multirow);
 			while(db_interface.rs.next()){
 				Object[] row = new Object[columns+2];
 				int next_el=0;
