@@ -29,7 +29,7 @@ import javax.swing.table.TableColumnModel;
 @SuppressWarnings("serial")
 public class MultirowForm extends JFrame {
 	private JFrame screen;
-	private JTable db_table;
+	public JTable db_table;
 	private DefaultTableModel model;
 	private boolean allow_edit, allow_delete;
 
@@ -41,7 +41,15 @@ public class MultirowForm extends JFrame {
 	private ArrayList<Integer> combo_columns;
 	private String query_str;
 	private int init_width;
-	private int edit_mode;
+	public int edit_mode;
+	
+	public String my_sql_tbl;
+	
+	public int column_id=-1;
+	public int column_cloud_id=-1;
+	public int column_subject=-1;
+	public int column_sender_id = -1;
+	public int clicked_row = -1;
 	
 	private String sql_string_multirow;
 	
@@ -50,7 +58,7 @@ public class MultirowForm extends JFrame {
 	static int ROW_HEIGHT=35;
 	static int PREFERRED_ROWS=12;
 	
-	public MultirowForm(String title, String sql, boolean allow_edit, boolean allow_delete, int edit_mode) {	
+	public MultirowForm(String title, String sql, boolean allow_addnew, boolean allow_edit, boolean allow_delete, int edit_mode) {	
 		Container cnt;
 		sql_string_multirow = sql;
 		pg = null;
@@ -58,9 +66,8 @@ public class MultirowForm extends JFrame {
 		this.allow_delete = allow_delete;
 		this.edit_mode = edit_mode;
 		
-		Cval.multirow_state_stack.push(edit_mode);
 		Cval.multirow_instances_stack.push(this);
-		String my_tbl;
+		
 		
 		model = new DefaultTableModel(){
 		    @Override
@@ -78,16 +85,24 @@ public class MultirowForm extends JFrame {
 		//db_interface.parent_window = screen;
 		
 		screen.getContentPane().setBackground(new Color(0, 0, 153));
-		screen.setTitle("(user : " + db_interface.user_surname + ": " + db_interface.school_name + ")");
+		screen.setTitle("(" + db_interface.user_role + ": " + db_interface.user_surname + ": " + db_interface.school_name + ")");
 		cnt = screen.getContentPane();
 		
 		String query_str = sql;
 	    int n = query_str.indexOf("FROM");
 	    String q1 = query_str.substring(n+4).trim();
 	    int table_end = q1.indexOf(" ");
-	    my_tbl = q1.substring(0, table_end).trim();
+	    my_sql_tbl = q1.substring(0, table_end).trim();
 	    //System.out.println(">>>>"+my_tbl+"<");
 	    try {    	
+			db_interface.getQueryResults(query_str);
+			rsmdt = db_interface.rs.getMetaData();
+	        columns = rsmdt.getColumnCount();
+			for (int i = 1; i <= columns; i++ ) {
+		        model.addColumn(rsmdt.getColumnLabel(i));
+		        //System.out.println(rsmdt.getColumnLabel(i) + ":" +rsmdt.getColumnType(i));
+		        //db_table.getColumnModel().getColumn(i+1).setPreferredWidth(300);
+			}
 			db_table = new JTable(model) {
 			    @Override
 			       public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -99,36 +114,14 @@ public class MultirowForm extends JFrame {
 			        }
 			    };
 			db_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);//AUTO_RESIZE_OFF);
-			
-			Cval.jtbl_stack.push(db_table);
-			Cval.multirow_parent_table_stack.push(my_tbl);
-			
-			db_interface.getQueryResults(query_str);
-			rsmdt = db_interface.rs.getMetaData();
-	        columns = rsmdt.getColumnCount();
-			for (int i = 1; i <= columns; i++ ) {
-		        model.addColumn(rsmdt.getColumnLabel(i));
-		        //System.out.println(rsmdt.getColumnLabel(i) + ":" +rsmdt.getColumnType(i));
-		        db_table.getColumnModel().getColumn(i+1).setPreferredWidth(300);
-			}
-			if (allow_edit) {
-				db_table.getColumnModel().getColumn(0).setCellRenderer(new ButtonCell(edit_icon));
-		        db_table.getColumnModel().getColumn(0).setCellEditor(new ButtonCell(edit_icon));
-		        db_table.getColumnModel().getColumn(0).setMaxWidth(35);
-			}
-			if (allow_delete) {
-				db_table.getColumnModel().getColumn(1).setCellRenderer(new ButtonCell(del_icon));
-				db_table.getColumnModel().getColumn(1).setCellEditor(new ButtonCell(del_icon));
-				db_table.getColumnModel().getColumn(1).setMaxWidth(35);
-			}
-
 			db_table.setRowHeight(ROW_HEIGHT);
+			
 			// The column count starts from 1
 			ArrayList<ArrayList<String>> fkeys;
 			cboxes = new ArrayList<JComboBox<String>>();
 			combo_columns = new ArrayList<Integer>();
 			for (int i = 1; i <= columns; i++ ) {
-		        fkeys = db_interface.GetForeignKeyReferences(rsmdt.getColumnName(i), my_tbl);
+		        fkeys = db_interface.GetForeignKeyReferences(rsmdt.getColumnName(i), my_sql_tbl);
 		        //System.out.println(rsmdt.getColumnName(i) + "=>" + rsmdt.getColumnLabel(i) + ":" +rsmdt.getColumnType(i));
 		        if (fkeys!=null) {
 		        	combo_columns.add(i+1);
@@ -141,8 +134,34 @@ public class MultirowForm extends JFrame {
 		        }
 		        db_table.getColumnModel().getColumn(i+1).setPreferredWidth(300);
 			}
-			db_table.removeColumn(db_table.getColumnModel().getColumn(2));
-			if (my_tbl.equals("msgs")) db_table.removeColumn(db_table.getColumnModel().getColumn(5));
+			int m=0;
+			if (allow_edit) {
+				db_table.getColumnModel().getColumn(m).setCellRenderer(new ButtonCell(edit_icon));
+		        db_table.getColumnModel().getColumn(m).setCellEditor(new ButtonCell(edit_icon));
+		        db_table.getColumnModel().getColumn(m++).setMaxWidth(35);
+			}
+			if (allow_delete) {
+				db_table.getColumnModel().getColumn(m).setCellRenderer(new ButtonCell(del_icon));
+				db_table.getColumnModel().getColumn(m).setCellEditor(new ButtonCell(del_icon));
+				db_table.getColumnModel().getColumn(m++).setMaxWidth(35);
+			}
+			for (int k=0;k<db_table.getColumnModel().getColumnCount();k++) {
+				if (db_table.getColumnName(k).equals("Κωδικός")) column_id = k;
+				else if (db_table.getColumnName(k).equals("online_id")) column_cloud_id = k;
+				else if (db_table.getColumnName(k).equals("sender_id")) column_sender_id = k;
+				else if (db_table.getColumnName(k).equals("Θέμα")) column_subject=k;
+			}		
+			//TO DO : sort and remove from end to start
+			if (column_id>0) {
+				db_table.removeColumn(db_table.getColumnModel().getColumn(column_id));
+				if (column_cloud_id>column_id) column_cloud_id--;
+				if (column_sender_id>column_id) column_sender_id--;
+			}
+			if (column_cloud_id>0) {
+				db_table.removeColumn(db_table.getColumnModel().getColumn(column_cloud_id));
+				if (column_sender_id>column_cloud_id) column_sender_id--;
+			}
+			if (column_sender_id>0) db_table.removeColumn(db_table.getColumnModel().getColumn(column_sender_id));
 			
 			w = populate_jtable(true);
 			db_interface.rs.close();
@@ -166,25 +185,27 @@ public class MultirowForm extends JFrame {
 		JLabel title_lbl = new JLabel();
 		title_lbl.setText(title);
 		title_lbl.setForeground(Color.YELLOW);
-		title_lbl.setFont(new Font("Helvetica", Font.ITALIC, 24));
-		title_lbl.setBounds(110, 10, 400, 35);
+		title_lbl.setFont(new Font("Helvetica", Font.ITALIC, 16));
+		title_lbl.setBounds(60, 10, 400, 35);
 		cnt.add(title_lbl);
 
         //System.out.println(h + "---> " + w);
         pg.setBounds(10, 55, w,h);
         cnt.add(pg);
-	    
-		JButton new_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/new_category.png")));
-		new_btn.setToolTipText("Add new");
-	    new_btn.setMaximumSize(new Dimension(35,35));
-	    new_btn.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent arg0) {
-	        	EditRow edit_scr = new EditRow(my_tbl, Cval.id_from_parent.peek(),  db_interface.ADD, true);
-	        }
-	    });
-	    new_btn.setBounds(10, 10, 35, 35);
-	    cnt.add(new_btn);
-	    
+	    if (allow_addnew) {
+			JButton new_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/new_category.png")));
+			new_btn.setToolTipText("Add new");
+		    new_btn.setMaximumSize(new Dimension(35,35));
+		    new_btn.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent arg0) {
+		        	if (edit_mode==Cval.OPEN_EDITOR) 
+		        		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Νέο μήνυμα",null, 0);
+		        	else new EditRow(my_sql_tbl, -1,  db_interface.ADD, true);
+		        }
+		    });
+		    new_btn.setBounds(10, 10, 35, 35);
+		    cnt.add(new_btn);
+	    }
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");
 		exit_btn.setMaximumSize(new Dimension(35, 35));
@@ -198,11 +219,8 @@ public class MultirowForm extends JFrame {
 		screen.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	if (!Cval.multirow_state_stack.isEmpty()) Cval.multirow_state_stack.pop();
 		    	if (!Cval.multirow_instances_stack.isEmpty()) Cval.multirow_instances_stack.pop();
-				if (!Cval.id_from_parent.isEmpty()) Cval.id_from_parent.pop();
-				if (!Cval.jtbl_stack.isEmpty()) Cval.jtbl_stack.pop();
-				if (!Cval.multirow_parent_table_stack.isEmpty()) Cval.multirow_parent_table_stack.pop();
+
 		    }
 		});
 		screen.setLocationRelativeTo(null);
@@ -241,7 +259,7 @@ public class MultirowForm extends JFrame {
 			db_interface.rs.close();
 	        //pg = new JScrollPane(db_table,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	        //db_table.setFillsViewportHeight(true);
-	        if (form_init) {init_width = resizeColumnWidth(db_table);  return (init_width);}
+	        if (form_init) {init_width = resizeColumnWidth(db_table)+100;  return (init_width);}
 	        else return init_width;
     	} catch (Exception e) {
     		e.printStackTrace();
