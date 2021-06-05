@@ -65,7 +65,6 @@ public class db_interface {
 	   public static String school_fax;
 	   public static String schoool_web;
 	   public static int school_director_id;
-	   public static int school_id;
 	   
 	   
 	   public static String last_msg_to;
@@ -234,7 +233,7 @@ public class db_interface {
 	   }
 	   
 	   static void getSchoolParams() {
-		   String sql_str = "SELECT school_name,email, phone, fax, web, director_id, school_id FROM "+ "school_params"+ year;
+		   String sql_str = "SELECT school_name,email, phone, fax, web, director_id FROM "+ "school_params"+ year;
 		   getAuxQueryResults(sql_str);		
 			try {
 				if (rs_aux.next()){
@@ -244,7 +243,6 @@ public class db_interface {
 					school_fax = rs_aux.getString("fax");
 					schoool_web = rs_aux.getString("web");
 					school_director_id =rs_aux.getInt("director_id");
-					school_id =rs_aux.getInt("school_id");
 				}
 				rs_aux.close();
 				last_stmt_aux.close();
