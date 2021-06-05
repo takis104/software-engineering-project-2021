@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
@@ -24,6 +25,8 @@ public class Cval {
 	static int ScreenWidth = 700;
 	static int ScreenHeight = 500;
 	static int TitleFontSize = 14;
+	
+	static int reply_to;
 
 	static int OPEN_EDITOR=0;
 	static int OPEN_MULTIROW=1;
@@ -34,12 +37,10 @@ public class Cval {
 	static String EMPTY_HTML = "<html><body></body></html>";
 	public static String LastSelectedImage;
 	
-	public static Stack<Integer> multirow_state_stack;
-	public static Stack<String> multirow_parent_table_stack;
 	public static Stack<MultirowForm> multirow_instances_stack;
+	
 	public static Stack<JTable> jtbl_stack;
 	public static Stack<Integer> id_from_parent;
-	public static Stack<String> sql_from_parent;
 	
 	static JButton AddButton(JFrame screen, int row, int col, String img_res, String tooltip) {
 		Dimension btn_dim = new Dimension(button_size, button_size);
@@ -70,5 +71,16 @@ public class Cval {
 				}
 			} else return null;
 		}
+	}
+	
+	public static String sayHello() {
+		Calendar c = Calendar.getInstance();
+		int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+		String greeting;
+
+		if(timeOfDay >= 0 && timeOfDay < 12) greeting="Καλημέρα ";
+		else if(timeOfDay >= 12 && timeOfDay < 16) greeting="Καλό απόγευμα ";
+		else greeting= "Καλησπέρα ";
+		return greeting + db_interface.user_firstname;
 	}
 }
