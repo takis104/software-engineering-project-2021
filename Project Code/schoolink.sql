@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Φιλοξενητής: 127.0.0.1
--- Χρόνος δημιουργίας: 01 Ιουν 2021 στις 03:39:37
--- Έκδοση διακομιστή: 10.4.17-MariaDB
--- Έκδοση PHP: 8.0.0
+-- Φιλοξενητής: 127.0.0.1:3306
+-- Χρόνος δημιουργίας: 05 Ιουν 2021 στις 16:47:18
+-- Έκδοση διακομιστή: 5.7.31
+-- Έκδοση PHP: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,15 +24,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Δομή πίνακα για τον πίνακα `absences`
+--
+
+DROP TABLE IF EXISTS `absences`;
+CREATE TABLE IF NOT EXISTS `absences` (
+  `subclass_id` int(11) NOT NULL,
+  `pupil_id` int(11) NOT NULL,
+  `adate` date NOT NULL,
+  `absenses_code` tinyint(4) NOT NULL,
+  `tcount` tinyint(4) NOT NULL,
+  KEY `pupil_id` (`pupil_id`),
+  KEY `subclass_id` (`subclass_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=greek;
+
+--
+-- Άδειασμα δεδομένων του πίνακα `absences`
+--
+
+INSERT INTO `absences` (`subclass_id`, `pupil_id`, `adate`, `absenses_code`, `tcount`) VALUES
+(57, 37, '2021-02-10', 127, 7),
+(55, 37, '2021-05-29', 96, 2),
+(55, 74, '2021-05-29', 24, 2),
+(58, 73, '2021-06-23', 74, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Δομή πίνακα για τον πίνακα `classes`
 --
 
-CREATE TABLE `classes` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `classes`;
+CREATE TABLE IF NOT EXISTS `classes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `cname` varchar(255) NOT NULL COMMENT 'Όνομα',
   `comments` varchar(255) DEFAULT NULL COMMENT 'Σχόλια',
-  `fees` float DEFAULT NULL COMMENT 'Δίδακτρα'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `fees` float DEFAULT NULL COMMENT 'Δίδακτρα',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `classes`
@@ -50,11 +79,14 @@ INSERT INTO `classes` (`id`, `cname`, `comments`, `fees`) VALUES
 -- Δομή πίνακα για τον πίνακα `courses`
 --
 
-CREATE TABLE `courses` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `courses`;
+CREATE TABLE IF NOT EXISTS `courses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `cname` varchar(255) NOT NULL,
   `class_id` int(11) NOT NULL,
-  `comments` varchar(255) DEFAULT NULL
+  `comments` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `class_id` (`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
 
 -- --------------------------------------------------------
@@ -63,14 +95,17 @@ CREATE TABLE `courses` (
 -- Δομή πίνακα για τον πίνακα `expenses`
 --
 
-CREATE TABLE `expenses` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `expenses`;
+CREATE TABLE IF NOT EXISTS `expenses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `expense_type` varchar(100) NOT NULL COMMENT 'Είδος Λειτουργικών Εξόδων',
   `amount` int(11) NOT NULL COMMENT 'Ποσό',
   `payment_method` tinyint(11) DEFAULT NULL COMMENT 'Μέθοδος Πληρωμής',
   `edate` date NOT NULL COMMENT 'Ημερομηνία Πληρωμής',
-  `comments` varchar(500) NOT NULL COMMENT 'Σημειώσεις'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `comments` varchar(500) NOT NULL COMMENT 'Σημειώσεις',
+  PRIMARY KEY (`id`),
+  KEY `payment_method` (`payment_method`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `expenses`
@@ -87,10 +122,12 @@ INSERT INTO `expenses` (`id`, `expense_type`, `amount`, `payment_method`, `edate
 -- Δομή πίνακα για τον πίνακα `expense_payment_methods`
 --
 
-CREATE TABLE `expense_payment_methods` (
-  `id` tinyint(4) NOT NULL,
-  `method` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+DROP TABLE IF EXISTS `expense_payment_methods`;
+CREATE TABLE IF NOT EXISTS `expense_payment_methods` (
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
+  `method` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `expense_payment_methods`
@@ -107,14 +144,17 @@ INSERT INTO `expense_payment_methods` (`id`, `method`) VALUES
 -- Δομή πίνακα για τον πίνακα `feedback`
 --
 
-CREATE TABLE `feedback` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `feedback`;
+CREATE TABLE IF NOT EXISTS `feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `grade` tinyint(4) NOT NULL,
   `comment` varchar(100) DEFAULT NULL,
   `fdate` date NOT NULL,
   `school_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `feedback`
@@ -124,7 +164,8 @@ INSERT INTO `feedback` (`id`, `grade`, `comment`, `fdate`, `school_id`, `user_id
 (9, 6, '', '2021-05-25', 1789, 2),
 (10, 7, '', '2021-05-25', 1789, 4),
 (11, 7, '', '2021-05-25', 1789, 4),
-(12, 7, '', '2021-05-25', 1789, 4);
+(12, 7, '', '2021-05-25', 1789, 4),
+(13, 7, '', '2021-06-05', 1789, 2);
 
 -- --------------------------------------------------------
 
@@ -132,13 +173,18 @@ INSERT INTO `feedback` (`id`, `grade`, `comment`, `fdate`, `school_id`, `user_id
 -- Δομή πίνακα για τον πίνακα `grades`
 --
 
-CREATE TABLE `grades` (
+DROP TABLE IF EXISTS `grades`;
+CREATE TABLE IF NOT EXISTS `grades` (
   `id` int(11) NOT NULL,
   `teacher_id` int(11) NOT NULL,
   `pupil_id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
   `description` varchar(100) NOT NULL,
-  `grade` int(11) NOT NULL
+  `grade` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_id` (`course_id`),
+  KEY `pupil_id` (`pupil_id`),
+  KEY `teacher_id` (`teacher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
 
 -- --------------------------------------------------------
@@ -147,14 +193,19 @@ CREATE TABLE `grades` (
 -- Δομή πίνακα για τον πίνακα `groups`
 --
 
-CREATE TABLE `groups` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `groups`;
+CREATE TABLE IF NOT EXISTS `groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `gname` varchar(255) NOT NULL COMMENT 'Όνομα',
   `teacher_id` int(11) DEFAULT NULL COMMENT 'Υπευθ. Καθηγητής',
   `class_id` int(11) DEFAULT NULL COMMENT 'Τάξη',
   `comments` varchar(255) DEFAULT NULL COMMENT 'Σχόλια',
-  `sub_class` tinyint(1) NOT NULL COMMENT 'Τμήμα μαθητών'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `sub_class` tinyint(1) NOT NULL COMMENT 'Τμήμα μαθητών',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gname` (`gname`),
+  KEY `teacher_id` (`teacher_id`),
+  KEY `class_id` (`class_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `groups`
@@ -176,15 +227,18 @@ INSERT INTO `groups` (`id`, `gname`, `teacher_id`, `class_id`, `comments`, `sub_
 -- Δομή πίνακα για τον πίνακα `msgs`
 --
 
-CREATE TABLE `msgs` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `msgs`;
+CREATE TABLE IF NOT EXISTS `msgs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `msg_date` datetime NOT NULL,
   `msg_subject` varchar(255) NOT NULL,
   `cloud_id` varchar(150) DEFAULT NULL,
   `deadline` datetime DEFAULT NULL COMMENT 'Προθεσμία',
   `parent_msg_id` int(11) DEFAULT NULL,
-  `kind` tinyint(4) NOT NULL COMMENT '0=msg, 1=εργασία, 2=ανακοίνωση'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `kind` tinyint(4) NOT NULL COMMENT '0=msg, 1=εργασία, 2=ανακοίνωση',
+  PRIMARY KEY (`id`),
+  KEY `parent_msg_id` (`parent_msg_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `msgs`
@@ -203,12 +257,16 @@ INSERT INTO `msgs` (`id`, `msg_date`, `msg_subject`, `cloud_id`, `deadline`, `pa
 -- Δομή πίνακα για τον πίνακα `msgs_details`
 --
 
-CREATE TABLE `msgs_details` (
+DROP TABLE IF EXISTS `msgs_details`;
+CREATE TABLE IF NOT EXISTS `msgs_details` (
   `msg_id` int(11) NOT NULL,
   `from_user_id` int(11) NOT NULL,
   `to_user_id` int(11) NOT NULL,
   `to_or_cc` tinyint(1) NOT NULL,
-  `grade` float DEFAULT NULL COMMENT 'Βαθμός'
+  `grade` float DEFAULT NULL COMMENT 'Βαθμός',
+  PRIMARY KEY (`msg_id`,`from_user_id`,`to_user_id`,`to_or_cc`),
+  KEY `to_user_id` (`to_user_id`),
+  KEY `from_user_id` (`from_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
 
 --
@@ -233,9 +291,12 @@ INSERT INTO `msgs_details` (`msg_id`, `from_user_id`, `to_user_id`, `to_or_cc`, 
 -- Δομή πίνακα για τον πίνακα `participates`
 --
 
-CREATE TABLE `participates` (
+DROP TABLE IF EXISTS `participates`;
+CREATE TABLE IF NOT EXISTS `participates` (
   `user_id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL
+  `group_id` int(11) NOT NULL,
+  KEY `group_id` (`group_id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
 
 --
@@ -282,13 +343,16 @@ INSERT INTO `participates` (`user_id`, `group_id`) VALUES
 -- Δομή πίνακα για τον πίνακα `payments`
 --
 
-CREATE TABLE `payments` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE IF NOT EXISTS `payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'Χρήστης',
   `amount` float NOT NULL COMMENT 'Ποσό',
   `pdate` datetime NOT NULL COMMENT 'Ημερ. πληρωμής',
-  `comments` varchar(100) DEFAULT NULL COMMENT 'Σχόλια'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `comments` varchar(100) DEFAULT NULL COMMENT 'Σχόλια',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `payments`
@@ -305,11 +369,13 @@ INSERT INTO `payments` (`id`, `user_id`, `amount`, `pdate`, `comments`) VALUES
 -- Δομή πίνακα για τον πίνακα `roles`
 --
 
-CREATE TABLE `roles` (
-  `id` tinyint(4) NOT NULL,
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` tinyint(4) NOT NULL AUTO_INCREMENT,
   `description` varchar(50) NOT NULL,
-  `comments` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `comments` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `roles`
@@ -328,7 +394,8 @@ INSERT INTO `roles` (`id`, `description`, `comments`) VALUES
 -- Δομή πίνακα για τον πίνακα `school_params`
 --
 
-CREATE TABLE `school_params` (
+DROP TABLE IF EXISTS `school_params`;
+CREATE TABLE IF NOT EXISTS `school_params` (
   `school_name` varchar(50) NOT NULL,
   `school_title` varchar(50) NOT NULL,
   `address` varchar(50) NOT NULL,
@@ -353,8 +420,9 @@ INSERT INTO `school_params` (`school_name`, `school_title`, `address`, `email`, 
 -- Δομή πίνακα για τον πίνακα `subscriptions`
 --
 
-CREATE TABLE `subscriptions` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `subscriptions`;
+CREATE TABLE IF NOT EXISTS `subscriptions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `student_surname` varchar(50) NOT NULL COMMENT 'Επώνυμο Μαθητή',
   `student_name` varchar(50) NOT NULL COMMENT 'Όνομα Μαθητή',
   `student_class` varchar(50) NOT NULL COMMENT 'Τάξη Μαθητή',
@@ -369,8 +437,9 @@ CREATE TABLE `subscriptions` (
   `payment_April` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Απριλίου',
   `payment_May` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Μαΐου',
   `payment_June` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Πληρωμή Ιουνίου',
-  `Comments` varchar(500) DEFAULT NULL COMMENT 'Σχόλια'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `Comments` varchar(500) DEFAULT NULL COMMENT 'Σχόλια',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `subscriptions`
@@ -386,11 +455,15 @@ INSERT INTO `subscriptions` (`id`, `student_surname`, `student_name`, `student_c
 -- Δομή πίνακα για τον πίνακα `teach`
 --
 
-CREATE TABLE `teach` (
+DROP TABLE IF EXISTS `teach`;
+CREATE TABLE IF NOT EXISTS `teach` (
   `teacher_id` int(11) NOT NULL COMMENT 'Εκπαιδετυικός',
   `group_id` int(11) NOT NULL COMMENT 'Τμήμα*',
   `course_id` int(11) NOT NULL COMMENT 'Μάθημα',
-  `comments` varchar(100) DEFAULT NULL COMMENT 'Σχόλια'
+  `comments` varchar(100) DEFAULT NULL COMMENT 'Σχόλια',
+  PRIMARY KEY (`teacher_id`,`group_id`,`course_id`),
+  KEY `course_id` (`course_id`),
+  KEY `group_id` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
 
 -- --------------------------------------------------------
@@ -399,13 +472,17 @@ CREATE TABLE `teach` (
 -- Δομή πίνακα για τον πίνακα `tests`
 --
 
-CREATE TABLE `tests` (
+DROP TABLE IF EXISTS `tests`;
+CREATE TABLE IF NOT EXISTS `tests` (
   `id` int(11) NOT NULL,
   `teacher_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
   `comments` varchar(255) NOT NULL,
   `filename` varchar(255) DEFAULT NULL,
-  `description` blob NOT NULL
+  `description` blob NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  KEY `teacher_id` (`teacher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=greek;
 
 -- --------------------------------------------------------
@@ -414,8 +491,9 @@ CREATE TABLE `tests` (
 -- Δομή πίνακα για τον πίνακα `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `surname` varchar(255) NOT NULL COMMENT 'Επώνυμο',
   `firstname` varchar(50) NOT NULL COMMENT 'Όνομα',
   `gender` bit(1) NOT NULL COMMENT 'Φύλο',
@@ -430,8 +508,11 @@ CREATE TABLE `users` (
   `discount` int(11) DEFAULT NULL COMMENT 'Έκπτωση',
   `teaching` smallint(4) DEFAULT NULL COMMENT 'Διδασκαλία',
   `salary` float DEFAULT NULL COMMENT 'Μισθός',
-  `photo` varchar(40) DEFAULT NULL COMMENT 'photo'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `photo` varchar(40) DEFAULT NULL COMMENT 'photo',
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `role_id` (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `users`
@@ -549,15 +630,17 @@ INSERT INTO `users` (`id`, `surname`, `firstname`, `gender`, `fathername`, `moth
 -- Δομή πίνακα για τον πίνακα `work_time_salary`
 --
 
-CREATE TABLE `work_time_salary` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `work_time_salary`;
+CREATE TABLE IF NOT EXISTS `work_time_salary` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_surname` varchar(50) NOT NULL COMMENT 'Επώνυμο Εργαζομένου',
   `employee_name` varchar(50) NOT NULL COMMENT 'Όνομα Εργαζομένου',
   `work_shift_date` date NOT NULL COMMENT 'Ημερομηνία Εργασίας',
   `work_time` int(11) NOT NULL COMMENT 'Χρόνος Εργασίας σε Ώρες',
   `hour_cost` int(11) NOT NULL COMMENT 'Κόστος Ώρας Εργαζομένου',
-  `payment_status` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Κατάσταση Πληρωμής'
-) ENGINE=InnoDB DEFAULT CHARSET=greek;
+  `payment_status` varchar(10) NOT NULL DEFAULT 'ΟΧΙ' COMMENT 'Κατάσταση Πληρωμής',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=greek;
 
 --
 -- Άδειασμα δεδομένων του πίνακα `work_time_salary`
@@ -572,210 +655,15 @@ INSERT INTO `work_time_salary` (`id`, `employee_surname`, `employee_name`, `work
 (6, 'ΑΛΕΞΑΝΔΡΙΔΗ', 'ΕΥΑΓΓΕΛΙΑ', '2021-04-01', 8, 10, 'NAI');
 
 --
--- Ευρετήρια για άχρηστους πίνακες
---
-
---
--- Ευρετήρια για πίνακα `classes`
---
-ALTER TABLE `classes`
-  ADD PRIMARY KEY (`id`);
-
---
--- Ευρετήρια για πίνακα `courses`
---
-ALTER TABLE `courses`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `class_id` (`class_id`);
-
---
--- Ευρετήρια για πίνακα `expenses`
---
-ALTER TABLE `expenses`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `payment_method` (`payment_method`) USING BTREE;
-
---
--- Ευρετήρια για πίνακα `expense_payment_methods`
---
-ALTER TABLE `expense_payment_methods`
-  ADD PRIMARY KEY (`id`);
-
---
--- Ευρετήρια για πίνακα `feedback`
---
-ALTER TABLE `feedback`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Ευρετήρια για πίνακα `grades`
---
-ALTER TABLE `grades`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `course_id` (`course_id`),
-  ADD KEY `pupil_id` (`pupil_id`),
-  ADD KEY `teacher_id` (`teacher_id`);
-
---
--- Ευρετήρια για πίνακα `groups`
---
-ALTER TABLE `groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `gname` (`gname`),
-  ADD KEY `teacher_id` (`teacher_id`),
-  ADD KEY `class_id` (`class_id`);
-
---
--- Ευρετήρια για πίνακα `msgs`
---
-ALTER TABLE `msgs`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent_msg_id` (`parent_msg_id`);
-
---
--- Ευρετήρια για πίνακα `msgs_details`
---
-ALTER TABLE `msgs_details`
-  ADD PRIMARY KEY (`msg_id`,`from_user_id`,`to_user_id`,`to_or_cc`),
-  ADD KEY `to_user_id` (`to_user_id`),
-  ADD KEY `from_user_id` (`from_user_id`);
-
---
--- Ευρετήρια για πίνακα `participates`
---
-ALTER TABLE `participates`
-  ADD KEY `group_id` (`group_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Ευρετήρια για πίνακα `payments`
---
-ALTER TABLE `payments`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Ευρετήρια για πίνακα `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`);
-
---
--- Ευρετήρια για πίνακα `subscriptions`
---
-ALTER TABLE `subscriptions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Ευρετήρια για πίνακα `teach`
---
-ALTER TABLE `teach`
-  ADD PRIMARY KEY (`teacher_id`,`group_id`,`course_id`),
-  ADD KEY `course_id` (`course_id`),
-  ADD KEY `group_id` (`group_id`);
-
---
--- Ευρετήρια για πίνακα `tests`
---
-ALTER TABLE `tests`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `group_id` (`group_id`),
-  ADD KEY `teacher_id` (`teacher_id`);
-
---
--- Ευρετήρια για πίνακα `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent_id` (`parent_id`),
-  ADD KEY `role_id` (`role_id`);
-
---
--- Ευρετήρια για πίνακα `work_time_salary`
---
-ALTER TABLE `work_time_salary`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT για άχρηστους πίνακες
---
-
---
--- AUTO_INCREMENT για πίνακα `classes`
---
-ALTER TABLE `classes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT για πίνακα `courses`
---
-ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT για πίνακα `expenses`
---
-ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT για πίνακα `expense_payment_methods`
---
-ALTER TABLE `expense_payment_methods`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT για πίνακα `feedback`
---
-ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT για πίνακα `groups`
---
-ALTER TABLE `groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
-
---
--- AUTO_INCREMENT για πίνακα `msgs`
---
-ALTER TABLE `msgs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
-
---
--- AUTO_INCREMENT για πίνακα `payments`
---
-ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT για πίνακα `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT για πίνακα `subscriptions`
---
-ALTER TABLE `subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT για πίνακα `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
-
---
--- AUTO_INCREMENT για πίνακα `work_time_salary`
---
-ALTER TABLE `work_time_salary`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- Περιορισμοί για άχρηστους πίνακες
 --
+
+--
+-- Περιορισμοί για πίνακα `absences`
+--
+ALTER TABLE `absences`
+  ADD CONSTRAINT `absences_ibfk_1` FOREIGN KEY (`pupil_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `absences_ibfk_2` FOREIGN KEY (`subclass_id`) REFERENCES `groups` (`id`);
 
 --
 -- Περιορισμοί για πίνακα `courses`
