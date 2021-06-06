@@ -81,35 +81,31 @@ public class Director extends JFrame {
 
 		btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 4 ORDER BY surname";
-				new MultirowForm("Μαθητές", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+				showPupilList();
 			}
 		});
 		
 		btn2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 3 ORDER BY surname";
-				new MultirowForm("Καθηγητές", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+				showTeacherList();
 			}
 		});
 
 		btn3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 5 ORDER BY surname";
-				new MultirowForm("Κηδεμόνες", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+				showParentList();
 			}
 		});
 
 		btn4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο, role_id FROM "+ "users WHERE id>0 ORDER BY surname";
-				new MultirowForm("Όλοι οι χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+				showAllUsersList();
 			}
 		});
 		
 		btn5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new Absenses();
+				manageAbsences();
 			}
 		});
 		
@@ -135,9 +131,12 @@ public class Director extends JFrame {
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");
 		exit_btn.setMaximumSize(new Dimension(35, 35));
-		//exit_btn.setBounds(250, 400, 46, 35);
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					new Feedback();
+				}
 				screen.dispose();
 			}
 		});
@@ -145,5 +144,29 @@ public class Director extends JFrame {
 		gbc3.gridx = 5;  gbc3.gridy = 5; screen.add(exit_btn, gbc3);
 		screen.setLocationRelativeTo(null);
 		screen.setVisible(true);
+	}
+	
+	public void showPupilList() {
+		String sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 4 ORDER BY surname";
+		new MultirowForm("Μαθητές", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+	}
+	
+	public void showTeacherList() {
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 3 ORDER BY surname";
+		new MultirowForm("Καθηγητές", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+	}
+	
+	public void showParentList() {
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 5 ORDER BY surname";
+		new MultirowForm("Κηδεμόνες", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+	}
+	
+	public void showAllUsersList() {
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο, role_id FROM "+ "users WHERE id>0 ORDER BY surname";
+		new MultirowForm("Όλοι οι χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+	}
+	
+	public void manageAbsences() {
+		new Absenses();
 	}
 }
