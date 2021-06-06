@@ -39,7 +39,7 @@ public class Feedback {
 		
 		grade = Cval.NoStars;
 		//=================================================================
-		JLabel lblUsername = new JLabel("Αξιολογήστε την εφαρμογή μας!");
+		JLabel lblUsername = new JLabel("Ξ‘ΞΎΞΉΞΏΞ»ΞΏΞ³Ξ®ΟƒΟ„Ξµ Ο„Ξ·Ξ½ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ® ΞΌΞ±Ο‚!");
 		lblUsername.setForeground(Color.CYAN);
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblUsername.setBounds(20, 10, 250, 44);
@@ -56,7 +56,7 @@ public class Feedback {
 		exit_btn.setBounds(100, 200, 32, 32);
 		cnt.add(exit_btn);
 		
-		JLabel lbl1 = new JLabel("Σχόλια");
+		JLabel lbl1 = new JLabel("Ξ£Ο‡ΟΞ»ΞΉΞ±");
 		lbl1.setForeground(Color.CYAN);
 		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lbl1.setBounds(20, 120, 250, 44);
