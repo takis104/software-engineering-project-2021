@@ -64,7 +64,6 @@ public class Pupil extends JDialog {
 		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im02.png", "Εισερχόμενα");
 		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im06.png", "Απεσταλμένα");
 		JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im09.png", "Οι απουσίες μου");
-		
 
 		btn1.addActionListener(new ActionListener() { //new message
 			public void actionPerformed(ActionEvent arg0) {
