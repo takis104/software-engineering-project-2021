@@ -74,8 +74,8 @@ public class Director extends JFrame {
 		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im10.png", "Μαθητές");
 		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im11.png", "Καθηγητές");
 		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im05.png", "Γονείς");
-		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im04.png", "Όλοι οι χρήστες");
-		//JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im03.png", "Call dbx");
+		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im13.png", "Όλοι οι χρήστες");
+		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im03.png", "Απουσίες μαθητών");
 		//JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im14.png", "Call editor");
 		
 
@@ -107,16 +107,16 @@ public class Director extends JFrame {
 			}
 		});
 		
-		/*btn5.addActionListener(new ActionListener() {
+		btn5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				new Absenses();
 			}
 		});
 		
-		btn6.addActionListener(new ActionListener() {
+		/*btn6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
-		});
+		});*/
 				
 		
 		btn5.addActionListener(new ActionListener() {
@@ -129,18 +129,15 @@ public class Director extends JFrame {
 				//	e.printStackTrace();
 				//}
 			}
-		});*/
+		});
 
 		
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");
 		exit_btn.setMaximumSize(new Dimension(35, 35));
+		//exit_btn.setBounds(250, 400, 46, 35);
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
-				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					new Feedback();
-				}
 				screen.dispose();
 			}
 		});
