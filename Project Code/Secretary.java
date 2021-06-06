@@ -73,76 +73,62 @@ public class Secretary extends JDialog {
 		
 		btn1.addActionListener(new ActionListener() { //users
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα, fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 ORDER BY surname";
-				new MultirowForm("Χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				manageContacts();
 			}
 		});
 		btn2.addActionListener(new ActionListener() { //classes
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, cname AS Όνομα, comments AS Σχόλια,  fees AS Δίδακτρα FROM "+ "classes WHERE id>0 ORDER BY cname";
-				new MultirowForm("Τάξεις", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				showSchoolClasses();
 			}
 		});
 		btn3.addActionListener(new ActionListener() { //subclasses
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, gname AS Όνομα, teacher_id AS ΥπΚαθηγητής,  class_id AS Τάξη, comments AS Σχόλια FROM groups WHERE sub_class=1 ORDER BY gname";
-				new MultirowForm("Τμήματα", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				showGroups();
 			}
 		});
 		btn4.addActionListener(new ActionListener() { //expenses
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT expenses.id AS Κωδικός, expenses.expense_type AS Είδος, expenses.amount AS Ποσό, expense_payment_methods.method AS Μέθοδος_Πληρωμής, expenses.edate AS Ημερομηνία, expenses.comments AS Σχόλια FROM expenses INNER JOIN expense_payment_methods ON expenses.payment_method = expense_payment_methods.id ORDER BY edate desc";
-				new MultirowForm("Έξοδα", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				showExpenses();
 			}
 		});
 		btn5.addActionListener(new ActionListener() { //payments
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, pdate AS Ημερομηνία, amount AS Ποσό,  user_id AS Κηδεμόνας, comments AS Σχόλια FROM payments WHERE 1 ORDER BY pdate desc";
-				new MultirowForm("Πληρωμές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				showPayments();
 			}
 		});
 		btn6.addActionListener(new ActionListener() { //announcements
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-				System.out.println("6>" + sql_from_parent);
-				new MultirowForm("Ανακοινώσεις", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+				manageAnnouncements();
 			}
 		});
 		btn7.addActionListener(new ActionListener() { //Incomimg msgs
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-				System.out.println("7>" + sql_from_parent);
-				new MultirowForm("Εισερχόμενα", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
+				showIncomingMsgs();
 			}
 		});
 		btn8.addActionListener(new ActionListener() { //Outgoing msgs
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT distinct(m.id) AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-				System.out.println("8>" + sql_from_parent);
-				new MultirowForm("Απεσταλμένα", sql_from_parent, true, true, true,  Cval.OPEN_EDITOR);
+				showOutgoingMsgs();
 			}
 		});
 		btn9.addActionListener(new ActionListener() { //groups
 			public void actionPerformed(ActionEvent arg0) {
-				new HandleGroups("Edit groups", screen, false);
+				showTeams();
 			}
 		});
 		btn10.addActionListener(new ActionListener() { //subscription management
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, student_surname AS Επώνυμο, student_name AS Όνομα, student_class AS Τάξη, subscription_monthly_price AS Μηνιαίο_Κόστος_EUR, payment_September AS Σεπτέμβριος, payment_October AS Οκτώβριος, payment_November AS Νοέμβριος, payment_December AS Δεκέμβριος, payment_January AS Ιανουάριος, payment_February AS Φεβρουάριος, payment_March AS Μάρτιος, payment_April AS Απρίλιος, payment_May AS Μάιος, payment_June AS Ιούνιος, Comments AS Σχόλια FROM subscriptions order by student_surname asc";
-				new MultirowForm("Διαχείριση Συνδρομών", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				manageSubscriptions();
 			}
 		});
 		btn11.addActionListener(new ActionListener() { //work time management
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, work_shift_date AS Ημερομηνία, work_time AS Χρόνος_Εργασίας, hour_cost AS Κόστος_Ώρας, payment_status AS Κατάσταση_Πληρωμής FROM work_time_salary ORDER BY work_shift_date DESC;";
-				new MultirowForm("Διαχείριση Εργασίας Προσωπικού", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+				manageWorkTime();
 			}
 		});
 		btn12.addActionListener(new ActionListener() { //salary calculator management
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, MONTH(work_shift_date) AS Μήνας, SUM(work_time*hour_cost) AS Κόστος FROM work_time_salary WHERE payment_status = 'ΟΧΙ' GROUP BY employee_surname, MONTH(work_shift_date) order by employee_surname asc, MONTH(work_shift_date) desc";
-				new MultirowForm("Μισθοδοσία ανά Υπάλληλο", sql_from_parent, false, true, true, Cval.OPEN_EDIT_ROW);
+				calculateSalary();
 			}
 		});
 		
@@ -154,7 +140,7 @@ public class Secretary extends JDialog {
 				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					new Feedback();
-				} 
+				}
 				screen.dispose();
 			}
 		});
@@ -162,6 +148,67 @@ public class Secretary extends JDialog {
 		gbc3.gridx = 5;  gbc3.gridy = 5; screen.add(exit_btn, gbc3);
 		screen.setLocationRelativeTo(null);
 		screen.setVisible(true);
-
-	}	
+	}
+	
+	public void manageContacts() {
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα, fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 ORDER BY surname";
+		new MultirowForm("Χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void showSchoolClasses() {
+		sql_from_parent = "SELECT id AS Κωδικός, cname AS Όνομα, comments AS Σχόλια,  fees AS Δίδακτρα FROM "+ "classes WHERE id>0 ORDER BY cname";
+		new MultirowForm("Τάξεις", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void showGroups() {
+		sql_from_parent = "SELECT id AS Κωδικός, gname AS Όνομα, teacher_id AS ΥπΚαθηγητής,  class_id AS Τάξη, comments AS Σχόλια FROM groups WHERE sub_class=1 ORDER BY gname";
+		new MultirowForm("Τμήματα", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void showExpenses() {
+		sql_from_parent = "SELECT expenses.id AS Κωδικός, expenses.expense_type AS Είδος, expenses.amount AS Ποσό, expense_payment_methods.method AS Μέθοδος_Πληρωμής, expenses.edate AS Ημερομηνία, expenses.comments AS Σχόλια FROM expenses INNER JOIN expense_payment_methods ON expenses.payment_method = expense_payment_methods.id ORDER BY edate desc";
+		new MultirowForm("Έξοδα", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void showPayments() {
+		sql_from_parent = "SELECT id AS Κωδικός, pdate AS Ημερομηνία, amount AS Ποσό,  user_id AS Κηδεμόνας, comments AS Σχόλια FROM payments WHERE 1 ORDER BY pdate desc";
+		new MultirowForm("Πληρωμές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void manageAnnouncements() {
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		System.out.println("6>" + sql_from_parent);
+		new MultirowForm("Ανακοινώσεις", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+	}
+	
+	public void showIncomingMsgs() {
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		System.out.println("7>" + sql_from_parent);
+		new MultirowForm("Εισερχόμενα", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
+	}
+	
+	public void showOutgoingMsgs() {
+		sql_from_parent = "SELECT distinct(m.id) AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		System.out.println("8>" + sql_from_parent);
+		new MultirowForm("Απεσταλμένα", sql_from_parent, true, true, true,  Cval.OPEN_EDITOR);
+	}
+	
+	public void showTeams() {
+		new HandleGroups("Edit groups", screen, false);
+	}
+	
+	public void manageSubscriptions() {
+		sql_from_parent = "SELECT id AS Κωδικός, student_surname AS Επώνυμο, student_name AS Όνομα, student_class AS Τάξη, subscription_monthly_price AS Μηνιαίο_Κόστος_EUR, payment_September AS Σεπτέμβριος, payment_October AS Οκτώβριος, payment_November AS Νοέμβριος, payment_December AS Δεκέμβριος, payment_January AS Ιανουάριος, payment_February AS Φεβρουάριος, payment_March AS Μάρτιος, payment_April AS Απρίλιος, payment_May AS Μάιος, payment_June AS Ιούνιος, Comments AS Σχόλια FROM subscriptions order by student_surname asc";
+		new MultirowForm("Διαχείριση Συνδρομών", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void manageWorkTime() {
+		sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, work_shift_date AS Ημερομηνία, work_time AS Χρόνος_Εργασίας, hour_cost AS Κόστος_Ώρας, payment_status AS Κατάσταση_Πληρωμής FROM work_time_salary ORDER BY work_shift_date DESC;";
+		new MultirowForm("Διαχείριση Εργασίας Προσωπικού", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void calculateSalary() {
+		sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, MONTH(work_shift_date) AS Μήνας, SUM(work_time*hour_cost) AS Κόστος FROM work_time_salary WHERE payment_status = 'ΟΧΙ' GROUP BY employee_surname, MONTH(work_shift_date) order by employee_surname asc, MONTH(work_shift_date) desc";
+		new MultirowForm("Μισθοδοσία ανά Υπάλληλο", sql_from_parent, false, true, true, Cval.OPEN_EDIT_ROW);
+	}
 }
