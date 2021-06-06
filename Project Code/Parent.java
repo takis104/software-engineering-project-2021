@@ -67,43 +67,37 @@ public class Parent extends JDialog {
 
 		btn1.addActionListener(new ActionListener() { //new message
 			public void actionPerformed(ActionEvent arg0) {
-				new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Μήνυμα",null, 0);
+				newMessage();
 			}
 		});
 		
 		btn2.addActionListener(new ActionListener() { //new payment
 			public void actionPerformed(ActionEvent arg0) { 
-				sql_from_parent = "SELECT id AS Κωδικός, pdate AS Ημερομηνία, amount AS Ποσό, comments as Σχόλια FROM payments WHERE user_id = " + db_interface.user_id + " ORDER BY pdate desc";
-				new MultirowForm("Πληρωμές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);			
+				newPayment();
 			}
 		});
 		
 		btn3.addActionListener(new ActionListener() { //announcements
 			public void actionPerformed(ActionEvent arg0) {
-				Cval.id_from_parent.push(db_interface.user_id);
-				sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-				new MultirowForm("Ανακοινώσεις", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);			
+				showAnnouncements();
 			}
 		});
 		
-		btn4.addActionListener(new ActionListener() { //Incomimg msgs
+		btn4.addActionListener(new ActionListener() { //Incoming msgs
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-				new MultirowForm("Εισερχόμενα", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
+				showIncomingMsgs();
 			}
 		});
 		
 		btn5.addActionListener(new ActionListener() { //Outgoing msgs
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-				new MultirowForm("Απεσταλμένα", sql_from_parent, true, true, false, Cval.OPEN_EDITOR);
+				showOutgoingMsgs();
 			}
 		});
 
 		btn6.addActionListener(new ActionListener() { //absences of my children
 			public void actionPerformed(ActionEvent arg0) {
-				sql_from_parent = "SELECT CONCAT(pup.surname, ' ', pup.firstname) AS Ονοματεπώνυμο, sum(ab.tcount) as ΣύνολοΑπουσιών FROM users as par INNER JOIN users as pup on pup.parent_id = par.id INNER JOIN absences as ab on ab.pupil_id = pup.id WHERE par.id=" + db_interface.user_id + " GROUP BY ab.pupil_id";
-				new MultirowForm("Απουσίες", sql_from_parent, false, false, false,  Cval.OPEN_EDITOR);
+				retrieveAbsencesOfChildren();
 			}
 		});
 		
@@ -123,5 +117,35 @@ public class Parent extends JDialog {
 		gbc3.gridx = 5;  gbc3.gridy = 5; screen.add(exit_btn, gbc3);
 		screen.setLocationRelativeTo(null);
 		screen.setVisible(true);
+	}
+	
+	public void newMessage() {
+		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Μήνυμα",null, 0);
+	}
+	
+	public void newPayment() {
+		sql_from_parent = "SELECT id AS Κωδικός, pdate AS Ημερομηνία, amount AS Ποσό, comments as Σχόλια FROM payments WHERE user_id = " + db_interface.user_id + " ORDER BY pdate desc";
+		new MultirowForm("Πληρωμές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+	}
+	
+	public void showAnnouncements() {
+		Cval.id_from_parent.push(db_interface.user_id);
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Ανακοινώσεις", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);		
+	}
+	
+	public void showIncomingMsgs() {
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Εισερχόμενα", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
+	}
+	
+	public void showOutgoingMsgs() {
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Απεσταλμένα", sql_from_parent, true, true, false, Cval.OPEN_EDITOR);
+	}
+	
+	public void retrieveAbsencesOfChildren() {
+		sql_from_parent = "SELECT CONCAT(pup.surname, ' ', pup.firstname) AS Ονοματεπώνυμο, sum(ab.tcount) as ΣύνολοΑπουσιών FROM users as par INNER JOIN users as pup on pup.parent_id = par.id INNER JOIN absences as ab on ab.pupil_id = pup.id WHERE par.id=" + db_interface.user_id + " GROUP BY ab.pupil_id";
+		new MultirowForm("Απουσίες", sql_from_parent, false, false, false,  Cval.OPEN_EDITOR);
 	}
 }
