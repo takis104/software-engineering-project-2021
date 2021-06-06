@@ -78,13 +78,14 @@ import javafx.beans.value.*;
 
 public class MessageFx extends Application {
 	
-	public static MessageFx instance;
+	private MessageFx instance;
 	private int cnt;
 	
-	static String html_code;
+	private String html_code;
 	
-	private  int my_width;
-	private  int my_height;
+	private int my_width;
+	private int my_height;
+	private int my_kind;
 	private String my_title_txt;
 	private String my_init_html_link;
 	private HTMLEditor ed;
@@ -97,12 +98,14 @@ public class MessageFx extends Application {
 	private static String file_replace_str2 = "%$_##_";
 	private static int NAMES_PER_LINE = 2;
 	
+	private Label to_lbl;
+	
 	private ArrayList<String> files;
 	private int file_cnt;
 	private ArrayList<String> images;
 	private int image_cnt;
 	private  HashMap<TreeItem<String>, String> queries;
-	private static TableView<Person> tableView;
+	private TableView<Person> tableView;
 	
 	private Alert ok_alert;
 
@@ -110,13 +113,12 @@ public class MessageFx extends Application {
 	private VBox emailcc_vbox;
 	private VBox selected_vbox;
 	
-	private Button to_btn, cc_btn, sv_btn;
+	private Button to_btn, cc_btn, sv_btn, reply_btn;
 	private TextField msg_subject;
 
 	private HashSet<Integer> SetTo, SetCc;
 	private String id_prefix;
 	private Scene scene;
-	private boolean is_assignment;
 	
 	private Stage dialog;
 	
@@ -125,20 +127,20 @@ public class MessageFx extends Application {
     	primStage = primaryStage;
     }
 	
-	public MessageFx(int width, int height, String title_txt, String init_html_content_link, boolean pupil_assignment) {
+	public MessageFx(int width, int height, String title_txt, String init_html_content_link, int kind) {
 		instance = this;
     	file_no = 0;
     	files = new ArrayList<String>();
     	images = new ArrayList<String>();
+    	my_width = width;
+    	my_height = height;
+    	my_title_txt = title_txt;
+    	my_init_html_link = init_html_content_link;
+    	my_kind = kind;
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-            	my_width = width;
-            	my_height = height;
-            	my_title_txt = title_txt;
-            	my_init_html_link = init_html_content_link;
-            	is_assignment = pupil_assignment;
                 initAndShowGUI();
             }
         });		
@@ -167,7 +169,7 @@ public class MessageFx extends Application {
     	SetCc = new HashSet<Integer>();
     	main_dialog = dialog;
     	cnt=0;
-
+    	
         VBox root = new VBox();      
         root.setPadding(new Insets(8, 8, 8, 8));
         root.setSpacing(5);
@@ -199,7 +201,8 @@ public class MessageFx extends Application {
         msg_subject.setPromptText("Enter your subject");
         gridPane.add(msg_subject, 1, 0);
 
-        Label to_lbl = new Label("Προς");
+        to_lbl = new Label("Προς");
+        to_lbl.setPrefWidth(80);
         to_lbl.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,16));
         to_lbl.setTextFill(Color.YELLOW);
         gridPane.add(to_lbl, 0, 1);
@@ -219,7 +222,7 @@ public class MessageFx extends Application {
             }
         });
         gridPane.add(to_btn, 2, 1);
-    	if (is_assignment) {
+    	if (my_kind==1) {
     		Label cc_lbl = new Label("Προθεσμία:");
     		cc_lbl.setFont(Font.font("verdana", 12));
     	
@@ -250,7 +253,7 @@ public class MessageFx extends Application {
    	            public void handle(ActionEvent e)  {
     	                LocalDate i = d.getValue();
     	                l.setText("Date :" + i);
-    	                System.out.println("--->" + d.getValue() + "->" + hourcbx.getValue() + ":" + mincbx.getValue()); 
+    	                //System.out.println("--->" + d.getValue() + "->" + hourcbx.getValue() + ":" + mincbx.getValue()); 
     	            }
     	    };
        	    d.setOnAction(event);
@@ -416,7 +419,7 @@ public class MessageFx extends Application {
 	      });
           Platform.runLater(() -> {
               if (my_init_html_link!=null) {
-            	  LoadMessage();
+            	  	LoadMessage();
                 }
               	ArrangeLinkInEditor((WebView) ed.lookup(".web-view"));
               	scene.setCursor(Cursor.DEFAULT);
@@ -563,6 +566,19 @@ public class MessageFx extends Application {
     	        });
             }
         });
+        
+	    ImageView gr3 = new ImageView(new Image(MessageFx.class.getResource("/images/reply.png").toExternalForm(), 32, 32, true, true));    
+        reply_btn = new Button("", gr3);
+        reply_btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent arg0) {
+            	Platform.runLater(() -> {
+            		System.out.println("aHERE");
+            		Cval.reply_to = -125;
+            		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Απάντηση",null, 4);
+    	        });
+            }
+        });
+        
 	    ImageView gr2 = new ImageView(new Image(MessageFx.class.getResource("/images/exit.png").toExternalForm(), 32, 32, true, true));    
         Button cancel_btn = new Button("", gr2);
         cancel_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -571,6 +587,11 @@ public class MessageFx extends Application {
             }
         });
         gridPane1.add(sv_btn, 0, 0);
+        sv_btn.setTooltip(new Tooltip("Αποστολή"));
+        gridPane1.add(reply_btn, 1, 0);
+        reply_btn.setVisible(false);
+        reply_btn.setTooltip(new Tooltip("Απάντηση"));
+        cancel_btn.setTooltip(new Tooltip("Έξοδος"));
         gridPane1.add(cancel_btn, 2, 0);
         root.getChildren().add(gridPane1);
         
@@ -647,7 +668,7 @@ public class MessageFx extends Application {
         	ti.getChildren().add(tit);
         }
         rootItem.getChildren().add(ti);
-        if (!is_assignment) {
+        if (my_kind!=1) {
 	        ti = new TreeItem<String>("Γονείς");
 	        for (k=0;k<classes.size();k++) {
 	        	String parts[] = classes.get(k).split(",");
@@ -709,7 +730,7 @@ public class MessageFx extends Application {
         tree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
         	String query_str=queries.get(newValue);
         	if (query_str!=null) {
-        		System.out.println("JFX--->" + query_str);
+        		//System.out.println("JFX--->" + query_str);
         		LoadTableView(query_str);
         	}
         });
@@ -828,7 +849,7 @@ public class MessageFx extends Application {
                     	String prefix=sid.substring(0, sid.indexOf("@"));
                     	String id = sid.substring(sid.indexOf("@")+1, sid.indexOf("_"));
                     	SetTo.add(Integer.parseInt(id));
-                    	System.out.println(prefix + "->" + id);
+                    	//System.out.println(prefix + "->" + id);
                     	
                     	String lid = id_prefix+"@"+id+"_"+1;
                     	TextField txt_field = (TextField) scene.lookup("#"+lid);
@@ -850,7 +871,7 @@ public class MessageFx extends Application {
     }
     
     @SuppressWarnings("unchecked")
-	private static void LoadTableView(String sql_query) {
+	private void LoadTableView(String sql_query) {
     	try {
     		tableView.getItems().clear();
     		db_interface.getQueryResults(sql_query);
@@ -870,16 +891,29 @@ public class MessageFx extends Application {
     private void LoadMessage() {
     	ed.setHtmlText(FileServer.DownloadTxtFile(my_init_html_link));
     	TextArea textAreaTo = new TextArea(); textAreaTo.setPrefHeight(400); textAreaTo.setPrefWidth(600);
-    	textAreaTo.setText(db_interface.last_msg_to);
+    	
     	emailto_vbox.getChildren().add(textAreaTo);
-    	if (!is_assignment) {
+    	if (my_title_txt.equals("Εισερχόμενο μήνυμα")) {
+    		to_lbl.setText("Από");
+    		int row, col;
+    		MultirowForm mr = Cval.multirow_instances_stack.peek();
+    		row = mr.clicked_row;
+    		col = mr.column_sender_id;
+    		System.out.println("===>" + mr.db_table.getModel().getValueAt(row, col+1).toString());
+    		textAreaTo.setText(mr.db_table.getModel().getValueAt(row, col).toString());
+    	} else {
+    		System.out.println("HEHEHEHEHE");
+    		textAreaTo.setText(db_interface.last_msg_to);
+    	}
+    	if (my_kind!=1) {
     		TextArea textAreaCc = new TextArea(); textAreaCc.setPrefHeight(400); textAreaCc.setPrefWidth(600);
     		textAreaCc.setText(db_interface.last_msg_cc);
         	emailcc_vbox.getChildren().add(textAreaCc);
     	}
     	msg_subject.setText(db_interface.last_msg_subject);
     	to_btn.setVisible(false); 
-    	if (!is_assignment) {
+        reply_btn.setVisible(true);
+    	if (my_kind!=1) {
     		cc_btn.setVisible(false);
     		sv_btn.setVisible(false);
     	}
@@ -945,14 +979,14 @@ public class MessageFx extends Application {
     	    public Void call() {
     	        StringPair sp=null;
     	        try {
-    	        	System.out.println("S1");
+    	        	//System.out.println("S1");
     	        	html_code = ReplaceImagesAndFiles(ed.getHtmlText());
-    	        	System.out.println("S2");
+    	        	//System.out.println("S2");
     	        	sp = FileServer.WriteHtmlToFile(html_code);
-    	        	System.out.println("S3");
+    	        	//System.out.println("S3");
     	        	if (sp.link==null) throw new Exception();
     	       		String file_link = sp.id.substring(3); //exclude id:
-    	       	   	String sql_str_msg = "INSERT INTO msgs VALUES(DEFAULT, CURRENT_TIMESTAMP, '" + msg_subject.getText() +"','"+ file_link +"', NULL, NULL)";
+    	       	   	String sql_str_msg = "INSERT INTO msgs VALUES(DEFAULT, CURRENT_TIMESTAMP, '" + msg_subject.getText() +"','"+ file_link +"', NULL, NULL," + my_kind +")";
     	       	   	db_interface.execute(sql_str_msg);
     	       	   	int msg_id = db_interface.last_inserted_id("msgs");
     	           	String values = "";
@@ -1002,57 +1036,4 @@ public class MessageFx extends Application {
         task.setOnFailed(evnt -> { System.out.println("Task failed!");});
     	new Thread(task).start();
     }
-    
-    /*
-    private static Task<String> fileLoaderTask(String nme){
-    	File fileToLoad  = new File("e:\\test1.txt");
-        Task<String> loadFileTask = new Task<String>() {
-            @Override
-            protected String call() throws Exception {
-                BufferedReader reader = new BufferedReader(new FileReader(fileToLoad));
-
-                //Use Files.lines() to calculate total lines - used for progress
-                long lineCount;
-                try (Stream<String> stream = Files.lines(fileToLoad.toPath())) {
-                    lineCount = stream.count();
-                }
-
-                //Load in all lines one by one into a StringBuilder separated by "\n" - compatible with TextArea
-                String line;
-                StringBuilder totalFile = new StringBuilder();
-                long linesLoaded = 0;
-                while((line = reader.readLine()) != null) {
-                    totalFile.append(line);
-                    totalFile.append("\n");
-                    updateProgress(++linesLoaded, lineCount);
-                    //System.out.println("....");
-                }
-
-                return totalFile.toString();
-            }
-        };
-
-        //If successful, update the text area, display a success message and store the loaded file reference
-        loadFileTask.setOnSucceeded(workerStateEvent -> {
-            try {
-                //textArea.setText(loadFileTask.get());
-                System.out.println(loadFileTask.get());
-                //statusMessage.setText("File loaded: " + fileToLoad.getName());
-                //loadedFileReference = fileToLoad;
-            } catch (InterruptedException | ExecutionException e) {
-                //Logger.getLogger(getClass().getName()).log(SEVERE, null, e);
-                System.out.println("Could not load file from:\n " + fileToLoad.getAbsolutePath());
-            }
-        });
-
-        //If unsuccessful, set text area with error message and status message to failed
-        loadFileTask.setOnFailed(workerStateEvent -> {
-        	 System.out.println("Could not load file from:\n " + fileToLoad.getAbsolutePath());
-            //statusMessage.setText("Failed to load file");
-        });
-
-        return loadFileTask;
-    }
-    */
-
 }
