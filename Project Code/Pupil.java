@@ -101,7 +101,6 @@ public class Pupil extends JDialog {
 				showMyAbsences();
 			}
 		});
-
 				
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");
