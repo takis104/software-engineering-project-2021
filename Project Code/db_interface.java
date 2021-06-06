@@ -24,14 +24,6 @@ public class db_interface {
 	   static boolean status=true;
 	   
 	   //static MultirowForm multirow_form;
-	      
-	   //static final int JOURNALIST = 1;
-	   //static final int PUBLISHER = 2;
-	   //static final int ADMINISTRATION_EDIT_EMPLOYEE = 31;
-	   //static final int ADMINISTRATION_EDIT_ISSUE = 32;
-	   //static final int ADMINISTRATION_FINANCE= 33;
-	   //static final int CHIEF_EDITOR1 = 41;
-	   //static final int CHIEF_EDITOR2 = 42;
 	   
 	   static final int DIRECTOR = 1;
 	   static final int ADMINISTATION = 2;
@@ -86,13 +78,6 @@ public class db_interface {
 	   //public static String sql_string_multirow;
 	   
 	   public static ArrayList<Integer> listOf_int_fields;
-	   
-	   /*TO BE REMOVED*/
-	   public int employee_id;
-	   public String employee_name;
-	   public int newspaper_id;
-	   public int user_level;
-	   /*TO BE REMOVED*/
 	   
 	   //public static JTable jtbl;
 	   public static int last_id;
