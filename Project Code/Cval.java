@@ -42,6 +42,11 @@ public class Cval {
 	public static Stack<JTable> jtbl_stack;
 	public static Stack<Integer> id_from_parent;
 	
+	public static int NoStars=10;
+	public static int DefaultGrade=7;
+	
+	public static int HoursPerDay=7;
+	
 	static JButton AddButton(JFrame screen, int row, int col, String img_res, String tooltip) {
 		Dimension btn_dim = new Dimension(button_size, button_size);
 		JButton btn = new JButton((Icon) new ImageIcon(Cval.class.getResource(img_res)));
@@ -78,9 +83,9 @@ public class Cval {
 		int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 		String greeting;
 
-		if(timeOfDay >= 0 && timeOfDay < 12) greeting="Καλημέρα ";
-		else if(timeOfDay >= 12 && timeOfDay < 16) greeting="Καλό απόγευμα ";
-		else greeting= "Καλησπέρα ";
+		if(timeOfDay >= 0 && timeOfDay < 12) greeting="ΞΞ±Ξ»Ξ·ΞΌΞ­ΟΞ± ";
+		else if(timeOfDay >= 12 && timeOfDay < 16) greeting="ΞΞ±Ξ»Ο Ξ±Ο€ΟΞ³ΞµΟ…ΞΌΞ± ";
+		else greeting= "ΞΞ±Ξ»Ξ·ΟƒΟ€Ξ­ΟΞ± ";
 		return greeting + db_interface.user_firstname;
 	}
 }
