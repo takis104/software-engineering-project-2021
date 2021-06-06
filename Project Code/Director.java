@@ -6,6 +6,8 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Window;
 
@@ -44,82 +46,106 @@ public class Director extends JFrame {
 	List<Integer> CategoryComboIndexToId;
 	JComboBox<String> parent_category;
 	JTextField category_descr;
-
+	int button_size;
+	String sql_from_parent;
 	
 	public Director() {
 		screen = new JFrame();
-
+		db_interface.user_role = "Director";
 		screen.setTitle("Director:" + db_interface.user_surname + ":" + db_interface.school_name);
-		screen.setSize(new Dimension(500,500));
-		System.out.println("<<<<<=> :" + getClass().getResource("/images/main_bg.png").getPath());
-		ImageIcon bg = new ImageIcon(getClass().getResource("/images/main_bg.png"));
+		ImageIcon bg = new ImageIcon(getClass().getResource(Cval.bg_image));
+		screen.setSize(new Dimension(Cval.ScreenWidth,Cval.ScreenHeight));
 		Image bg_img = bg.getImage().getScaledInstance(screen.getWidth(), screen.getHeight(), Image.SCALE_DEFAULT);
 		screen.setContentPane(new ImagePanel(bg_img));
-		Container cnt = screen.getContentPane();
-		cnt.setLayout(null);
+
 		
-		JLabel lbl1 = new JLabel("Director :");
-		lbl1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl1.setBounds(10, 100, 86, 14);
+		GridBagLayout grid = new GridBagLayout();
+		screen.setLayout(grid);
+		GridBagConstraints gbc1 = new GridBagConstraints();
+		gbc1.gridx = 6;  gbc1.gridy = 6; screen.add(new JLabel(""), gbc1);
+		
+		JLabel lbl1 = new JLabel("Welcome...");
+		lbl1.setFont(new Font("Tahoma", Font.PLAIN, Cval.TitleFontSize));
 		lbl1.setForeground(Color.WHITE);
-		cnt.add(lbl1);
+		GridBagConstraints gbc2 = new GridBagConstraints();
+		gbc2.gridx = 0;  gbc2.gridy = 0; gbc2.gridwidth=2;
+		screen.add(lbl1, gbc2);
+		
+		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im10.png", "Μαθητές");
+		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im11.png", "Καθηγητές");
+		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im05.png", "Γονείς");
+		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im04.png", "Όλοι οι χρήστες");
+		//JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im03.png", "Call dbx");
+		//JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im14.png", "Call editor");
+		
+
+		btn1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 4 ORDER BY surname";
+				new MultirowForm("Μαθητές", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+			}
+		});
+		
+		btn2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 3 ORDER BY surname";
+				new MultirowForm("Καθηγητές", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+			}
+		});
+
+		btn3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 5 ORDER BY surname";
+				new MultirowForm("Κηδεμόνες", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+			}
+		});
+
+		btn4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο, role_id FROM "+ "users WHERE id>0 ORDER BY surname";
+				new MultirowForm("Όλοι οι χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+			}
+		});
+		
+		/*btn5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		
+		btn6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+				
+		
+		btn5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				//try {
+					//Dbx e = new Dbx(Cval.ScreenWidth, Cval.ScreenHeight, "HTML Editor",dropbox_interface.getHtmlText(getClass().getResource("/test.htm")));
+				//} catch (IOException e) {
+					// TODO Auto-generated catch block
+				//	e.printStackTrace();
+				//}
+			}
+		});*/
+
 		
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");
-		exit_btn.setMaximumSize(new Dimension(32, 32));
-		exit_btn.setBounds(250, 400, 32, 32);
+		exit_btn.setMaximumSize(new Dimension(35, 35));
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					new Feedback();
+				}
 				screen.dispose();
 			}
 		});
-		cnt.add(exit_btn);
-		
-		JButton edit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/edit.png")));
-		edit_btn.setToolTipText("Edit");
-		edit_btn.setMaximumSize(new Dimension(35, 35));
-		edit_btn.setBounds(150, 150, 46, 35);
-		edit_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				db_interface.sql_from_parent = "SELECT id AS �������, surname AS �������, firstname AS �����,  fathername AS ���������, mothername AS ���������, role_id FROM "+ "users WHERE id>0 ORDER BY surname";
-				new MultirowForm(true, true, false);
-			}
-		});
-		cnt.add(edit_btn);
-		
-		JLabel lbl_im = new JLabel("im :");
-		lbl_im.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_im.setBounds(10, 100, 200, 200);
-		lbl_im.setForeground(Color.WHITE);
-		cnt.add(lbl_im);
-		
-        UtilDateModel dmodel = new UtilDateModel();
-        Properties p = new Properties();
-        p.put("text.today", "Today");
-        p.put("text.month", "Month");
-        p.put("text.year", "Year");
-        JDatePanelImpl datePanel = new JDatePanelImpl(dmodel,p);
-        JDatePickerImpl IssueDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        IssueDatePicker.setBounds(116, 208, 150, 20);
-        cnt.add(IssueDatePicker);
-		
-		
-		JButton test_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/down.png")));
-		test_btn.setToolTipText("test");
-		test_btn.setMaximumSize(new Dimension(35, 35));
-		test_btn.setBounds(150, 350, 46, 35);
-		test_btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				try {
-					EditorFx e = new EditorFx(700, 500, "HTML Editor",dropbox_interface.getHtmlText(getClass().getResource("/test.htm")));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-		cnt.add(test_btn);
+		GridBagConstraints gbc3 = new GridBagConstraints();
+		gbc3.gridx = 5;  gbc3.gridy = 5; screen.add(exit_btn, gbc3);
 		screen.setLocationRelativeTo(null);
 		screen.setVisible(true);
 	}
