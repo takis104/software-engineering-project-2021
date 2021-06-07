@@ -113,20 +113,6 @@ public class Director extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});*/
-				
-		
-		btn5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				//try {
-					//Dbx e = new Dbx(Cval.ScreenWidth, Cval.ScreenHeight, "HTML Editor",dropbox_interface.getHtmlText(getClass().getResource("/test.htm")));
-				//} catch (IOException e) {
-					// TODO Auto-generated catch block
-				//	e.printStackTrace();
-				//}
-			}
-		});
-
 		
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
 		exit_btn.setToolTipText("Exit");
@@ -162,8 +148,8 @@ public class Director extends JFrame {
 	}
 	
 	public void showAllUsersList() {
-		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο, role_id FROM "+ "users WHERE id>0 ORDER BY surname";
-		new MultirowForm("Όλοι οι χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα, fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 ORDER BY surname";
+		new MultirowForm("Χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void manageAbsences() {
