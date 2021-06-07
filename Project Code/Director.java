@@ -71,11 +71,11 @@ public class Director extends JFrame {
 		gbc2.gridx = 0;  gbc2.gridy = 0; gbc2.gridwidth=2;
 		screen.add(lbl1, gbc2);
 		
-		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im10.png", "ΞΞ±ΞΈΞ·Ο„Ξ­Ο‚");
-		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im11.png", "ΞΞ±ΞΈΞ·Ξ³Ξ·Ο„Ξ­Ο‚");
-		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im05.png", "Ξ“ΞΏΞ½ΞµΞ―Ο‚");
-		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im13.png", "ΞΞ»ΞΏΞΉ ΞΏΞΉ Ο‡ΟΞ®ΟƒΟ„ΞµΟ‚");
-		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im03.png", "Ξ‘Ο€ΞΏΟ…ΟƒΞ―ΞµΟ‚ ΞΌΞ±ΞΈΞ·Ο„ΟΞ½");
+		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im10.png", "Μαθητές");
+		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im11.png", "Καθηγητές");
+		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im05.png", "Γονείς");
+		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/Users-icon.png", "Όλοι οι χρήστες");
+		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/entries_book.png", "Απουσίες μαθητών");
 		//JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im14.png", "Call editor");
 		
 
@@ -119,7 +119,7 @@ public class Director extends JFrame {
 		exit_btn.setMaximumSize(new Dimension(35, 35));
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (JOptionPane.showConfirmDialog(null, "ΞΞ­Ξ»ΞµΟ„Ξµ Ξ½Ξ± Ξ±ΞΎΞΉΞΏΞ»ΞΏΞ³Ξ®ΟƒΞµΟ„Ξµ Ο„Ξ·Ξ½ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ®", "Ξ‘ΞΎΞΉΞΏΞ»ΟΞ³Ξ·ΟƒΞ·",
+				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					new Feedback();
 				}
@@ -133,23 +133,23 @@ public class Director extends JFrame {
 	}
 	
 	public void showPupilList() {
-		String sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, firstname AS ΞΞ½ΞΏΞΌΞ±,  fathername AS Ξ Ξ±Ο„ΟΟΞ½Ο…ΞΌΞΏ, mothername AS ΞΞ·Ο„ΟΟΞ½Ο…ΞΌΞΏ FROM "+ "users WHERE id>0 AND role_id = 4 ORDER BY surname";
-		new MultirowForm("ΞΞ±ΞΈΞ·Ο„Ξ­Ο‚", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+		String sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 4 ORDER BY surname";
+		new MultirowForm("Μαθητές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showTeacherList() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, firstname AS ΞΞ½ΞΏΞΌΞ±,  fathername AS Ξ Ξ±Ο„ΟΟΞ½Ο…ΞΌΞΏ, mothername AS ΞΞ·Ο„ΟΟΞ½Ο…ΞΌΞΏ FROM "+ "users WHERE id>0 AND role_id = 3 ORDER BY surname";
-		new MultirowForm("ΞΞ±ΞΈΞ·Ξ³Ξ·Ο„Ξ­Ο‚", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 3 ORDER BY surname";
+		new MultirowForm("Καθηγητές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showParentList() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, firstname AS ΞΞ½ΞΏΞΌΞ±,  fathername AS Ξ Ξ±Ο„ΟΟΞ½Ο…ΞΌΞΏ, mothername AS ΞΞ·Ο„ΟΟΞ½Ο…ΞΌΞΏ FROM "+ "users WHERE id>0 AND role_id = 5 ORDER BY surname";
-		new MultirowForm("ΞΞ·Ξ΄ΞµΞΌΟΞ½ΞµΟ‚", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα,  fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 AND role_id = 5 ORDER BY surname";
+		new MultirowForm("Κηδεμόνες", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showAllUsersList() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, firstname AS ΞΞ½ΞΏΞΌΞ±, fathername AS Ξ Ξ±Ο„ΟΟΞ½Ο…ΞΌΞΏ, mothername AS ΞΞ·Ο„ΟΟΞ½Ο…ΞΌΞΏ FROM "+ "users WHERE id>0 ORDER BY surname";
-		new MultirowForm("Ξ§ΟΞ®ΟƒΟ„ΞµΟ‚", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα, fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 ORDER BY surname";
+		new MultirowForm("Χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void manageAbsences() {

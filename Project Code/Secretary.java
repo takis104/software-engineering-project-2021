@@ -58,18 +58,18 @@ public class Secretary extends JDialog {
 		gbc2.gridx = 0;  gbc2.gridy = 0; gbc2.gridwidth=3;
 		screen.add(lbl1, gbc2);
 		
-		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im04.png", "Ξ§ΟΞ®ΟƒΟ„ΞµΟ‚");
-		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im05.png", "Ξ¤Ξ¬ΞΎΞµΞΉΟ‚");
-		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im09.png", "Ξ¤ΞΌΞ®ΞΌΞ±Ο„Ξ±");
-		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im12.png", "ΞΞΎΞΏΞ΄Ξ±");
-		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im16.png", "Ξ Ξ»Ξ·ΟΟ‰ΞΌΞ­Ο‚");
-		JButton btn6 = Cval.AddButton(screen, 3, 1, "/images/mn_im11.png", "Ξ‘Ξ½Ξ±ΞΊΞΏΞΉΞ½ΟΟƒΞµΞΉΟ‚");
-		JButton btn7 = Cval.AddButton(screen, 3, 2, "/images/mn_im14.png", "Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±");
-		JButton btn8 = Cval.AddButton(screen, 3, 3, "/images/mn_im03.png", "Ξ‘Ο€ΞµΟƒΟ„Ξ±Ξ»ΞΌΞ­Ξ½Ξ±");
-		JButton btn9 = Cval.AddButton(screen, 4, 1, "/images/mn_im02.png", "Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· ΞΏΞΌΞ¬Ξ΄Ο‰Ξ½");
-		JButton btn10 = Cval.AddButton(screen, 2, 3, "/images/entries_book.png", "Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ξ£Ο…Ξ½Ξ΄ΟΞΏΞΌΟΞ½");
-		JButton btn11 = Cval.AddButton(screen, 4, 2, "/images/clock.png", "Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ξ•ΟΞ³Ξ±ΟƒΞ―Ξ±Ο‚ Ξ ΟΞΏΟƒΟ‰Ο€ΞΉΞΊΞΏΟ");
-		JButton btn12 = Cval.AddButton(screen, 4, 3, "/images/salary_img.png", "Ξ¥Ο€ΞΏΞ»ΞΏΞ³ΞΉΟƒΞΌΟΟ‚ ΞΟΟƒΟ„ΞΏΟ…Ο‚ ΞΞΉΟƒΞΈΞΏΞ΄ΞΏΟƒΞ―Ξ±Ο‚ Ξ±Ξ½Ξ¬ Ξ¥Ο€Ξ¬Ξ»Ξ»Ξ·Ξ»ΞΏ");
+		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/Users-icon.png", "Χρήστες");
+		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im11.png", "Τάξεις");
+		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im10.png", "Τμήματα");
+		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im12.png", "Έξοδα");
+		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im16.png", "Πληρωμές");
+		JButton btn6 = Cval.AddButton(screen, 3, 1, "/images/mn_im03.png", "Ανακοινώσεις");
+		JButton btn7 = Cval.AddButton(screen, 3, 2, "/images/mn_im18.png", "Εισερχόμενα");
+		JButton btn8 = Cval.AddButton(screen, 3, 3, "/images/mn_im19.png", "Απεσταλμένα");
+		JButton btn9 = Cval.AddButton(screen, 4, 1, "/images/mn_im14.png", "Διαχείριση ομάδων");
+		JButton btn10 = Cval.AddButton(screen, 2, 3, "/images/entries_book.png", "Διαχείριση Συνδρομών");
+		JButton btn11 = Cval.AddButton(screen, 4, 2, "/images/clock.png", "Διαχείριση Εργασίας Προσωπικού");
+		JButton btn12 = Cval.AddButton(screen, 4, 3, "/images/salary_img.png", "Υπολογισμός Κόστους Μισθοδοσίας ανά Υπάλληλο");
 		
 		btn1.addActionListener(new ActionListener() { //users
 			public void actionPerformed(ActionEvent arg0) {
@@ -101,7 +101,7 @@ public class Secretary extends JDialog {
 				manageAnnouncements();
 			}
 		});
-		btn7.addActionListener(new ActionListener() { //Incomimg msgs
+		btn7.addActionListener(new ActionListener() { //Incoming msgs
 			public void actionPerformed(ActionEvent arg0) {
 				showIncomingMsgs();
 			}
@@ -137,7 +137,7 @@ public class Secretary extends JDialog {
 		exit_btn.setMaximumSize(new Dimension(35, 35));
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (JOptionPane.showConfirmDialog(null, "ΞΞ­Ξ»ΞµΟ„Ξµ Ξ½Ξ± Ξ±ΞΎΞΉΞΏΞ»ΞΏΞ³Ξ®ΟƒΞµΟ„Ξµ Ο„Ξ·Ξ½ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ®", "Ξ‘ΞΎΞΉΞΏΞ»ΟΞ³Ξ·ΟƒΞ·",
+				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					new Feedback();
 				}
@@ -151,46 +151,46 @@ public class Secretary extends JDialog {
 	}
 	
 	public void manageContacts() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, firstname AS ΞΞ½ΞΏΞΌΞ±, fathername AS Ξ Ξ±Ο„ΟΟΞ½Ο…ΞΌΞΏ, mothername AS ΞΞ·Ο„ΟΟΞ½Ο…ΞΌΞΏ FROM "+ "users WHERE id>0 ORDER BY surname";
-		new MultirowForm("Ξ§ΟΞ®ΟƒΟ„ΞµΟ‚", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, surname AS Επώνυμο, firstname AS Όνομα, fathername AS Πατρώνυμο, mothername AS Μητρώνυμο FROM "+ "users WHERE id>0 ORDER BY surname";
+		new MultirowForm("Χρήστες", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showSchoolClasses() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, cname AS ΞΞ½ΞΏΞΌΞ±, comments AS Ξ£Ο‡ΟΞ»ΞΉΞ±,  fees AS Ξ”Ξ―Ξ΄Ξ±ΞΊΟ„ΟΞ± FROM "+ "classes WHERE id>0 ORDER BY cname";
-		new MultirowForm("Ξ¤Ξ¬ΞΎΞµΞΉΟ‚", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, cname AS Όνομα, comments AS Σχόλια,  fees AS Δίδακτρα FROM "+ "classes WHERE id>0 ORDER BY cname";
+		new MultirowForm("Τάξεις", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showGroups() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, gname AS ΞΞ½ΞΏΞΌΞ±, teacher_id AS Ξ¥Ο€ΞΞ±ΞΈΞ·Ξ³Ξ·Ο„Ξ®Ο‚,  class_id AS Ξ¤Ξ¬ΞΎΞ·, comments AS Ξ£Ο‡ΟΞ»ΞΉΞ± FROM groups WHERE sub_class=1 ORDER BY gname";
-		new MultirowForm("Ξ¤ΞΌΞ®ΞΌΞ±Ο„Ξ±", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, gname AS Όνομα, teacher_id AS ΥπΚαθηγητής,  class_id AS Τάξη, comments AS Σχόλια FROM groups WHERE sub_class=1 ORDER BY gname";
+		new MultirowForm("Τμήματα", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showExpenses() {
-		sql_from_parent = "SELECT expenses.id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, expenses.expense_type AS Ξ•Ξ―Ξ΄ΞΏΟ‚, expenses.amount AS Ξ ΞΏΟƒΟ, expense_payment_methods.method AS ΞΞ­ΞΈΞΏΞ΄ΞΏΟ‚_Ξ Ξ»Ξ·ΟΟ‰ΞΌΞ®Ο‚, expenses.edate AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, expenses.comments AS Ξ£Ο‡ΟΞ»ΞΉΞ± FROM expenses INNER JOIN expense_payment_methods ON expenses.payment_method = expense_payment_methods.id ORDER BY edate desc";
-		new MultirowForm("ΞΞΎΞΏΞ΄Ξ±", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT expenses.id AS Κωδικός, expenses.expense_type AS Είδος, expenses.amount AS Ποσό, expense_payment_methods.method AS Μέθοδος_Πληρωμής, expenses.edate AS Ημερομηνία, expenses.comments AS Σχόλια FROM expenses INNER JOIN expense_payment_methods ON expenses.payment_method = expense_payment_methods.id ORDER BY edate desc";
+		new MultirowForm("Έξοδα", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showPayments() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, pdate AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, amount AS Ξ ΞΏΟƒΟ,  user_id AS ΞΞ·Ξ΄ΞµΞΌΟΞ½Ξ±Ο‚, comments AS Ξ£Ο‡ΟΞ»ΞΉΞ± FROM payments WHERE 1 ORDER BY pdate desc";
-		new MultirowForm("Ξ Ξ»Ξ·ΟΟ‰ΞΌΞ­Ο‚", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, pdate AS Ημερομηνία, amount AS Ποσό,  user_id AS Κηδεμόνας, comments AS Σχόλια FROM payments WHERE 1 ORDER BY pdate desc";
+		new MultirowForm("Πληρωμές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void manageAnnouncements() {
-		sql_from_parent = "SELECT m.id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
 		System.out.println("6>" + sql_from_parent);
-		new MultirowForm("Ξ‘Ξ½Ξ±ΞΊΞΏΞΉΞ½ΟΟƒΞµΞΉΟ‚", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
+		new MultirowForm("Ανακοινώσεις", sql_from_parent, true, true, true, Cval.OPEN_EDITOR);
 	}
 	
 	public void showIncomingMsgs() {
-		sql_from_parent = "SELECT m.id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
 		System.out.println("7>" + sql_from_parent);
-		new MultirowForm("Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
+		new MultirowForm("Εισερχόμενα", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
 	}
 	
 	public void showOutgoingMsgs() {
-		sql_from_parent = "SELECT distinct(m.id) AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		sql_from_parent = "SELECT distinct(m.id) AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
 		System.out.println("8>" + sql_from_parent);
-		new MultirowForm("Ξ‘Ο€ΞµΟƒΟ„Ξ±Ξ»ΞΌΞ­Ξ½Ξ±", sql_from_parent, true, true, true,  Cval.OPEN_EDITOR);
+		new MultirowForm("Απεσταλμένα", sql_from_parent, true, true, true,  Cval.OPEN_EDITOR);
 	}
 	
 	public void showTeams() {
@@ -198,17 +198,17 @@ public class Secretary extends JDialog {
 	}
 	
 	public void manageSubscriptions() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, student_surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, student_name AS ΞΞ½ΞΏΞΌΞ±, student_class AS Ξ¤Ξ¬ΞΎΞ·, subscription_monthly_price AS ΞΞ·Ξ½ΞΉΞ±Ξ―ΞΏ_ΞΟΟƒΟ„ΞΏΟ‚_EUR, payment_September AS Ξ£ΞµΟ€Ο„Ξ­ΞΌΞ²ΟΞΉΞΏΟ‚, payment_October AS ΞΞΊΟ„ΟΞ²ΟΞΉΞΏΟ‚, payment_November AS ΞΞΏΞ­ΞΌΞ²ΟΞΉΞΏΟ‚, payment_December AS Ξ”ΞµΞΊΞ­ΞΌΞ²ΟΞΉΞΏΟ‚, payment_January AS Ξ™Ξ±Ξ½ΞΏΟ…Ξ¬ΟΞΉΞΏΟ‚, payment_February AS Ξ¦ΞµΞ²ΟΞΏΟ…Ξ¬ΟΞΉΞΏΟ‚, payment_March AS ΞΞ¬ΟΟ„ΞΉΞΏΟ‚, payment_April AS Ξ‘Ο€ΟΞ―Ξ»ΞΉΞΏΟ‚, payment_May AS ΞΞ¬ΞΉΞΏΟ‚, payment_June AS Ξ™ΞΏΟΞ½ΞΉΞΏΟ‚, Comments AS Ξ£Ο‡ΟΞ»ΞΉΞ± FROM subscriptions order by student_surname asc";
-		new MultirowForm("Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ξ£Ο…Ξ½Ξ΄ΟΞΏΞΌΟΞ½", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, student_surname AS Επώνυμο, student_name AS Όνομα, student_class AS Τάξη, subscription_monthly_price AS Μηνιαίο_Κόστος_EUR, payment_September AS Σεπτέμβριος, payment_October AS Οκτώβριος, payment_November AS Νοέμβριος, payment_December AS Δεκέμβριος, payment_January AS Ιανουάριος, payment_February AS Φεβρουάριος, payment_March AS Μάρτιος, payment_April AS Απρίλιος, payment_May AS Μάιος, payment_June AS Ιούνιος, Comments AS Σχόλια FROM subscriptions order by student_surname asc";
+		new MultirowForm("Διαχείριση Συνδρομών", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void manageWorkTime() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, employee_surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, employee_name AS ΞΞ½ΞΏΞΌΞ±, work_shift_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, work_time AS Ξ§ΟΟΞ½ΞΏΟ‚_Ξ•ΟΞ³Ξ±ΟƒΞ―Ξ±Ο‚, hour_cost AS ΞΟΟƒΟ„ΞΏΟ‚_ΞΟΞ±Ο‚, payment_status AS ΞΞ±Ο„Ξ¬ΟƒΟ„Ξ±ΟƒΞ·_Ξ Ξ»Ξ·ΟΟ‰ΞΌΞ®Ο‚ FROM work_time_salary ORDER BY work_shift_date DESC;";
-		new MultirowForm("Ξ”ΞΉΞ±Ο‡ΞµΞ―ΟΞΉΟƒΞ· Ξ•ΟΞ³Ξ±ΟƒΞ―Ξ±Ο‚ Ξ ΟΞΏΟƒΟ‰Ο€ΞΉΞΊΞΏΟ", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, work_shift_date AS Ημερομηνία, work_time AS Χρόνος_Εργασίας, hour_cost AS Κόστος_Ώρας, payment_status AS Κατάσταση_Πληρωμής FROM work_time_salary ORDER BY work_shift_date DESC;";
+		new MultirowForm("Διαχείριση Εργασίας Προσωπικού", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void calculateSalary() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, employee_surname AS Ξ•Ο€ΟΞ½Ο…ΞΌΞΏ, employee_name AS ΞΞ½ΞΏΞΌΞ±, MONTH(work_shift_date) AS ΞΞ®Ξ½Ξ±Ο‚, SUM(work_time*hour_cost) AS ΞΟΟƒΟ„ΞΏΟ‚ FROM work_time_salary WHERE payment_status = 'ΞΞ§Ξ™' GROUP BY employee_surname, MONTH(work_shift_date) order by employee_surname asc, MONTH(work_shift_date) desc";
-		new MultirowForm("ΞΞΉΟƒΞΈΞΏΞ΄ΞΏΟƒΞ―Ξ± Ξ±Ξ½Ξ¬ Ξ¥Ο€Ξ¬Ξ»Ξ»Ξ·Ξ»ΞΏ", sql_from_parent, false, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, employee_surname AS Επώνυμο, employee_name AS Όνομα, MONTH(work_shift_date) AS Μήνας, SUM(work_time*hour_cost) AS Κόστος FROM work_time_salary WHERE payment_status = 'ΟΧΙ' GROUP BY employee_surname, MONTH(work_shift_date) order by employee_surname asc, MONTH(work_shift_date) desc";
+		new MultirowForm("Μισθοδοσία ανά Υπάλληλο", sql_from_parent, false, true, true, Cval.OPEN_EDIT_ROW);
 	}
 }

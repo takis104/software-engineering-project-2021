@@ -37,9 +37,9 @@ public class Parent extends JDialog {
 	
 	public Parent() {	
 		screen = new JFrame();
-		db_interface.user_role="ΞΞ·Ξ΄ΞµΞΌΟΞ½Ξ±Ο‚";
+		db_interface.user_role="Κηδεμόνας";
 
-		screen.setTitle("ΞΞ·Ξ΄ΞµΞΌΟΞ½Ξ±Ο‚:" + db_interface.user_surname + ":" + db_interface.school_name);
+		screen.setTitle("Κηδεμόνας:" + db_interface.user_surname + ":" + db_interface.school_name);
 		ImageIcon bg = new ImageIcon(getClass().getResource("/images/main_bg.png"));
 		screen.setSize(new Dimension(Cval.ScreenWidth,Cval.ScreenHeight));
 		Image bg_img = bg.getImage().getScaledInstance(screen.getWidth(), screen.getHeight(), Image.SCALE_DEFAULT);
@@ -57,12 +57,12 @@ public class Parent extends JDialog {
 		gbc2.gridx = 0;  gbc2.gridy = 0; gbc2.gridwidth=2;
 		screen.add(lbl1, gbc2);
 		
-		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im10.png", "Ξ‘Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ® ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚");
-		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im07.png", "Ξ Ξ»Ξ·ΟΟ‰ΞΌΞ®");
-		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im05.png", "Ξ‘Ξ½Ξ±ΞΊΞΏΞΉΞ½ΟΟƒΞµΞΉΟ‚");
-		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im02.png", "Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±");
-		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im06.png", "Ξ‘Ο€ΞµΟƒΟ„Ξ±Ξ»ΞΌΞ­Ξ½Ξ±");
-		JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im11.png", "Ξ‘Ο€ΞΏΟ…ΟƒΞ―ΞµΟ‚ Ο€Ξ±ΞΉΞ΄ΞΉΟΞ½");
+		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im13.png", "Αποστολή μηνύματος");
+		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im12.png", "Πληρωμή");
+		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im03.png", "Ανακοινώσεις");
+		JButton btn4 = Cval.AddButton(screen, 2, 1, "/images/mn_im18.png", "Εισερχόμενα");
+		JButton btn5 = Cval.AddButton(screen, 2, 2, "/images/mn_im19.png", "Απεσταλμένα");
+		JButton btn6 = Cval.AddButton(screen, 2, 3, "/images/mn_im11.png", "Απουσίες παιδιών");
 		
 
 		btn1.addActionListener(new ActionListener() { //new message
@@ -106,7 +106,7 @@ public class Parent extends JDialog {
 		exit_btn.setMaximumSize(new Dimension(35, 35));
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (JOptionPane.showConfirmDialog(null, "ΞΞ­Ξ»ΞµΟ„Ξµ Ξ½Ξ± Ξ±ΞΎΞΉΞΏΞ»ΞΏΞ³Ξ®ΟƒΞµΟ„Ξµ Ο„Ξ·Ξ½ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ®", "Ξ‘ΞΎΞΉΞΏΞ»ΟΞ³Ξ·ΟƒΞ·",
+				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					new Feedback();
 				}
@@ -120,32 +120,32 @@ public class Parent extends JDialog {
 	}
 	
 	public void newMessage() {
-		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "ΞΞ®Ξ½Ο…ΞΌΞ±",null, 0);
+		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Μήνυμα",null, 0);
 	}
 	
 	public void newPayment() {
-		sql_from_parent = "SELECT id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, pdate AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, amount AS Ξ ΞΏΟƒΟ, comments as Ξ£Ο‡ΟΞ»ΞΉΞ± FROM payments WHERE user_id = " + db_interface.user_id + " ORDER BY pdate desc";
-		new MultirowForm("Ξ Ξ»Ξ·ΟΟ‰ΞΌΞ­Ο‚", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
+		sql_from_parent = "SELECT id AS Κωδικός, pdate AS Ημερομηνία, amount AS Ποσό, comments as Σχόλια FROM payments WHERE user_id = " + db_interface.user_id + " ORDER BY pdate desc";
+		new MultirowForm("Πληρωμές", sql_from_parent, true, true, true, Cval.OPEN_EDIT_ROW);
 	}
 	
 	public void showAnnouncements() {
 		Cval.id_from_parent.push(db_interface.user_id);
-		sql_from_parent = "SELECT m.id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-		new MultirowForm("Ξ‘Ξ½Ξ±ΞΊΞΏΞΉΞ½ΟΟƒΞµΞΉΟ‚", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);		
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Ανακοινώσεις", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);		
 	}
 	
 	public void showIncomingMsgs() {
-		sql_from_parent = "SELECT m.id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-		new MultirowForm("Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=2 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Εισερχόμενα", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
 	}
 	
 	public void showOutgoingMsgs() {
-		sql_from_parent = "SELECT m.id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-		new MultirowForm("Ξ‘Ο€ΞµΟƒΟ„Ξ±Ξ»ΞΌΞ­Ξ½Ξ±", sql_from_parent, true, true, false, Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.to_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Απεσταλμένα", sql_from_parent, true, true, false, Cval.OPEN_EDITOR);
 	}
 	
 	public void retrieveAbsencesOfChildren() {
-		sql_from_parent = "SELECT CONCAT(pup.surname, ' ', pup.firstname) AS ΞΞ½ΞΏΞΌΞ±Ο„ΞµΟ€ΟΞ½Ο…ΞΌΞΏ, sum(ab.tcount) as Ξ£ΟΞ½ΞΏΞ»ΞΏΞ‘Ο€ΞΏΟ…ΟƒΞΉΟΞ½ FROM users as par INNER JOIN users as pup on pup.parent_id = par.id INNER JOIN absences as ab on ab.pupil_id = pup.id WHERE par.id=" + db_interface.user_id + " GROUP BY ab.pupil_id";
-		new MultirowForm("Ξ‘Ο€ΞΏΟ…ΟƒΞ―ΞµΟ‚", sql_from_parent, false, false, false,  Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT CONCAT(pup.surname, ' ', pup.firstname) AS Ονοματεπώνυμο, sum(ab.tcount) as ΣύνολοΑπουσιών FROM users as par INNER JOIN users as pup on pup.parent_id = par.id INNER JOIN absences as ab on ab.pupil_id = pup.id WHERE par.id=" + db_interface.user_id + " GROUP BY ab.pupil_id";
+		new MultirowForm("Απουσίες", sql_from_parent, false, false, false,  Cval.OPEN_EDITOR);
 	}
 }
