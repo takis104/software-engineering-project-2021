@@ -190,7 +190,7 @@ public class MessageFx extends Application {
         gridPane.setPadding(new Insets(20, 150, 10, 10));
         
         
-        Label subject_lbl = new Label("ΞΞ­ΞΌΞ±:");
+        Label subject_lbl = new Label("Θέμα:");
         subject_lbl.setFont(Font.font("verdana", 14));
         subject_lbl.setTextFill(Color.YELLOW);
         gridPane.add(subject_lbl, 0, 0);
@@ -201,7 +201,7 @@ public class MessageFx extends Application {
         msg_subject.setPromptText("Enter your subject");
         gridPane.add(msg_subject, 1, 0);
 
-        to_lbl = new Label("Ξ ΟΞΏΟ‚");
+        to_lbl = new Label("Προς");
         to_lbl.setPrefWidth(80);
         to_lbl.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,16));
         to_lbl.setTextFill(Color.YELLOW);
@@ -223,7 +223,7 @@ public class MessageFx extends Application {
         });
         gridPane.add(to_btn, 2, 1);
     	if (my_kind==1) {
-    		Label cc_lbl = new Label("Ξ ΟΞΏΞΈΞµΟƒΞΌΞ―Ξ±:");
+    		Label cc_lbl = new Label("Προθεσμία:");
     		cc_lbl.setFont(Font.font("verdana", 12));
     	
     		cc_lbl.setTextFill(Color.YELLOW);
@@ -310,6 +310,21 @@ public class MessageFx extends Application {
 	      ImageView graphic3 = new ImageView(new Image(MessageFx.class.getResource("/images/ed_import.png").toExternalForm(), 16, 16, true, true));     
 	      Button pdfButton = new Button("", graphic3);
 	      bar.getItems().addAll(tblButton, imgButton,lnkButton,pdfButton, new Separator());
+	      tblButton.setDisable(true);
+	      imgButton.setDisable(true);
+	      lnkButton.setDisable(true);
+	      pdfButton.setDisable(true);
+	      WebView webView = (WebView) ed.lookup("WebView");
+	      webView.focusedProperty().addListener(new ChangeListener<Boolean>() {
+	          @Override
+	          public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)  {
+	    	      tblButton.setDisable(false);
+	    	      imgButton.setDisable(false);
+	    	      lnkButton.setDisable(false);
+	    	      pdfButton.setDisable(false);
+	          }
+	      });
+	      
           tblButton.setOnAction(new EventHandler<ActionEvent>() {
 	        @Override public void handle(ActionEvent arg0) {
 	            Dialog<Pair<Integer, Integer>> ndialog = new Dialog<>();
@@ -574,7 +589,7 @@ public class MessageFx extends Application {
             	Platform.runLater(() -> {
             		System.out.println("aHERE");
             		Cval.reply_to = -125;
-            		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ·",null, 4);
+            		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Απάντηση",null, 4);
     	        });
             }
         });
@@ -587,11 +602,11 @@ public class MessageFx extends Application {
             }
         });
         gridPane1.add(sv_btn, 0, 0);
-        sv_btn.setTooltip(new Tooltip("Ξ‘Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ®"));
+        sv_btn.setTooltip(new Tooltip("Αποστολή"));
         gridPane1.add(reply_btn, 1, 0);
         reply_btn.setVisible(false);
-        reply_btn.setTooltip(new Tooltip("Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ·"));
-        cancel_btn.setTooltip(new Tooltip("ΞΞΎΞΏΞ΄ΞΏΟ‚"));
+        reply_btn.setTooltip(new Tooltip("Απάντηση"));
+        cancel_btn.setTooltip(new Tooltip("Έξοδος"));
         gridPane1.add(cancel_btn, 2, 0);
         root.getChildren().add(gridPane1);
         
@@ -615,9 +630,29 @@ public class MessageFx extends Application {
         return (scene);
     }    
     private void insertTextAtCursor(String txt) {
+        String jsCodeInsertHtml = "function insertHtmlAtCursor(html) {\n" +
+                "    var range, node;\n" +
+                "    if (window.getSelection && window.getSelection().getRangeAt) {\n" +
+                "        range = window.getSelection().getRangeAt(0);\n" +
+                "        node = range.createContextualFragment(html);\n" +
+                "        range.insertNode(node);\n" +
+                "    } else if (document.selection && document.selection.createRange) {\n" +
+                "        document.selection.createRange().pasteHTML(html);\n" +
+                "    }\n" +
+                "}insertHtmlAtCursor('";
+
           WebView webView = (WebView) ed.lookup(".web-view");
-          WebPage webPage = Accessor.getPageFor(webView.getEngine());
-          webPage.executeCommand("insertHTML", txt);
+          //WebPage webPage = Accessor.getPageFor(webView.getEngine());
+          //webPage.executeCommand("insertHTML", txt);
+          //System.out.println("1)--->" + jsCodeInsertHtml);
+          //System.out.println("===========================");
+          String repl_text = escapeJavaStyleString(txt, false, false);
+          //System.out.println("1)--->" + jsCodeInsertHtml+txt + "')");
+          webView.getEngine().executeScript(jsCodeInsertHtml+repl_text + "')");
+          //String html = "<html><center><h2>Hello, world!</h2></center></html>";
+          //.loadContent(html, "text/html");
+          
+          
     }
     
     @SuppressWarnings("unchecked")
@@ -637,13 +672,13 @@ public class MessageFx extends Application {
         ndialog.getDialogPane().setContent(gridPane);
         
         queries = new HashMap<TreeItem<String>, String>();
-        TreeItem<String> rootItem = new TreeItem<String> ("ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―ΞµΟ‚");
+        TreeItem<String> rootItem = new TreeItem<String> ("Κατηγορίες");
         int k;
              
         TreeItem<String> tit;
         String sql_string;
         TreeItem<String> ti; 
-        ti = new TreeItem<String>("Ξ¤Ξ¬ΞΎΞµΞΉΟ‚");
+        ti = new TreeItem<String>("Τάξεις");
         ArrayList<String> classes = db_interface.getClasses();
         for (k=0;k<classes.size();k++) {
         	String parts[] = classes.get(k).split(",");
@@ -652,13 +687,13 @@ public class MessageFx extends Application {
         	queries.put(tit, sql_string);
         	ti.getChildren().add(tit);
         }
-        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ ΞΌΞ±ΞΈΞ·Ο„Ξ­Ο‚");
+        tit = new TreeItem<String>("Όλοι οι μαθητές");
         sql_string = "SELECT id, surname, firstname, email  FROM users WHERE role_id=4";  
         queries.put(tit, sql_string);
         ti.getChildren().add(tit);
         rootItem.getChildren().add(ti);
         
-        ti = new TreeItem<String>("Ξ¤ΞΌΞ®ΞΌΞ±Ο„Ξ±");
+        ti = new TreeItem<String>("Τμήματα");
         ArrayList<String> sub_classes = db_interface.getSubClasses();
         for (k=0;k<sub_classes.size();k++) {
         	String parts[] = sub_classes.get(k).split(",");
@@ -669,50 +704,50 @@ public class MessageFx extends Application {
         }
         rootItem.getChildren().add(ti);
         if (my_kind!=1) {
-	        ti = new TreeItem<String>("Ξ“ΞΏΞ½ΞµΞ―Ο‚");
+	        ti = new TreeItem<String>("Γονείς");
 	        for (k=0;k<classes.size();k++) {
 	        	String parts[] = classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Ξ“ΞΏΞ½ΞµΞ―Ο‚ " + parts[1]);
+	        	tit = new TreeItem<String>("Γονείς " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE u.role_id=5 and g.class_id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
 	        for (k=0;k<sub_classes.size();k++) {
 	        	String parts[] = sub_classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Ξ“ΞΏΞ½ΞµΞ―Ο‚ " + parts[1]);
+	        	tit = new TreeItem<String>("Γονείς " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE u.role_id=5 and g.id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
-	        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ Ξ³ΞΏΞ½ΞµΞ―Ο‚");
+	        tit = new TreeItem<String>("Όλοι οι γονείς");
 	        sql_string = "SELECT id, surname, firstname, email  FROM users WHERE role_id=5";  
 	        queries.put(tit, sql_string);
 	        ti.getChildren().add(tit);
 	        rootItem.getChildren().add(ti);
 	
-	        ti = new TreeItem<String>("Ξ•ΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ„ΞΉΞΊΞΏΞ―");
+	        ti = new TreeItem<String>("Εκπαιδετικοί");
 	        for (k=0;k<classes.size();k++) {
 	        	String parts[] = classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Ξ•ΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ„ΞΉΞΊΞΏΞ― " + parts[1]);
+	        	tit = new TreeItem<String>("Εκπαιδετικοί " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE g.class_id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
 	        for (k=0;k<sub_classes.size();k++) {
 	        	String parts[] = sub_classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Ξ•ΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ„ΞΉΞΊΞΏΞ― " + parts[1]);
+	        	tit = new TreeItem<String>("Εκπαιδετικοί " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE g.id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
-	        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ ΞµΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ…Ο„ΞΉΞΊΞΏΞ―");
+	        tit = new TreeItem<String>("Όλοι οι εκπαιδευτικοί");
 	        sql_string = "SELECT id as id, surname, firstname, email  FROM users WHERE id>0 and role_id=3";  
 	        queries.put(tit, sql_string);
 	        ti.getChildren().add(tit);
 	        rootItem.getChildren().add(ti);
 	        
-	        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ");
-	        ti = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ Ο‡ΟΞ®ΟƒΟ„ΞµΟ‚");
+	        tit = new TreeItem<String>("Όλοι");
+	        ti = new TreeItem<String>("Όλοι οι χρήστες");
 	        sql_string = "SELECT id, surname, firstname, email  FROM users WHERE id>0";  
 	        queries.put(tit, sql_string);
 	        ti.getChildren().add(tit);
@@ -772,7 +807,7 @@ public class MessageFx extends Application {
     	
 	    ImageView graphic1 = new ImageView(new Image(MessageFx.class.getResource("/images/select_all.png").toExternalForm(), 16, 16, true, true));
         Button select_all_btn = new Button("", graphic1);
-    	select_all_btn.setTooltip(new Tooltip("Ξ•Ο€ΞΉΞ»ΞΏΞ³Ξ® ΟΞ»Ο‰Ξ½")); 
+    	select_all_btn.setTooltip(new Tooltip("Επιλογή όλων")); 
     	select_all_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent arg0) {
             	for (Person p : tableView.getItems()) 
@@ -781,7 +816,7 @@ public class MessageFx extends Application {
     	});
 	    ImageView graphic2 = new ImageView(new Image(MessageFx.class.getResource("/images/select_none.png").toExternalForm(), 16, 16, true, true));
         Button select_none_btn = new Button("", graphic2);
-    	select_none_btn.setTooltip(new Tooltip("ΞΞ·Ξ΄ΞµΞ½ΞΉΟƒΞΌΟΟ‚ ΞµΟ€ΞΉΞ»ΞΏΞ³ΟΞ½"));
+    	select_none_btn.setTooltip(new Tooltip("Μηδενισμός επιλογών"));
     	select_none_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent arg0) {
             	for (Person p : tableView.getItems()) 
@@ -893,8 +928,8 @@ public class MessageFx extends Application {
     	TextArea textAreaTo = new TextArea(); textAreaTo.setPrefHeight(400); textAreaTo.setPrefWidth(600);
     	
     	emailto_vbox.getChildren().add(textAreaTo);
-    	if (my_title_txt.equals("Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½ΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ±")) {
-    		to_lbl.setText("Ξ‘Ο€Ο");
+    	if (my_title_txt.equals("Εισερχόμενο μήνυμα")) {
+    		to_lbl.setText("Από");
     		int row, col;
     		MultirowForm mr = Cval.multirow_instances_stack.peek();
     		row = mr.clicked_row;
@@ -1036,4 +1071,89 @@ public class MessageFx extends Application {
         task.setOnFailed(evnt -> { System.out.println("Task failed!");});
     	new Thread(task).start();
     }
+    private static String hex(int i) {
+        return Integer.toHexString(i);
+    }
+
+    //a method to convert to a javas/js style string 
+    //https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/src-html/org/apache/commons/lang/StringEscapeUtils.html
+
+    private static String escapeJavaStyleString(String str, boolean escapeSingleQuote, boolean escapeForwardSlash) {
+        StringBuilder out = new StringBuilder("");
+        if (str == null) {
+            return null;
+        }
+        int sz;
+        sz = str.length();
+        for (int i = 0; i < sz; i++) {
+            char ch = str.charAt(i);
+
+            // handle unicode
+            if (ch > 0xfff) {
+                out.append("\\u").append(hex(ch));
+            } else if (ch > 0xff) {
+                out.append("\\u0").append(hex(ch));
+            } else if (ch > 0x7f) {
+                out.append("\\u00").append(hex(ch));
+            } else if (ch < 32) {
+                switch (ch) {
+                    case '\b':
+                        out.append('\\');
+                        out.append('b');
+                        break;
+                    case '\n':
+                        out.append('\\');
+                        out.append('n');
+                        break;
+                    case '\t':
+                        out.append('\\');
+                        out.append('t');
+                        break;
+                    case '\f':
+                        out.append('\\');
+                        out.append('f');
+                        break;
+                    case '\r':
+                        out.append('\\');
+                        out.append('r');
+                        break;
+                    default:
+                        if (ch > 0xf) {
+                            out.append("\\u00").append(hex(ch));
+                        } else {
+                            out.append("\\u000").append(hex(ch));
+                        }
+                        break;
+                }
+            } else {
+                switch (ch) {
+                    case '\'':
+                        if (escapeSingleQuote) {
+                            out.append('\\');
+                        }
+                        out.append('\'');
+                        break;
+                    case '"':
+                        out.append('\\');
+                        out.append('"');
+                        break;
+                    case '\\':
+                        out.append('\\');
+                        out.append('\\');
+                        break;
+                    case '/':
+                        if (escapeForwardSlash) {
+                            out.append('\\');
+                        }
+                        out.append('/');
+                        break;
+                    default:
+                        out.append(ch);
+                        break;
+                }
+            }
+        }
+        return out.toString();
+    }
+    
 }
