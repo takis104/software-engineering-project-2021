@@ -76,9 +76,9 @@ public class MultirowForm extends JFrame {
 		        else return true;
 		    }
 		};
-		model.addColumn(""); //for edit btn
+		if (allow_edit) model.addColumn(""); //for edit btn
 		edit_icon = new ImageIcon(getClass().getResource("/images/edit.png"));
-		model.addColumn("");//for del btn
+		if (allow_delete) model.addColumn("");//for del btn
         del_icon = new ImageIcon(getClass().getResource("/images/delete.png"));
        
 		screen = new JFrame();
@@ -120,11 +120,14 @@ public class MultirowForm extends JFrame {
 			ArrayList<ArrayList<String>> fkeys;
 			cboxes = new ArrayList<JComboBox<String>>();
 			combo_columns = new ArrayList<Integer>();
+			int base=-1;
+	        if (allow_edit) base++;
+	        if (allow_delete) base++;
 			for (int i = 1; i <= columns; i++ ) {
 		        fkeys = db_interface.GetForeignKeyReferences(rsmdt.getColumnName(i), my_sql_tbl);
 		        //System.out.println(rsmdt.getColumnName(i) + "=>" + rsmdt.getColumnLabel(i) + ":" +rsmdt.getColumnType(i));
 		        if (fkeys!=null) {
-		        	combo_columns.add(i+1);
+		        	combo_columns.add(i+base);
 		        	//TableColumn indexColumn = db_table.getColumnModel().getColumn(i+1);
 		        	JComboBox<String> comboBox = new JComboBox<String>();
 		        	for (int k=0;k<fkeys.size();k++)
@@ -132,7 +135,7 @@ public class MultirowForm extends JFrame {
 		        	cboxes.add(comboBox);
 		        	//indexColumn.setCellEditor(new DefaultCellEditor(comboBox));
 		        }
-		        db_table.getColumnModel().getColumn(i+1).setPreferredWidth(300);
+		        db_table.getColumnModel().getColumn(i+base).setPreferredWidth(300);
 			}
 			int m=0;
 			if (allow_edit) {
@@ -146,10 +149,10 @@ public class MultirowForm extends JFrame {
 				db_table.getColumnModel().getColumn(m++).setMaxWidth(35);
 			}
 			for (int k=0;k<db_table.getColumnModel().getColumnCount();k++) {
-				if (db_table.getColumnName(k).equals(" ˘‰ÈÍ¸Ú")) column_id = k;
+				if (db_table.getColumnName(k).equals("ŒöœâŒ¥ŒπŒ∫œåœÇ")) column_id = k;
 				else if (db_table.getColumnName(k).equals("online_id")) column_cloud_id = k;
 				else if (db_table.getColumnName(k).equals("sender_id")) column_sender_id = k;
-				else if (db_table.getColumnName(k).equals("»›Ï·")) column_subject=k;
+				else if (db_table.getColumnName(k).equals("ŒòŒ≠ŒºŒ±")) column_subject=k;
 			}		
 			//TO DO : sort and remove from end to start
 			if (column_id>0) {
@@ -174,6 +177,7 @@ public class MultirowForm extends JFrame {
     	}
 	    
         h = ROW_HEIGHT * PREFERRED_ROWS;
+        if (w<260) w=260;
 		screen.setSize(new Dimension(w + 40,h + 100));
 		
 		ImageIcon bg = new ImageIcon(getClass().getResource("/images/main_bg.png"));
@@ -186,7 +190,8 @@ public class MultirowForm extends JFrame {
 		title_lbl.setText(title);
 		title_lbl.setForeground(Color.YELLOW);
 		title_lbl.setFont(new Font("Helvetica", Font.ITALIC, 16));
-		title_lbl.setBounds(60, 10, 400, 35);
+		if (allow_addnew) title_lbl.setBounds(60, 10, 400, 35);
+		else title_lbl.setBounds(10, 10, 400, 35);
 		cnt.add(title_lbl);
 
         //System.out.println(h + "---> " + w);
@@ -199,7 +204,7 @@ public class MultirowForm extends JFrame {
 		    new_btn.addActionListener(new ActionListener() {
 		        public void actionPerformed(ActionEvent arg0) {
 		        	if (edit_mode==Cval.OPEN_EDITOR) 
-		        		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Õ›Ô ÏﬁÌıÏ·",null, 0);
+		        		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "ŒùŒ≠Œø ŒºŒÆŒΩœÖŒºŒ±",null, 0);
 		        	else new EditRow(my_sql_tbl, -1,  db_interface.ADD, true);
 		        }
 		    });
