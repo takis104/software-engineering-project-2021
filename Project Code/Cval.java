@@ -83,9 +83,9 @@ public class Cval {
 		int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 		String greeting;
 
-		if(timeOfDay >= 0 && timeOfDay < 12) greeting="ΞΞ±Ξ»Ξ·ΞΌΞ­ΟΞ± ";
-		else if(timeOfDay >= 12 && timeOfDay < 16) greeting="ΞΞ±Ξ»Ο Ξ±Ο€ΟΞ³ΞµΟ…ΞΌΞ± ";
-		else greeting= "ΞΞ±Ξ»Ξ·ΟƒΟ€Ξ­ΟΞ± ";
+		if(timeOfDay >= 0 && timeOfDay < 12) greeting="Καλημέρα ";
+		else if(timeOfDay >= 12 && timeOfDay < 16) greeting="Καλό απόγευμα ";
+		else greeting= "Καλησπέρα ";
 		return greeting + db_interface.user_firstname;
 	}
 }
