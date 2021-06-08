@@ -324,4 +324,5 @@ public class Absenses {
 		for (k=0;k<Pupils.size();k++)
 			gpanel.remove(Pupils.get(k));
 	}
+	
 }
