@@ -190,7 +190,7 @@ public class MessageFx extends Application {
         gridPane.setPadding(new Insets(20, 150, 10, 10));
         
         
-        Label subject_lbl = new Label("Θέμα:");
+        Label subject_lbl = new Label("ΞΞ­ΞΌΞ±:");
         subject_lbl.setFont(Font.font("verdana", 14));
         subject_lbl.setTextFill(Color.YELLOW);
         gridPane.add(subject_lbl, 0, 0);
@@ -201,7 +201,7 @@ public class MessageFx extends Application {
         msg_subject.setPromptText("Enter your subject");
         gridPane.add(msg_subject, 1, 0);
 
-        to_lbl = new Label("Προς");
+        to_lbl = new Label("Ξ ΟΞΏΟ‚");
         to_lbl.setPrefWidth(80);
         to_lbl.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,16));
         to_lbl.setTextFill(Color.YELLOW);
@@ -223,7 +223,7 @@ public class MessageFx extends Application {
         });
         gridPane.add(to_btn, 2, 1);
     	if (my_kind==1) {
-    		Label cc_lbl = new Label("Προθεσμία:");
+    		Label cc_lbl = new Label("Ξ ΟΞΏΞΈΞµΟƒΞΌΞ―Ξ±:");
     		cc_lbl.setFont(Font.font("verdana", 12));
     	
     		cc_lbl.setTextFill(Color.YELLOW);
@@ -589,7 +589,7 @@ public class MessageFx extends Application {
             	Platform.runLater(() -> {
             		System.out.println("aHERE");
             		Cval.reply_to = -125;
-            		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Απάντηση",null, 4);
+            		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ·",null, 4);
     	        });
             }
         });
@@ -602,11 +602,11 @@ public class MessageFx extends Application {
             }
         });
         gridPane1.add(sv_btn, 0, 0);
-        sv_btn.setTooltip(new Tooltip("Αποστολή"));
+        sv_btn.setTooltip(new Tooltip("Ξ‘Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ®"));
         gridPane1.add(reply_btn, 1, 0);
         reply_btn.setVisible(false);
-        reply_btn.setTooltip(new Tooltip("Απάντηση"));
-        cancel_btn.setTooltip(new Tooltip("Έξοδος"));
+        reply_btn.setTooltip(new Tooltip("Ξ‘Ο€Ξ¬Ξ½Ο„Ξ·ΟƒΞ·"));
+        cancel_btn.setTooltip(new Tooltip("ΞΞΎΞΏΞ΄ΞΏΟ‚"));
         gridPane1.add(cancel_btn, 2, 0);
         root.getChildren().add(gridPane1);
         
@@ -672,13 +672,13 @@ public class MessageFx extends Application {
         ndialog.getDialogPane().setContent(gridPane);
         
         queries = new HashMap<TreeItem<String>, String>();
-        TreeItem<String> rootItem = new TreeItem<String> ("Κατηγορίες");
+        TreeItem<String> rootItem = new TreeItem<String> ("ΞΞ±Ο„Ξ·Ξ³ΞΏΟΞ―ΞµΟ‚");
         int k;
              
         TreeItem<String> tit;
         String sql_string;
         TreeItem<String> ti; 
-        ti = new TreeItem<String>("Τάξεις");
+        ti = new TreeItem<String>("Ξ¤Ξ¬ΞΎΞµΞΉΟ‚");
         ArrayList<String> classes = db_interface.getClasses();
         for (k=0;k<classes.size();k++) {
         	String parts[] = classes.get(k).split(",");
@@ -687,13 +687,13 @@ public class MessageFx extends Application {
         	queries.put(tit, sql_string);
         	ti.getChildren().add(tit);
         }
-        tit = new TreeItem<String>("Όλοι οι μαθητές");
+        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ ΞΌΞ±ΞΈΞ·Ο„Ξ­Ο‚");
         sql_string = "SELECT id, surname, firstname, email  FROM users WHERE role_id=4";  
         queries.put(tit, sql_string);
         ti.getChildren().add(tit);
         rootItem.getChildren().add(ti);
         
-        ti = new TreeItem<String>("Τμήματα");
+        ti = new TreeItem<String>("Ξ¤ΞΌΞ®ΞΌΞ±Ο„Ξ±");
         ArrayList<String> sub_classes = db_interface.getSubClasses();
         for (k=0;k<sub_classes.size();k++) {
         	String parts[] = sub_classes.get(k).split(",");
@@ -704,50 +704,50 @@ public class MessageFx extends Application {
         }
         rootItem.getChildren().add(ti);
         if (my_kind!=1) {
-	        ti = new TreeItem<String>("Γονείς");
+	        ti = new TreeItem<String>("Ξ“ΞΏΞ½ΞµΞ―Ο‚");
 	        for (k=0;k<classes.size();k++) {
 	        	String parts[] = classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Γονείς " + parts[1]);
+	        	tit = new TreeItem<String>("Ξ“ΞΏΞ½ΞµΞ―Ο‚ " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE u.role_id=5 and g.class_id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
 	        for (k=0;k<sub_classes.size();k++) {
 	        	String parts[] = sub_classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Γονείς " + parts[1]);
+	        	tit = new TreeItem<String>("Ξ“ΞΏΞ½ΞµΞ―Ο‚ " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE u.role_id=5 and g.id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
-	        tit = new TreeItem<String>("Όλοι οι γονείς");
+	        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ Ξ³ΞΏΞ½ΞµΞ―Ο‚");
 	        sql_string = "SELECT id, surname, firstname, email  FROM users WHERE role_id=5";  
 	        queries.put(tit, sql_string);
 	        ti.getChildren().add(tit);
 	        rootItem.getChildren().add(ti);
 	
-	        ti = new TreeItem<String>("Εκπαιδετικοί");
+	        ti = new TreeItem<String>("Ξ•ΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ„ΞΉΞΊΞΏΞ―");
 	        for (k=0;k<classes.size();k++) {
 	        	String parts[] = classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Εκπαιδετικοί " + parts[1]);
+	        	tit = new TreeItem<String>("Ξ•ΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ„ΞΉΞΊΞΏΞ― " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE g.class_id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
 	        for (k=0;k<sub_classes.size();k++) {
 	        	String parts[] = sub_classes.get(k).split(",");
-	        	tit = new TreeItem<String>("Εκπαιδετικοί " + parts[1]);
+	        	tit = new TreeItem<String>("Ξ•ΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ„ΞΉΞΊΞΏΞ― " + parts[1]);
 	        	sql_string = "SELECT u.id as id, surname, firstname, email  FROM users as u INNER JOIN participates as p on u.id=p.user_id INNER JOIN GROUPS as g on p.group_id = g.id WHERE g.id = " + parts[0];
 	        	queries.put(tit, sql_string);
 	        	ti.getChildren().add(tit);
 	        }
-	        tit = new TreeItem<String>("Όλοι οι εκπαιδευτικοί");
+	        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ ΞµΞΊΟ€Ξ±ΞΉΞ΄ΞµΟ…Ο„ΞΉΞΊΞΏΞ―");
 	        sql_string = "SELECT id as id, surname, firstname, email  FROM users WHERE id>0 and role_id=3";  
 	        queries.put(tit, sql_string);
 	        ti.getChildren().add(tit);
 	        rootItem.getChildren().add(ti);
 	        
-	        tit = new TreeItem<String>("Όλοι");
-	        ti = new TreeItem<String>("Όλοι οι χρήστες");
+	        tit = new TreeItem<String>("ΞΞ»ΞΏΞΉ");
+	        ti = new TreeItem<String>("ΞΞ»ΞΏΞΉ ΞΏΞΉ Ο‡ΟΞ®ΟƒΟ„ΞµΟ‚");
 	        sql_string = "SELECT id, surname, firstname, email  FROM users WHERE id>0";  
 	        queries.put(tit, sql_string);
 	        ti.getChildren().add(tit);
@@ -807,7 +807,7 @@ public class MessageFx extends Application {
     	
 	    ImageView graphic1 = new ImageView(new Image(MessageFx.class.getResource("/images/select_all.png").toExternalForm(), 16, 16, true, true));
         Button select_all_btn = new Button("", graphic1);
-    	select_all_btn.setTooltip(new Tooltip("Επιλογή όλων")); 
+    	select_all_btn.setTooltip(new Tooltip("Ξ•Ο€ΞΉΞ»ΞΏΞ³Ξ® ΟΞ»Ο‰Ξ½")); 
     	select_all_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent arg0) {
             	for (Person p : tableView.getItems()) 
@@ -816,7 +816,7 @@ public class MessageFx extends Application {
     	});
 	    ImageView graphic2 = new ImageView(new Image(MessageFx.class.getResource("/images/select_none.png").toExternalForm(), 16, 16, true, true));
         Button select_none_btn = new Button("", graphic2);
-    	select_none_btn.setTooltip(new Tooltip("Μηδενισμός επιλογών"));
+    	select_none_btn.setTooltip(new Tooltip("ΞΞ·Ξ΄ΞµΞ½ΞΉΟƒΞΌΟΟ‚ ΞµΟ€ΞΉΞ»ΞΏΞ³ΟΞ½"));
     	select_none_btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent arg0) {
             	for (Person p : tableView.getItems()) 
@@ -928,8 +928,8 @@ public class MessageFx extends Application {
     	TextArea textAreaTo = new TextArea(); textAreaTo.setPrefHeight(400); textAreaTo.setPrefWidth(600);
     	
     	emailto_vbox.getChildren().add(textAreaTo);
-    	if (my_title_txt.equals("Εισερχόμενο μήνυμα")) {
-    		to_lbl.setText("Από");
+    	if (my_title_txt.equals("Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½ΞΏ ΞΌΞ®Ξ½Ο…ΞΌΞ±")) {
+    		to_lbl.setText("Ξ‘Ο€Ο");
     		int row, col;
     		MultirowForm mr = Cval.multirow_instances_stack.peek();
     		row = mr.clicked_row;
