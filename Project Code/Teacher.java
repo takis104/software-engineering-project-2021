@@ -66,12 +66,12 @@ public class Teacher extends JDialog {
 		gbc2.gridx = 0;  gbc2.gridy = 0; gbc2.gridwidth=2;
 		screen.add(lbl1, gbc2);
 		
-		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im13.png", "Αποστολή μηνύματος");
-		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im07.png", "Ανάθεση εργασίας");
-		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im16.png", "Οι εργασίες που έχω αναθέσει");
-		JButton btn4 = Cval.AddButton(screen, 2, 3, "/images/mn_im03.png", "Ανακοινώσεις");
-		JButton btn5 = Cval.AddButton(screen, 2, 1, "/images/mn_im18.png", "Εισερχόμενα");
-		JButton btn6 = Cval.AddButton(screen, 2, 2, "/images/mn_im19.png", "Απεσταλμένα");
+		JButton btn1 = Cval.AddButton(screen, 1, 1, "/images/mn_im13.png", "Ξ‘Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ® ΞΌΞ·Ξ½ΟΞΌΞ±Ο„ΞΏΟ‚");
+		JButton btn2 = Cval.AddButton(screen, 1, 2, "/images/mn_im07.png", "Ξ‘Ξ½Ξ¬ΞΈΞµΟƒΞ· ΞµΟΞ³Ξ±ΟƒΞ―Ξ±Ο‚");
+		JButton btn3 = Cval.AddButton(screen, 1, 3, "/images/mn_im16.png", "ΞΞΉ ΞµΟΞ³Ξ±ΟƒΞ―ΞµΟ‚ Ο€ΞΏΟ… Ξ­Ο‡Ο‰ Ξ±Ξ½Ξ±ΞΈΞ­ΟƒΞµΞΉ");
+		JButton btn4 = Cval.AddButton(screen, 2, 3, "/images/mn_im03.png", "Ξ‘Ξ½Ξ±ΞΊΞΏΞΉΞ½ΟΟƒΞµΞΉΟ‚");
+		JButton btn5 = Cval.AddButton(screen, 2, 1, "/images/mn_im18.png", "Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±");
+		JButton btn6 = Cval.AddButton(screen, 2, 2, "/images/mn_im19.png", "Ξ‘Ο€ΞµΟƒΟ„Ξ±Ξ»ΞΌΞ­Ξ½Ξ±");
 		
 		btn1.addActionListener(new ActionListener() { //new message
 			public void actionPerformed(ActionEvent arg0) {
@@ -114,7 +114,7 @@ public class Teacher extends JDialog {
 		exit_btn.setMaximumSize(new Dimension(35, 35));
 		exit_btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (JOptionPane.showConfirmDialog(null, "Θέλετε να αξιολογήσετε την εφαρμογή", "Αξιολόγηση",
+				if (JOptionPane.showConfirmDialog(null, "ΞΞ­Ξ»ΞµΟ„Ξµ Ξ½Ξ± Ξ±ΞΎΞΉΞΏΞ»ΞΏΞ³Ξ®ΟƒΞµΟ„Ξµ Ο„Ξ·Ξ½ ΞµΟ†Ξ±ΟΞΌΞΏΞ³Ξ®", "Ξ‘ΞΎΞΉΞΏΞ»ΟΞ³Ξ·ΟƒΞ·",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					new Feedback();
 				}
@@ -132,31 +132,31 @@ public class Teacher extends JDialog {
 	}
 	
 	public void newMessage() {
-		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Μήνυμα",null, 0);
+		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "ΞΞ®Ξ½Ο…ΞΌΞ±",null, 0);
 	}
 	
 	public void newProject() {
-		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Νέα εργασία",null, 1);
+		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "ΞΞ­Ξ± ΞµΟΞ³Ξ±ΟƒΞ―Ξ±",null, 1);
 	}
 	
 	public void showProjects() {
 		Cval.id_from_parent.push(db_interface.user_id);
-		sql_from_parent = "SELECT DISTINCT(m.id) AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.deadline as Προθεσμία, m.cloud_id AS link FROM msgs as m INNER JOIN msgs_details as md WHERE deadline is not null AND md.from_user_id = " + db_interface.user_id;
-		new MultirowForm("Εργασίες που ανέθεσα", sql_from_parent, true, true, true, Cval.OPEN_MULTIROW); //last true = call view message on edit
+		sql_from_parent = "SELECT DISTINCT(m.id) AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.deadline as Ξ ΟΞΏΞΈΞµΟƒΞΌΞ―Ξ±, m.cloud_id AS link FROM msgs as m INNER JOIN msgs_details as md WHERE deadline is not null AND md.from_user_id = " + db_interface.user_id;
+		new MultirowForm("Ξ•ΟΞ³Ξ±ΟƒΞ―ΞµΟ‚ Ο€ΞΏΟ… Ξ±Ξ½Ξ­ΞΈΞµΟƒΞ±", sql_from_parent, true, true, true, Cval.OPEN_MULTIROW); //last true = call view message on edit
 	}
 	
 	public void manageAnnouncements() {
-		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Ανακοίνωση",null, 2);
+		new MessageFx(Cval.ScreenWidth, Cval.ScreenHeight, "Ξ‘Ξ½Ξ±ΞΊΞΏΞ―Ξ½Ο‰ΟƒΞ·",null, 2);
 	}
 	
 	public void showIncomingMessages() {
-		sql_from_parent = "SELECT m.id AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, CONCAT(u.surname, ' ', u.firstname) as Αποστολέας, m.cloud_id as online_id, u.id As sender_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id INNER JOIN users as u on md.from_user_id=u.id WHERE kind=0 and md.to_user_id =" + db_interface.user_id + " ORDER BY msg_date desc";
-		new MultirowForm("Εισερχόμενα", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT m.id AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, CONCAT(u.surname, ' ', u.firstname) as Ξ‘Ο€ΞΏΟƒΟ„ΞΏΞ»Ξ­Ξ±Ο‚, m.cloud_id as online_id, u.id As sender_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id INNER JOIN users as u on md.from_user_id=u.id WHERE kind=0 and md.to_user_id =" + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Ξ•ΞΉΟƒΞµΟΟ‡ΟΞΌΞµΞ½Ξ±", sql_from_parent, false, true, true, Cval.OPEN_EDITOR);
 	}
 	
 	public void showOutgoingMessages() {
-		sql_from_parent = "SELECT distinct(m.id) AS Κωδικός, m.msg_date AS Ημερομηνία, m.msg_subject AS Θέμα, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
-		new MultirowForm("Απεσταλμένα", sql_from_parent, true, true, true,  Cval.OPEN_EDITOR);
+		sql_from_parent = "SELECT distinct(m.id) AS ΞΟ‰Ξ΄ΞΉΞΊΟΟ‚, m.msg_date AS Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ±, m.msg_subject AS ΞΞ­ΞΌΞ±, m.cloud_id as online_id FROM msgs as m INNER JOIN msgs_details as md on m.id= md.msg_id WHERE kind=0 and md.from_user_id = " + db_interface.user_id + " ORDER BY msg_date desc";
+		new MultirowForm("Ξ‘Ο€ΞµΟƒΟ„Ξ±Ξ»ΞΌΞ­Ξ½Ξ±", sql_from_parent, true, true, true,  Cval.OPEN_EDITOR);
 	}
 	
 	/*private JMenuBar PrepareMenu() {
