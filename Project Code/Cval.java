@@ -32,8 +32,8 @@ public class Cval {
 	static int OPEN_MULTIROW=1;
 	static int OPEN_EDIT_ROW=2;
 	
-	static String DROPBOX_ACCESS_TOKEN = "sl.AyXYSTqhYql_6AkRBDXZWji9iKntLnbLoku485-k2QsO8S1z0TgnlFsiiGLQirfuhxfNYzPFc_q8yXcxfMtM8Wf6WfmxOiz2E2eXSidcPfG_0GiFAkAZ6ZCDkDAnturpeFSzx_E";
-	static String PROJECT_NAME = "schoolink1";
+	static String DROPBOX_ACCESS_TOKEN = "PPdurebFc5oAAAAAAAAAAeDbozV7oQAOdBY52yVMJr1M1I7sXMPFOFV1xI-2V2fJ";
+	static String PROJECT_NAME = "schoolink2";
 	static String EMPTY_HTML = "<html><body></body></html>";
 	public static String LastSelectedImage;
 	
