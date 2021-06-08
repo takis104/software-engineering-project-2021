@@ -59,7 +59,7 @@ public class Absenses {
 		selected_subgroup_id=-1;
 		
 		screen = new JFrame("");
-		screen.setTitle("Απουσίες τμήματος");
+		screen.setTitle("Ξ‘Ο€ΞΏΟ…ΟƒΞ―ΞµΟ‚ Ο„ΞΌΞ®ΞΌΞ±Ο„ΞΏΟ‚");
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		screen.setSize(600, 800); 
 		ImageIcon bg = new ImageIcon(getClass().getResource("/images/main_bg.png"));
@@ -76,7 +76,7 @@ public class Absenses {
 		GridBagLayout grid = new GridBagLayout();
 		screen.setLayout(grid);
 		
-		JLabel lbl1 = new JLabel("Ημερομηνία : ");
+		JLabel lbl1 = new JLabel("Ξ—ΞΌΞµΟΞΏΞΌΞ·Ξ½Ξ―Ξ± : ");
 		
 		
 		lbl1.setFont(new Font("Tahoma", Font.PLAIN, Cval.TitleFontSize));
@@ -106,7 +106,7 @@ public class Absenses {
 		gbc1.gridx = 1;  gbc1.gridy = 0; gbc1.gridwidth=1;
         screen.add(IssueDatePicker, gbc1);
         
-		JLabel lbl2 = new JLabel("Τμήμα : ");
+		JLabel lbl2 = new JLabel("Ξ¤ΞΌΞ®ΞΌΞ± : ");
 		lbl2.setFont(new Font("Tahoma", Font.PLAIN, Cval.TitleFontSize));
 		lbl2.setForeground(Color.YELLOW);
 		gbc1.gridx = 0;  gbc1.gridy = 1; gbc1.gridwidth=1;
@@ -136,13 +136,13 @@ public class Absenses {
 		
 
 		JButton save_exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/save_exit.png")));
-		save_exit_btn.setToolTipText("Αποθήκευση & Έξοδος");
+		save_exit_btn.setToolTipText("Ξ‘Ο€ΞΏΞΈΞ®ΞΊΞµΟ…ΟƒΞ· & ΞΞΎΞΏΞ΄ΞΏΟ‚");
 		save_exit_btn.setMaximumSize(new Dimension(35, 35));
 		GridBagConstraints gbc4 = new GridBagConstraints();
 		gbc4.gridx = 2;  gbc4.gridy = 6; gbc4.gridwidth=2; screen.add(save_exit_btn, gbc4);
 		
 		JButton exit_btn = new JButton((Icon) new ImageIcon(getClass().getResource("/images/exit.png")));
-		exit_btn.setToolTipText("Έξοδος");
+		exit_btn.setToolTipText("ΞΞΎΞΏΞ΄ΞΏΟ‚");
 		exit_btn.setMaximumSize(new Dimension(35, 35));
 		GridBagConstraints gbc3 = new GridBagConstraints();
 		gbc3.gridx = 1;  gbc3.gridy = 6; gbc3.gridwidth=2; screen.add(exit_btn, gbc3);
@@ -232,12 +232,12 @@ public class Absenses {
 		lbl1a.setBorder(new BevelBorder(BevelBorder.RAISED));
 		loc_panel.add(lbl1a);
 		
-		JLabel lbl1b = new JLabel("Μαθητής :                 ");
+		JLabel lbl1b = new JLabel("ΞΞ±ΞΈΞ·Ο„Ξ®Ο‚ :                 ");
 		lbl1b.setFont(new Font("Verdana", Font.PLAIN, 18));
 		lbl1b.setBorder(new BevelBorder(BevelBorder.RAISED));
 		loc_panel.add(lbl1b);
 		for (int j=0;j<Cval.HoursPerDay;j++) {
-			JLabel lbl1c = new JLabel((j+1)+"η  ");
+			JLabel lbl1c = new JLabel((j+1)+"Ξ·  ");
 			lbl1c.setFont(new Font("Verdana", Font.PLAIN, 18));
 			lbl1c.setBorder(new BevelBorder(BevelBorder.RAISED));
 			loc_panel.add(lbl1c);
