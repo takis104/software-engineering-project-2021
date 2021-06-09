@@ -13,7 +13,7 @@ Project description: Computerization of School functionality
 * ΓΙΑΝΝΗΣ ΧΑΤΖΗΜΙΧΑΛΗΣ, (Α.Μ. : 1059613)
 * ΓΙΩΡΓΟΣ ΜΗΤΣΕΑΣ, (Α.Μ. : 1002345)
 
-## Συνολικός κώδικας σε zip αρχείο + κώδικας SQL 
+## Συνολικός κώδικας Java σε zip αρχείο + βάση SQL 
 
 👉 https://drive.google.com/drive/folders/1dUGSUgTYxvjxDW8S28Dapm83cQd6J38F?usp=sharing
 
