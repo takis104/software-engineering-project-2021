@@ -1,4 +1,6 @@
-<img src="https://user-images.githubusercontent.com/52033650/121591402-20179200-ca42-11eb-8411-c89d7dd5d6d5.jpg">
+<p align="center">
+  <img  src="https://user-images.githubusercontent.com/52033650/121591402-20179200-ca42-11eb-8411-c89d7dd5d6d5.jpg">
+</p>
 
 # SchooLink - School Management Application
 
