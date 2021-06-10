@@ -1,4 +1,7 @@
-# software-engineering-project-2021
+<img src="https://user-images.githubusercontent.com/52033650/121591402-20179200-ca42-11eb-8411-c89d7dd5d6d5.jpg">
+
+# SchooLink - School Management Application
+
 Software Engineering Project 2021 - CEID University of Patras
 
 ## Project details
