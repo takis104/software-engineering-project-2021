@@ -22,7 +22,7 @@ Project description: Computerization of School functionality
 Download Here:
 👉 https://drive.google.com/drive/folders/1dUGSUgTYxvjxDW8S28Dapm83cQd6J38F?usp=sharing
 
-##Demo Project 👉 https://www.youtube.com/watch?v=-Iq92LzqO8s
+## Demo Project 👉 https://www.youtube.com/watch?v=-Iq92LzqO8s
 
 ## Project implementation duration
 February 2021 - June 2021
