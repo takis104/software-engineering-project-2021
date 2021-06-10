@@ -10,11 +10,11 @@ Project name: SchooLink
 Project description: Computerization of School functionality
 
 ## Team members (names in Greek with student IDs)
-* ΧΡΗΣΤΟΣ-ΠΑΝΑΓΙΩΤΗΣ ΜΠΑΛΑΤΣΟΥΡΑΣ, (Α.Μ. : 1054335)
-* ΕΙΡΗΝΗ ΡΟΥΧΩΤΑ, (Α.Μ. : 1059654)
-* ΧΡΙΣΤΙΝΑ ΠΑΠΑΣΤΑΥΡΟΥ, (Α.Μ. : 1059621)
-* ΓΙΑΝΝΗΣ ΧΑΤΖΗΜΙΧΑΛΗΣ, (Α.Μ. : 1059613)
-* ΓΙΩΡΓΟΣ ΜΗΤΣΕΑΣ, (Α.Μ. : 1002345)
+* <a href="https://github.com/takis104">ΧΡΗΣΤΟΣ-ΠΑΝΑΓΙΩΤΗΣ ΜΠΑΛΑΤΣΟΥΡΑΣ, (Α.Μ. : 1054335)</a>
+* <a href="https://github.com/EiriniRouchota">ΕΙΡΗΝΗ ΡΟΥΧΩΤΑ, (Α.Μ. : 1059654)</a>
+* <a href="https://github.com/christinapap13">ΧΡΙΣΤΙΝΑ ΠΑΠΑΣΤΑΥΡΟΥ, (Α.Μ. : 1059621)</a>
+* <a href="https://github.com/ITSHASFI">ΓΙΑΝΝΗΣ ΧΑΤΖΗΜΙΧΑΛΗΣ, (Α.Μ. : 1059613)</a>
+* <a href="https://github.com/yakam0t0">ΓΙΩΡΓΟΣ ΜΗΤΣΕΑΣ, (Α.Μ. : 1002345)</a>
 
 ## Application Code in Java Language + SQL Database, in ZIP File
 Download Here:
