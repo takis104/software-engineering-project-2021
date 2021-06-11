@@ -18,9 +18,6 @@ Project description: Computerization of School functionality
 * <a href="https://github.com/ITSHASFI">ΓΙΑΝΝΗΣ ΧΑΤΖΗΜΙΧΑΛΗΣ, (Α.Μ. : 1059613)</a>
 * <a href="https://github.com/yakam0t0">ΓΙΩΡΓΟΣ ΜΗΤΣΕΑΣ, (Α.Μ. : 1002345)</a>
 
-## Application Code in Java Language + SQL Database, in ZIP File
-Download Here:
-👉 https://drive.google.com/drive/folders/1dUGSUgTYxvjxDW8S28Dapm83cQd6J38F?usp=sharing
 
 ## Demo Project Video
 👉 https://www.youtube.com/watch?v=-Iq92LzqO8s
